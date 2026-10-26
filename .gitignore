@@ -1,0 +1,43 @@
+# --- Secrets and local configuration ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+backend/.venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Databases (SQLite demo data is regenerated from seed files) ---
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# --- Node / frontend ---
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/test-results/
+frontend/playwright-report/
+*.tsbuildinfo
+
+# --- Optional ML artifacts and raw datasets (rebuilt by scripts) ---
+model/artifacts/
+datasets/raw/
+*.safetensors
+*.bin
+*.pt
+*.npy
+
+# --- Logs and OS / editor files ---
+logs/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

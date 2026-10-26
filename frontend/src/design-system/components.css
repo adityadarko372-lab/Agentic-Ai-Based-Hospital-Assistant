@@ -1,0 +1,490 @@
+/*
+ * Nova Health component styles.
+ * Each block maps to one React component in src/components/ui.
+ */
+
+/* ---------- Card ---------- */
+.nh-card {
+  position: relative;
+  background: linear-gradient(145deg, var(--nh-surface-raised), var(--nh-surface));
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  box-shadow: var(--nh-raise-md);
+  padding: var(--nh-space-6);
+}
+
+.nh-card--sunken {
+  background: var(--nh-surface-sunken);
+  box-shadow: var(--nh-inset-md);
+}
+
+.nh-card--flat {
+  box-shadow: var(--nh-raise-sm);
+}
+
+.nh-card--interactive {
+  transition:
+    transform var(--nh-duration) var(--nh-ease),
+    box-shadow var(--nh-duration) var(--nh-ease);
+}
+
+.nh-card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--nh-raise-lg);
+}
+
+.nh-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nh-space-4);
+  margin-bottom: var(--nh-space-4);
+}
+
+.nh-card__header > :last-child:not(:first-child) {
+  flex-shrink: 0;
+}
+
+.nh-card__title {
+  font-size: var(--nh-text-lg);
+}
+
+.nh-card__subtitle {
+  margin-top: var(--nh-space-1);
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+/* ---------- Button ---------- */
+.nh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nh-space-2);
+  min-height: 44px; /* comfortable touch target */
+  padding: 0 var(--nh-space-5);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-pill);
+  font-weight: 600;
+  font-size: var(--nh-text-sm);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    box-shadow var(--nh-duration-fast) var(--nh-ease),
+    transform var(--nh-duration-fast) var(--nh-ease),
+    background-color var(--nh-duration-fast) var(--nh-ease);
+}
+
+.nh-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.nh-button--primary {
+  background: linear-gradient(145deg, #0e7c7b, var(--nh-primary-strong));
+  color: var(--nh-ink-inverse);
+  border-color: transparent;
+  box-shadow:
+    5px 5px 12px rgba(8, 86, 86, 0.28),
+    -4px -4px 10px var(--nh-shadow-light);
+}
+
+.nh-button--primary:hover:not(:disabled) {
+  background: linear-gradient(145deg, #0b6e6e, #064848);
+}
+
+.nh-button--secondary {
+  background: var(--nh-surface-raised);
+  color: var(--nh-primary-strong);
+  box-shadow: var(--nh-raise-sm);
+}
+
+.nh-button--secondary:hover:not(:disabled) {
+  box-shadow: var(--nh-raise-md);
+}
+
+.nh-button--secondary:active:not(:disabled) {
+  box-shadow: var(--nh-inset-sm);
+}
+
+.nh-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--nh-ink-muted);
+}
+
+.nh-button--ghost:hover:not(:disabled) {
+  background: var(--nh-surface-sunken);
+  color: var(--nh-ink);
+}
+
+.nh-button--danger {
+  background: var(--nh-danger);
+  color: var(--nh-ink-inverse);
+  border-color: transparent;
+}
+
+.nh-button--sm {
+  min-height: 36px;
+  padding: 0 var(--nh-space-4);
+  font-size: var(--nh-text-xs);
+}
+
+.nh-button--icon {
+  width: 44px;
+  padding: 0;
+}
+
+.nh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.nh-button__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: nh-spin 0.8s linear infinite;
+}
+
+@keyframes nh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Form fields ---------- */
+.nh-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-2);
+}
+
+.nh-field__label {
+  font-weight: 600;
+  font-size: var(--nh-text-sm);
+  color: var(--nh-ink);
+}
+
+.nh-field__required {
+  color: var(--nh-danger);
+  margin-left: 2px;
+}
+
+.nh-field__hint {
+  font-size: var(--nh-text-xs);
+  color: var(--nh-ink-subtle);
+}
+
+.nh-field__error {
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-1);
+  font-size: var(--nh-text-xs);
+  font-weight: 600;
+  color: var(--nh-danger);
+}
+
+.nh-input,
+.nh-select,
+.nh-textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: var(--nh-space-3) var(--nh-space-4);
+  background: var(--nh-surface-sunken);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-md);
+  box-shadow: var(--nh-inset-sm);
+  transition:
+    border-color var(--nh-duration-fast) var(--nh-ease),
+    box-shadow var(--nh-duration-fast) var(--nh-ease);
+}
+
+.nh-input::placeholder,
+.nh-textarea::placeholder {
+  color: var(--nh-ink-subtle);
+}
+
+.nh-input:focus-visible,
+.nh-select:focus-visible,
+.nh-textarea:focus-visible {
+  border-color: var(--nh-accent);
+  box-shadow: var(--nh-inset-sm), var(--nh-focus-ring);
+}
+
+.nh-textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.nh-select {
+  appearance: none;
+  padding-right: var(--nh-space-10);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--nh-ink-muted) 50%),
+    linear-gradient(135deg, var(--nh-ink-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.nh-input[aria-invalid="true"],
+.nh-select[aria-invalid="true"],
+.nh-textarea[aria-invalid="true"] {
+  border-color: var(--nh-danger);
+}
+
+/* ---------- Badge ---------- */
+.nh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--nh-radius-pill);
+  font-size: var(--nh-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.nh-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.nh-badge--pending {
+  background: var(--nh-warning-soft);
+  color: var(--nh-warning);
+}
+
+.nh-badge--confirmed {
+  background: var(--nh-success-soft);
+  color: var(--nh-success);
+}
+
+.nh-badge--emergency {
+  background: var(--nh-danger-soft);
+  color: var(--nh-danger);
+}
+
+.nh-badge--info {
+  background: var(--nh-info-soft);
+  color: var(--nh-info);
+}
+
+.nh-badge--neutral {
+  background: var(--nh-surface-sunken);
+  color: var(--nh-ink-muted);
+}
+
+/* ---------- Skeleton ---------- */
+.nh-skeleton {
+  display: block;
+  border-radius: var(--nh-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--nh-surface-sunken) 0%,
+    var(--nh-surface-raised) 50%,
+    var(--nh-surface-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: nh-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes nh-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- Empty state ---------- */
+.nh-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-8) var(--nh-space-4);
+}
+
+.nh-empty__icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--nh-surface);
+  box-shadow: var(--nh-inset-md);
+  color: var(--nh-primary);
+}
+
+.nh-empty__title {
+  font-size: var(--nh-text-lg);
+}
+
+.nh-empty__description {
+  max-width: 42ch;
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+/* ---------- Demo data banner ---------- */
+.nh-demo-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-3) var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-info-soft);
+  border: 1px solid rgba(47, 93, 138, 0.18);
+  color: var(--nh-info);
+  font-size: var(--nh-text-sm);
+}
+
+.nh-demo-banner svg {
+  flex-shrink: 0;
+}
+
+.nh-demo-banner strong {
+  font-weight: 700;
+}
+
+/* ---------- Toast ---------- */
+.nh-toast-region {
+  position: fixed;
+  right: var(--nh-space-6);
+  bottom: var(--nh-space-6);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-3);
+  width: min(380px, calc(100vw - 2 * var(--nh-space-4)));
+  pointer-events: none;
+}
+
+.nh-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-surface-raised);
+  border: 1px solid var(--nh-border-strong);
+  border-left: 4px solid var(--nh-info);
+  box-shadow: var(--nh-raise-lg);
+  pointer-events: auto;
+}
+
+.nh-toast--success {
+  border-left-color: var(--nh-success);
+}
+
+.nh-toast--error {
+  border-left-color: var(--nh-danger);
+}
+
+.nh-toast--warning {
+  border-left-color: var(--nh-warning);
+}
+
+.nh-toast__body {
+  flex: 1;
+}
+
+.nh-toast__title {
+  font-weight: 700;
+  font-size: var(--nh-text-sm);
+}
+
+.nh-toast__message {
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+/* ---------- Modal ---------- */
+.nh-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: grid;
+  place-items: center;
+  padding: var(--nh-space-4);
+  background: rgba(20, 34, 47, 0.32);
+  backdrop-filter: blur(4px);
+}
+
+.nh-modal {
+  width: min(520px, 100%);
+  max-height: calc(100vh - 2 * var(--nh-space-8));
+  overflow: auto;
+  padding: var(--nh-space-8);
+  border-radius: var(--nh-radius-lg);
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  box-shadow: var(--nh-raise-lg);
+}
+
+.nh-modal__title {
+  font-size: var(--nh-text-xl);
+  margin-bottom: var(--nh-space-3);
+}
+
+.nh-modal__body {
+  color: var(--nh-ink-muted);
+}
+
+.nh-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--nh-space-3);
+  margin-top: var(--nh-space-6);
+}
+
+/* ---------- Status dot (backend connection) ---------- */
+.nh-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nh-space-2);
+  font-size: var(--nh-text-xs);
+  font-weight: 600;
+  color: var(--nh-ink-muted);
+}
+
+.nh-status__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--nh-ink-subtle);
+}
+
+.nh-status--online .nh-status__dot {
+  background: #1f9d57;
+  box-shadow: 0 0 0 4px rgba(31, 157, 87, 0.16);
+}
+
+.nh-status--offline .nh-status__dot {
+  background: var(--nh-danger);
+  box-shadow: 0 0 0 4px rgba(165, 38, 44, 0.14);
+}
+
+.nh-status--checking .nh-status__dot {
+  animation: nh-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes nh-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}

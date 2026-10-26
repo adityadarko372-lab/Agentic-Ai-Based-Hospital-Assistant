@@ -1,0 +1,9 @@
+/* Fonts are bundled locally (no Google Fonts CDN), so the UI works offline. */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
+
+@import "./design-system/tokens.css";
+@import "./design-system/base.css";
+@import "./design-system/components.css";
+@import "./design-system/layout.css";
+@import "./design-system/pages.css";

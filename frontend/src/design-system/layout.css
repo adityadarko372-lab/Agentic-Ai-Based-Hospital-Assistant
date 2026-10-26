@@ -1,0 +1,315 @@
+/* App shell layout: sidebar + main column, collapsing to a drawer on mobile. */
+
+.nh-app {
+  display: grid;
+  grid-template-columns: var(--nh-sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* ---------- Brand ---------- */
+.nh-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nh-space-3);
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--nh-radius-sm);
+}
+
+.nh-brand__mark {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  filter: drop-shadow(3px 4px 6px rgba(8, 86, 86, 0.25));
+}
+
+.nh-brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.nh-brand__name {
+  font-family: var(--nh-font-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: var(--nh-ink);
+}
+
+.nh-brand__tagline {
+  font-size: var(--nh-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nh-primary);
+}
+
+/* ---------- Sidebar ---------- */
+.nh-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-6);
+  height: 100vh;
+  padding: var(--nh-space-6) var(--nh-space-4);
+  border-right: 1px solid var(--nh-border);
+  background: linear-gradient(180deg, var(--nh-surface-raised), var(--nh-surface));
+  box-shadow: 6px 0 18px rgba(126, 142, 160, 0.14);
+  overflow-y: auto;
+}
+
+.nh-sidebar > .nh-brand {
+  padding: 0 var(--nh-space-2);
+}
+
+.nh-sidebar__spacer {
+  flex: 1;
+}
+
+.nh-sidebar__divider {
+  height: 1px;
+  margin: 0 var(--nh-space-2);
+  background: var(--nh-border-strong);
+}
+
+.nh-sidebar__footnote {
+  padding: 0 var(--nh-space-3);
+  font-size: var(--nh-text-xs);
+  color: var(--nh-ink-subtle);
+}
+
+/* ---------- Navigation list ---------- */
+.nh-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nh-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-2) var(--nh-space-3);
+  border-radius: var(--nh-radius-md);
+  color: var(--nh-ink-muted);
+  text-decoration: none;
+  transition:
+    background-color var(--nh-duration-fast) var(--nh-ease),
+    box-shadow var(--nh-duration-fast) var(--nh-ease),
+    color var(--nh-duration-fast) var(--nh-ease);
+}
+
+.nh-nav__link:hover {
+  color: var(--nh-ink);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.nh-nav__link.is-active {
+  color: var(--nh-primary-strong);
+  background: var(--nh-surface);
+  box-shadow: var(--nh-inset-sm);
+}
+
+.nh-nav__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--nh-surface-raised);
+  box-shadow: var(--nh-raise-sm);
+}
+
+.nh-nav__link.is-active .nh-nav__icon {
+  background: linear-gradient(145deg, #0e7c7b, var(--nh-primary-strong));
+  color: var(--nh-ink-inverse);
+  box-shadow: 3px 3px 8px rgba(8, 86, 86, 0.3);
+}
+
+.nh-nav__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nh-nav__label {
+  font-weight: 600;
+  font-size: var(--nh-text-sm);
+}
+
+.nh-nav__description {
+  font-size: var(--nh-text-xs);
+  color: var(--nh-ink-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Main column ---------- */
+.nh-main-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nh-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-3);
+  height: var(--nh-topbar-height);
+  padding: 0 var(--nh-space-8);
+  background: rgba(238, 241, 244, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--nh-border);
+}
+
+.nh-topbar__menu,
+.nh-topbar__brand {
+  display: none;
+}
+
+.nh-topbar__spacer {
+  flex: 1;
+}
+
+.nh-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--nh-space-8);
+  padding-bottom: 120px; /* room for the floating assistant button */
+}
+
+/* <main> receives focus programmatically after navigation; it is not an
+   interactive control, so it should not draw a focus ring. */
+.nh-main:focus,
+.nh-main:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ---------- Floating assistant button ---------- */
+.nh-fab {
+  position: fixed;
+  right: var(--nh-space-6);
+  bottom: var(--nh-space-6);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nh-space-2);
+  min-height: 56px;
+  padding: 0 var(--nh-space-6) 0 var(--nh-space-5);
+  border-radius: var(--nh-radius-pill);
+  background: linear-gradient(145deg, #12908e, var(--nh-primary-strong));
+  color: var(--nh-ink-inverse);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow:
+    8px 10px 22px rgba(8, 86, 86, 0.32),
+    -6px -6px 16px var(--nh-shadow-light);
+  transition: transform var(--nh-duration) var(--nh-ease);
+}
+
+.nh-fab:hover {
+  transform: translateY(-2px);
+}
+
+/* Keep toasts above the FAB */
+.nh-toast-region {
+  bottom: 96px;
+}
+
+/* ---------- Mobile drawer ---------- */
+.nh-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  background: rgba(20, 34, 47, 0.32);
+  backdrop-filter: blur(3px);
+}
+
+.nh-drawer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-6);
+  width: min(320px, 86vw);
+  height: 100%;
+  padding: var(--nh-space-5) var(--nh-space-4);
+  overflow-y: auto;
+  background: var(--nh-surface);
+  box-shadow: var(--nh-raise-lg);
+}
+
+.nh-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .nh-app {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nh-sidebar {
+    display: none;
+  }
+
+  .nh-topbar {
+    padding: 0 var(--nh-space-4);
+  }
+
+  .nh-topbar__menu {
+    display: inline-flex;
+  }
+
+  .nh-topbar__brand {
+    display: block;
+  }
+
+  .nh-main {
+    padding: var(--nh-space-5) var(--nh-space-4);
+    padding-bottom: 112px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nh-topbar__brand .nh-brand__tagline {
+    display: none;
+  }
+
+  /* Keep the status dot visible; the text stays available to screen readers. */
+  .nh-topbar .nh-status__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .nh-page-header__actions,
+  .nh-page-header__actions a {
+    width: 100%;
+  }
+
+  .nh-fab {
+    right: var(--nh-space-4);
+    bottom: var(--nh-space-4);
+    padding: 0 var(--nh-space-4);
+  }
+
+  .nh-fab__label {
+    display: none;
+  }
+}

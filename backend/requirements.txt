@@ -1,0 +1,6 @@
+# Nova Health backend runtime dependencies (pinned for reproducible demos).
+# Python 3.13 is the tested interpreter.
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.1
+pydantic-settings==2.16.1

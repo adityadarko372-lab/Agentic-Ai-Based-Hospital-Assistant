@@ -1,0 +1,317 @@
+/* Page-level layouts shared by Nova Health pages. */
+
+.nh-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-6);
+}
+
+.nh-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--nh-space-4);
+}
+
+.nh-page-header__eyebrow {
+  margin-bottom: var(--nh-space-2);
+  font-size: var(--nh-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nh-primary);
+}
+
+.nh-page-header__title {
+  font-size: var(--nh-text-3xl);
+}
+
+.nh-page-header__description {
+  max-width: 62ch;
+  margin-top: var(--nh-space-2);
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-lg);
+}
+
+.nh-page-header__actions a {
+  text-decoration: none;
+}
+
+.nh-section-title {
+  margin-bottom: var(--nh-space-4);
+  font-size: var(--nh-text-xl);
+}
+
+.nh-subheading {
+  margin: var(--nh-space-4) 0 var(--nh-space-3);
+  font-size: var(--nh-text-md);
+}
+
+/* Links styled as buttons */
+a.nh-button {
+  text-decoration: none;
+}
+
+/* ---------- Emergency notice ---------- */
+.nh-emergency-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-3) var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-danger-soft);
+  border: 1px solid rgba(165, 38, 44, 0.2);
+  color: #7d1c21;
+  font-size: var(--nh-text-sm);
+}
+
+.nh-emergency-notice a {
+  color: #7d1c21;
+  font-weight: 800;
+}
+
+.nh-emergency-notice__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--nh-danger);
+}
+
+/* ---------- Quick access cards ---------- */
+.nh-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--nh-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nh-quick-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-2);
+  height: 100%;
+  padding: var(--nh-space-6);
+  border-radius: var(--nh-radius-lg);
+  border: 1px solid var(--nh-border);
+  background: linear-gradient(145deg, var(--nh-surface-raised), var(--nh-surface));
+  box-shadow: var(--nh-raise-md);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform var(--nh-duration) var(--nh-ease),
+    box-shadow var(--nh-duration) var(--nh-ease);
+}
+
+.nh-quick-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--nh-raise-lg);
+}
+
+.nh-quick-card:active {
+  box-shadow: var(--nh-inset-sm);
+  transform: none;
+}
+
+.nh-quick-card__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--nh-space-2);
+  border-radius: 16px;
+  background: var(--nh-primary-soft);
+  color: var(--nh-primary-strong);
+  box-shadow: var(--nh-inset-sm);
+}
+
+.nh-quick-card__title {
+  font-weight: 700;
+  font-size: var(--nh-text-lg);
+}
+
+.nh-quick-card__description {
+  flex: 1;
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+.nh-quick-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--nh-space-2);
+  color: var(--nh-primary-strong);
+  font-weight: 700;
+  font-size: var(--nh-text-sm);
+}
+
+/* ---------- Dashboard columns ---------- */
+.nh-dashboard-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--nh-space-6);
+}
+
+@media (max-width: 900px) {
+  .nh-dashboard-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Status list ---------- */
+.nh-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-3);
+  margin: 0;
+}
+
+.nh-status-list > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--nh-space-4);
+  padding-bottom: var(--nh-space-3);
+  border-bottom: 1px solid var(--nh-border);
+  font-size: var(--nh-text-sm);
+}
+
+.nh-status-list > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.nh-status-list dt {
+  color: var(--nh-ink-muted);
+}
+
+.nh-status-list dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.nh-status-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--nh-space-3);
+  font-size: var(--nh-text-sm);
+  color: var(--nh-ink-muted);
+}
+
+.nh-status-panel code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--nh-surface-sunken);
+  color: var(--nh-ink);
+}
+
+/* ---------- Services ---------- */
+.nh-service-grid,
+.nh-department-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--nh-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nh-service-item {
+  display: flex;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-surface);
+  box-shadow: var(--nh-inset-sm);
+}
+
+.nh-service-item__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-primary);
+  box-shadow: var(--nh-raise-sm);
+}
+
+.nh-service-item__name {
+  font-size: var(--nh-text-md);
+}
+
+.nh-service-item__summary {
+  margin-top: 2px;
+  font-size: var(--nh-text-sm);
+  color: var(--nh-ink-muted);
+}
+
+.nh-department-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-3);
+  height: 100%;
+}
+
+.nh-department-card__name {
+  font-family: var(--nh-font-sans);
+  font-size: var(--nh-text-lg);
+}
+
+.nh-department-card__summary {
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+/* ---------- Utilities ---------- */
+.nh-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nh-space-3);
+}
+
+.nh-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-3);
+}
+
+.nh-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--nh-space-5);
+}
+
+.nh-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-sm);
+}
+
+.nh-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nh-space-2);
+}
+
+.nh-checklist svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--nh-primary);
+}
