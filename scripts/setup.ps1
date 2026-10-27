@@ -42,11 +42,7 @@ finally {
     Pop-Location
 }
 
-# --- Local configuration ---
-$EnvFile = Join-Path $RepoRoot ".env"
-if (-not (Test-Path $EnvFile)) {
-    Copy-Item (Join-Path $RepoRoot ".env.example") $EnvFile
-    Write-Host "Created .env from .env.example"
-}
+# --- Local configuration (.env with a random SESSION_SECRET) ---
+& (Join-Path $PSScriptRoot "ensure-env.ps1")
 
 Write-Host "Setup complete. Start the app with: .\scripts\start.ps1" -ForegroundColor Green

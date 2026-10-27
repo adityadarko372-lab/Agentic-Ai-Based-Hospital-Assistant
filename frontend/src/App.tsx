@@ -1,17 +1,22 @@
 import { MotionConfig } from "framer-motion";
 import { Route, Routes } from "react-router-dom";
 
+import { AuthProvider } from "./auth/AuthContext";
+import { RequireAuth } from "./auth/RequireAuth";
 import { AppShell } from "./components/layout/AppShell";
 import { ToastProvider } from "./components/ui";
 import { BackendHealthProvider } from "./hooks/BackendHealthContext";
+import { AppointmentsPage } from "./pages/AppointmentsPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { LoginPage } from "./pages/LoginPage";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
 import { ModulePreviewPage } from "./pages/ModulePreviewPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ServicesPage } from "./pages/ServicesPage";
 
 /**
- * Route map. Modules not yet implemented render an honest preview page that
+ * Route map. /login is public; every other page needs a signed-in demo
+ * patient. Modules not yet implemented render an honest preview page that
  * names the phase delivering them (see docs/first report.md).
  */
 export default function App() {
@@ -21,8 +26,16 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <ToastProvider>
         <BackendHealthProvider>
+          <AuthProvider>
           <Routes>
-            <Route element={<AppShell />}>
+            <Route path="login" element={<LoginPage />} />
+            <Route
+              element={
+                <RequireAuth>
+                  <AppShell />
+                </RequireAuth>
+              }
+            >
               <Route index element={<DashboardPage />} />
               <Route
                 path="assistant"
@@ -58,23 +71,7 @@ export default function App() {
                   />
                 }
               />
-              <Route
-                path="appointments"
-                element={
-                  <ModulePreviewPage
-                    eyebrow="Module 5 · Appointment Management"
-                    title="Appointments"
-                    description="Submit an appointment request and see its real status."
-                    icon="calendar"
-                    plannedPhase="Phase 2"
-                    plannedCapabilities={[
-                      "Form with patient name, department, preferred date and reason",
-                      "Requests saved to the SQLite database with status Pending",
-                      "A list of your requests that survives a page refresh",
-                    ]}
-                  />
-                }
-              />
+              <Route path="appointments" element={<AppointmentsPage />} />
               <Route path="services" element={<ServicesPage />} />
               <Route
                 path="activity"
@@ -97,6 +94,7 @@ export default function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
+          </AuthProvider>
         </BackendHealthProvider>
       </ToastProvider>
     </MotionConfig>

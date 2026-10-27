@@ -24,6 +24,9 @@ if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
     throw "Frontend dependencies not found. Run .\scripts\setup.ps1 first."
 }
 
+# A persistent session secret keeps users signed in across backend restarts.
+& (Join-Path $PSScriptRoot "ensure-env.ps1")
+
 # Each window gets its own command. Paths are single-quoted inside the command
 # string because the workspace path contains spaces.
 $BackendCommand = "Set-Location -LiteralPath '$BackendDir'; " +

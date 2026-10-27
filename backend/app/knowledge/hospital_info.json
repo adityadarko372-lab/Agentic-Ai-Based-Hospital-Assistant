@@ -1,0 +1,156 @@
+{
+  "_notice": "FICTIONAL demonstration content for the Nova Health prototype. The hospital, its departments, locations, timings and extensions are invented and must not be treated as real information.",
+  "version": "2026-10-26",
+  "hospital": {
+    "name": "Nova Health Multi-Speciality Hospital",
+    "city": "Pune, Maharashtra (fictional)",
+    "is_demo": true,
+    "opd_hours": "Monday to Saturday, 9:00 AM to 5:00 PM",
+    "emergency_hours": "Open 24 hours, all days",
+    "help_desk": "Main Reception, Block A, Ground Floor (Ext. 1000)",
+    "visiting_hours": "Daily, 4:00 PM to 7:00 PM (one visitor per patient at a time)"
+  },
+  "emergency_numbers": [
+    { "number": "112", "label": "National emergency number (India)" },
+    { "number": "108", "label": "Emergency ambulance service (most Indian states)" }
+  ],
+  "appointment_guidance": {
+    "how_to_book": [
+      "Open Appointments in Nova Health, or ask the AI Assistant to help you.",
+      "Choose a department, a preferred date and briefly describe the reason.",
+      "Submit the request. It is saved with the status Pending.",
+      "The hospital reviews the request. It is only an appointment once the hospital confirms it."
+    ],
+    "what_to_bring": [
+      "A government photo ID (for example Aadhaar card or PAN card)",
+      "Your Nova Health patient card, if you have one",
+      "Previous prescriptions, reports and discharge summaries",
+      "A list of medicines you currently take",
+      "Health insurance card or policy details, if applicable"
+    ],
+    "arrival_advice": "Please arrive 15 minutes early to complete registration at the Main Reception."
+  },
+  "departments": [
+    {
+      "id": "general-medicine",
+      "name": "General Medicine",
+      "category": "clinical",
+      "summary": "First point of contact for common illnesses, fever, infections and general health consultations.",
+      "location": "Block A, Ground Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 5:00 PM",
+      "extension": "Ext. 2101",
+      "accepts_appointments": true,
+      "icon": "stethoscope"
+    },
+    {
+      "id": "cardiology",
+      "name": "Cardiology",
+      "category": "clinical",
+      "summary": "Consultations and follow-ups for heart and blood-vessel related concerns.",
+      "location": "Block B, First Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 4:00 PM",
+      "extension": "Ext. 2201",
+      "accepts_appointments": true,
+      "icon": "activity"
+    },
+    {
+      "id": "orthopaedics",
+      "name": "Orthopaedics",
+      "category": "clinical",
+      "summary": "Bones, joints, muscles, sports injuries and fracture follow-ups.",
+      "location": "Block B, Ground Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 5:00 PM",
+      "extension": "Ext. 2301",
+      "accepts_appointments": true,
+      "icon": "shield"
+    },
+    {
+      "id": "paediatrics",
+      "name": "Paediatrics",
+      "category": "clinical",
+      "summary": "Healthcare for infants, children and adolescents, including routine check-ups.",
+      "location": "Block C, Ground Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 5:00 PM",
+      "extension": "Ext. 2401",
+      "accepts_appointments": true,
+      "icon": "sparkle"
+    },
+    {
+      "id": "obstetrics-gynaecology",
+      "name": "Obstetrics & Gynaecology",
+      "category": "clinical",
+      "summary": "Women's health, pregnancy care and gynaecology consultations.",
+      "location": "Block C, First Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 4:00 PM",
+      "extension": "Ext. 2501",
+      "accepts_appointments": true,
+      "icon": "heart"
+    },
+    {
+      "id": "dermatology",
+      "name": "Dermatology",
+      "category": "clinical",
+      "summary": "Skin, hair and nail related consultations.",
+      "location": "Block A, Second Floor",
+      "opening_hours": "Mon–Sat, 10:00 AM – 4:00 PM",
+      "extension": "Ext. 2601",
+      "accepts_appointments": true,
+      "icon": "layers"
+    },
+    {
+      "id": "ent",
+      "name": "ENT (Ear, Nose and Throat)",
+      "category": "clinical",
+      "summary": "Ear, nose, throat and hearing related consultations.",
+      "location": "Block A, First Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 4:00 PM",
+      "extension": "Ext. 2701",
+      "accepts_appointments": true,
+      "icon": "chat"
+    },
+    {
+      "id": "ophthalmology",
+      "name": "Ophthalmology",
+      "category": "clinical",
+      "summary": "Eye examinations, vision problems and eye-related consultations.",
+      "location": "Block A, Second Floor",
+      "opening_hours": "Mon–Sat, 9:00 AM – 4:00 PM",
+      "extension": "Ext. 2801",
+      "accepts_appointments": true,
+      "icon": "eye"
+    },
+    {
+      "id": "laboratory",
+      "name": "Laboratory & Diagnostics",
+      "category": "service",
+      "summary": "Blood tests and sample collection. Walk-in with a doctor's prescription; no appointment needed.",
+      "location": "Block A, Ground Floor (near Main Reception)",
+      "opening_hours": "Mon–Sat, 7:00 AM – 7:00 PM",
+      "extension": "Ext. 3101",
+      "accepts_appointments": false,
+      "icon": "flask"
+    },
+    {
+      "id": "pharmacy",
+      "name": "Pharmacy",
+      "category": "service",
+      "summary": "Dispenses medicines against a valid prescription.",
+      "location": "Block A, Ground Floor",
+      "opening_hours": "Open 24 hours",
+      "extension": "Ext. 3201",
+      "accepts_appointments": false,
+      "icon": "pill"
+    },
+    {
+      "id": "emergency",
+      "name": "Emergency Department",
+      "category": "service",
+      "summary": "For urgent and life-threatening conditions. Do not book an appointment; come directly or call 112 / 108.",
+      "location": "Block D, Ground Floor (separate entrance)",
+      "opening_hours": "Open 24 hours, all days",
+      "extension": "Ext. 1100",
+      "accepts_appointments": false,
+      "icon": "alert"
+    }
+  ]
+}

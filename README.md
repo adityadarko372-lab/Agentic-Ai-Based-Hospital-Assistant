@@ -9,18 +9,26 @@ Nova Health (earlier called "Hospivanta" in the project documents) is a final-ye
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Foundation, design system, app shell, `/api/health` | ✅ Done |
-| 2 | Login, SQLite, dashboard, appointment requests | Planned |
+| 2 | Demo login, SQLite, dashboard, appointment requests | ✅ Done |
 | 3 | Supervisory Agent, 3 specialist agents, chat, activity panel | Planned |
 | 4 | Symptom guidance, end-to-end demo, `v0.1-required-scope` | Planned |
 | 5 | Optional enhancements (front desk, MedQuAD, trained classifier, Ollama) | Optional |
 
 The full approved plan is in [`docs/first report.md`](docs/first%20report.md). Phase reports are in [`docs/phase-reports/`](docs/phase-reports/).
 
+## Demo account
+
+| Email | Password | Who |
+|---|---|---|
+| `patient@novahealth.demo` | `NovaDemo@2026` | Asha Verma (fictional demo patient) |
+
+Two more fictional patients (`rohan.mehta@novahealth.demo`, `kavya.iyer@novahealth.demo`) use the same password. They are used to test that patients cannot see each other's data. The login page has a **Fill in** button for the main demo account.
+
 ## Tech stack
 
 - **Frontend:** React 19, Vite 8, TypeScript 7, React Router 7, Framer Motion, and a hand-built neumorphic CSS design system with locally bundled Inter and Fraunces fonts.
-- **Backend:** Python 3.13, FastAPI, Pydantic Settings. SQLite and SQLModel are added in Phase 2.
-- **Tests:** pytest for the backend, Vitest with Testing Library for the frontend. Playwright is added in Phase 3.
+- **Backend:** Python 3.13, FastAPI, SQLModel on SQLite, bcrypt password hashing and signed (JWT) session tokens.
+- **Tests:** pytest for the backend, Vitest with Testing Library for the frontend, Playwright browser tests (using the Edge browser already installed on Windows).
 
 ## Prerequisites
 
@@ -41,12 +49,28 @@ powershell -ExecutionPolicy Bypass -File ".\scripts\setup.ps1"
 powershell -ExecutionPolicy Bypass -File ".\scripts\start.ps1"
 ```
 
-This opens two server windows and your browser:
+This creates `.env` with a random session secret if it is missing, then opens two server windows and your browser:
 
 - Frontend: http://127.0.0.1:5173
 - Backend API: http://127.0.0.1:8000 (interactive docs at http://127.0.0.1:8000/docs)
 
 To stop the app, close the two server windows.
+
+**Reset demo data:** stop the backend, then run `.\scripts\reset-demo-data.ps1`. The database (`backend/data/nova_health.db`) is recreated with the demo patients and departments on the next start, with no appointment requests.
+
+## API (Phase 2)
+
+| Method | Path | Sign-in | Purpose |
+|---|---|---|---|
+| GET | `/api/health` | No | Status, version, optional feature switches |
+| POST | `/api/auth/login` | No | Demo login, returns a session token |
+| GET | `/api/auth/me` | Yes | Signed-in user's profile |
+| GET | `/api/hospital/departments` | No | Fictional hospital directory |
+| GET | `/api/hospital/info` | No | Hours, help desk, what to bring, emergency numbers |
+| POST | `/api/appointments` | Yes | Submit a request (saved as **Pending**; `Idempotency-Key` header prevents duplicates) |
+| GET | `/api/appointments/mine` | Yes | The signed-in patient's own requests |
+| POST | `/api/appointments/{reference}/cancel` | Yes | Withdraw your own pending request |
+| GET | `/api/activity/mine` | Yes | Your activity history |
 
 ## Test
 
@@ -59,21 +83,28 @@ cd backend
 cd frontend
 npm.cmd run typecheck
 npm.cmd test
+
+# Browser tests (start the app first with scripts\start.ps1)
+npm.cmd run test:e2e
 ```
+
+Browser tests create and then cancel a real appointment request in whichever database the running backend uses. Run `scripts\reset-demo-data.ps1` afterwards for a clean demo.
 
 ## Project structure
 
 ```
-backend/    FastAPI app (app/api, app/core), tests/
-frontend/   React app (src/components, src/design-system, src/pages, src/services, src/hooks), tests/
-scripts/    setup.ps1, start.ps1
-docs/       plan, phase reports
+backend/    FastAPI app: app/api (routes), app/services (business rules), app/db (models, seed),
+            app/knowledge (fictional hospital_info.json), app/core (config, security, errors), tests/
+frontend/   React app: src/pages, src/components, src/auth, src/services, src/design-system, tests/, e2e/
+scripts/    setup.ps1, start.ps1, ensure-env.ps1, reset-demo-data.ps1
+docs/       plan, phase reports, screenshots
 ```
 
 ## Security notes
 
 - The backend binds to `127.0.0.1` only, and CORS allows only the local Vite origin.
-- There is no login yet (it arrives in Phase 2). The planned demo login is not production-grade authentication.
+- **Demo login, not production authentication.** Passwords are bcrypt-hashed and sessions are signed tokens that expire after 8 hours, and every protected endpoint re-checks the token. There is no rate limiting, account lockout, token revocation or password reset. The demo password is public on purpose.
+- The session token is kept in the browser's `sessionStorage` (cleared when the tab closes). This is acceptable for a local demo but exposed to any script injected into the page; a production build would use secure HTTP-only cookies.
 - `.env`, databases, virtual environments, model files and raw datasets are gitignored.
 
 ## Credits and licences

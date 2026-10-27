@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../auth/AuthContext";
+import { ActivityFeed } from "../components/ActivityFeed";
 import { EmergencyNotice } from "../components/EmergencyNotice";
 import { PageHeader } from "../components/layout/PageHeader";
 import {
@@ -12,8 +14,11 @@ import {
   Skeleton,
   type IconName,
 } from "../components/ui";
-import { DEMO_DEPARTMENTS } from "../data/demoDepartments";
+import { APPOINTMENT_STATUS } from "../config/appointmentStatus";
 import { useBackendHealthContext } from "../hooks/BackendHealthContext";
+import { useApiResource } from "../hooks/useApiResource";
+import { activityApi, appointmentApi, hospitalApi } from "../services/novaApi";
+import { formatCalendarDate, todayInIndia } from "../utils/dates";
 
 interface QuickAction {
   to: string;
@@ -44,10 +49,13 @@ const QUICK_ACTIONS: QuickAction[] = [
   {
     to: "/services",
     title: "Hospital Services",
-    description: "Browse departments and what each one handles.",
+    description: "Browse departments, locations and timings.",
     icon: "building",
   },
 ];
+
+// Stable loaders (useApiResource re-runs when the loader changes).
+const loadRecentActivity = () => activityApi.mine(6);
 
 function greetingForHour(hour: number): string {
   if (hour < 12) return "Good morning";
@@ -55,16 +63,50 @@ function greetingForHour(hour: number): string {
   return "Good evening";
 }
 
+function LoadingRows({ label, rows = 3 }: { label: string; rows?: number }) {
+  return (
+    <div className="nh-stack" aria-busy="true" aria-label={label}>
+      {Array.from({ length: rows }, (_, index) => (
+        <Skeleton key={index} height={52} />
+      ))}
+    </div>
+  );
+}
+
+function LoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return (
+    <div className="nh-status-panel">
+      <p>{message}</p>
+      <Button variant="secondary" size="sm" onClick={onRetry}>
+        Try again
+      </Button>
+    </div>
+  );
+}
+
+/** Module 1: Patient Dashboard. */
 export function DashboardPage() {
+  const { user } = useAuth();
   const { state, health, errorMessage, lastCheckedAt, recheck } = useBackendHealthContext();
+  const activity = useApiResource(loadRecentActivity);
+  const requests = useApiResource(appointmentApi.mine);
+  const departments = useApiResource(hospitalApi.departments);
+
+  const firstName = user?.full_name.split(" ")[0] ?? "there";
   const greeting = greetingForHour(new Date().getHours());
+  const today = todayInIndia();
+  const upcoming = (requests.data ?? [])
+    .filter((request) => request.status === "pending" && request.preferred_date > today)
+    .sort((a, b) => a.preferred_date.localeCompare(b.preferred_date))
+    .slice(0, 3);
+  const featuredDepartments = (departments.data ?? []).filter((d) => d.category === "clinical").slice(0, 4);
 
   return (
     <div className="nh-page">
       <PageHeader
         eyebrow="Patient dashboard"
-        title={`${greeting}, welcome to Nova Health`}
-        description="Your hospital assistant for finding the right department, requesting appointments and getting preliminary care guidance."
+        title={`${greeting}, ${firstName}`}
+        description="Welcome to Nova Health. Find the right department, request appointments and get preliminary care guidance."
         actions={
           <Link to="/assistant" className="nh-button nh-button--primary">
             <Icon name="sparkle" size={18} />
@@ -101,14 +143,94 @@ export function DashboardPage() {
       <div className="nh-dashboard-columns">
         <Card
           as="section"
-          title="Recent activity"
-          subtitle="Requests you make and the agent that handled them."
+          title="Upcoming requests"
+          subtitle="Pending requests for future dates. Not yet confirmed by the hospital."
+          actions={
+            <Link to="/appointments" className="nh-button nh-button--secondary nh-button--sm">
+              Manage
+            </Link>
+          }
         >
-          <EmptyState
-            icon="activity"
-            title="No activity yet"
-            description="Once you use the assistant or submit an appointment request, each step and the agent that handled it will appear here."
-          />
+          {requests.loading && !requests.data ? (
+            <LoadingRows label="Loading your requests" rows={2} />
+          ) : requests.error && !requests.data ? (
+            <LoadError message={`Requests could not be loaded: ${requests.error}`} onRetry={() => void requests.reload()} />
+          ) : upcoming.length === 0 ? (
+            <EmptyState
+              icon="calendar"
+              title="No upcoming requests"
+              description="Submit an appointment request and it will appear here with its status."
+              action={
+                <Link to="/appointments" className="nh-button nh-button--primary nh-button--sm">
+                  Request an appointment
+                </Link>
+              }
+            />
+          ) : (
+            <ul className="nh-upcoming-list">
+              {upcoming.map((request) => (
+                <li key={request.reference} className="nh-upcoming">
+                  <div className="nh-upcoming__date" aria-hidden="true">
+                    <span>{formatCalendarDate(request.preferred_date).split(" ")[0]}</span>
+                    <span>{formatCalendarDate(request.preferred_date).split(" ")[1]}</span>
+                  </div>
+                  <div className="nh-upcoming__body">
+                    <p className="nh-upcoming__title">{request.department_name}</p>
+                    <p className="nh-upcoming__meta">
+                      {request.reference} · preferred {formatCalendarDate(request.preferred_date)}
+                    </p>
+                  </div>
+                  <Badge tone={APPOINTMENT_STATUS[request.status].tone}>{APPOINTMENT_STATUS[request.status].label}</Badge>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card as="section" title="Recent activity" subtitle="What happened and who handled it.">
+          {activity.loading && !activity.data ? (
+            <LoadingRows label="Loading recent activity" />
+          ) : activity.error && !activity.data ? (
+            <LoadError message={`Activity could not be loaded: ${activity.error}`} onRetry={() => void activity.reload()} />
+          ) : (
+            <ActivityFeed events={activity.data ?? []} />
+          )}
+        </Card>
+      </div>
+
+      <div className="nh-dashboard-columns">
+        <Card
+          as="section"
+          title="Hospital services"
+          subtitle="Departments in the fictional Nova Health hospital."
+          actions={
+            <Link to="/services" className="nh-button nh-button--secondary nh-button--sm">
+              View all
+            </Link>
+          }
+        >
+          {departments.loading && !departments.data ? (
+            <LoadingRows label="Loading departments" rows={2} />
+          ) : departments.error && !departments.data ? (
+            <LoadError
+              message={`Departments could not be loaded: ${departments.error}`}
+              onRetry={() => void departments.reload()}
+            />
+          ) : (
+            <ul className="nh-service-grid nh-service-grid--compact">
+              {featuredDepartments.map((department) => (
+                <li key={department.id} className="nh-service-item">
+                  <span className="nh-service-item__icon">
+                    <Icon name={department.icon as IconName} size={20} />
+                  </span>
+                  <div>
+                    <h3 className="nh-service-item__name">{department.name}</h3>
+                    <p className="nh-service-item__summary">{department.location}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
 
         <Card
@@ -128,17 +250,13 @@ export function DashboardPage() {
           }
         >
           {state === "checking" && !health ? (
-            <div className="nh-stack" aria-busy="true" aria-label="Checking backend status">
-              <Skeleton height={18} width="60%" />
-              <Skeleton height={14} />
-              <Skeleton height={14} width="80%" />
-            </div>
+            <LoadingRows label="Checking backend status" rows={2} />
           ) : state === "offline" ? (
             <div className="nh-status-panel nh-status-panel--offline">
               <Badge tone="emergency">Backend offline</Badge>
               <p>
-                {errorMessage ?? "The server could not be reached."} Start it with{" "}
-                <code>scripts\start.ps1</code> and press “Check again”.
+                {errorMessage ?? "The server could not be reached."} Start it with <code>scripts\start.ps1</code> and
+                press “Check again”.
               </p>
             </div>
           ) : (
@@ -164,10 +282,9 @@ export function DashboardPage() {
               <div>
                 <dt>Optional AI add-ons</dt>
                 <dd>
-                  {health &&
-                  (health.features.health_info_enabled || health.features.llm_phrasing_enabled)
+                  {health && (health.features.health_info_enabled || health.features.llm_phrasing_enabled)
                     ? "Enabled"
-                    : "Off (not required for the demo)"}
+                    : "Off (not required)"}
                 </dd>
               </div>
               <div>
@@ -184,31 +301,6 @@ export function DashboardPage() {
           )}
         </Card>
       </div>
-
-      <Card
-        as="section"
-        title="Hospital services"
-        subtitle="Sample departments in the fictional Nova Health hospital."
-        actions={
-          <Link to="/services" className="nh-button nh-button--secondary nh-button--sm">
-            View all
-          </Link>
-        }
-      >
-        <ul className="nh-service-grid">
-          {DEMO_DEPARTMENTS.slice(0, 4).map((department) => (
-            <li key={department.id} className="nh-service-item">
-              <span className="nh-service-item__icon">
-                <Icon name={department.icon} size={20} />
-              </span>
-              <div>
-                <h3 className="nh-service-item__name">{department.name}</h3>
-                <p className="nh-service-item__summary">{department.summary}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Card>
     </div>
   );
 }

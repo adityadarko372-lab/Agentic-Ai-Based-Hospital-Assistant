@@ -10,6 +10,7 @@ import { BackendStatus } from "./BackendStatus";
 import { BrandLogo } from "./BrandLogo";
 import { MobileDrawer } from "./MobileDrawer";
 import { NavList } from "./NavList";
+import { UserMenu } from "./UserMenu";
 
 /**
  * Application frame: desktop sidebar, top bar (with the mobile menu button and
@@ -71,6 +72,7 @@ export function AppShell() {
           </div>
           <div className="nh-topbar__spacer" />
           <BackendStatus state={state} />
+          <UserMenu />
         </header>
 
         <main id="nh-main" ref={mainRef} className="nh-main" tabIndex={-1}>

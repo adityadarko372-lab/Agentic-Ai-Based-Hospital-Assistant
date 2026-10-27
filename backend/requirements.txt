@@ -4,3 +4,9 @@ fastapi==0.162.0
 uvicorn[standard]==0.54.0
 pydantic==2.14.1
 pydantic-settings==2.16.1
+# Persistence (SQLite through SQLModel / SQLAlchemy)
+sqlmodel==0.0.48
+SQLAlchemy==2.1.6
+# Demo login: password hashing and signed session tokens
+bcrypt==5.0.0
+PyJWT==2.15.1
