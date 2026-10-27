@@ -1,0 +1,50 @@
+{
+  "_notice": "Words that point a patient's request to a department in the FICTIONAL Nova Health hospital. Used for navigation only (where to go), never to diagnose.",
+  "version": "2026-10-27",
+  "departments": {
+    "general-medicine": {
+      "aliases": ["general medicine", "general physician", "physician", "gp", "family doctor", "medicine department"],
+      "keywords": ["fever", "cold", "cough", "flu-like", "general check", "checkup", "check-up", "general consultation", "weakness", "tiredness", "fatigue", "body ache", "headache", "vomiting", "diarrhoea", "diarrhea", "stomach", "acidity", "burning urination", "dizziness", "blood pressure", "sugar"]
+    },
+    "cardiology": {
+      "aliases": ["cardiology", "cardiologist", "heart doctor", "heart department"],
+      "keywords": ["heart", "palpitation", "palpitations", "heartbeat", "ecg"]
+    },
+    "orthopaedics": {
+      "aliases": ["orthopaedics", "orthopedics", "orthopaedic", "orthopedic", "ortho", "bone doctor"],
+      "keywords": ["bone", "bones", "joint", "joints", "knee", "back pain", "shoulder", "neck pain", "sprain", "fracture", "ankle", "wrist", "hip", "sports injury", "muscle"]
+    },
+    "paediatrics": {
+      "aliases": ["paediatrics", "pediatrics", "paediatrician", "pediatrician", "child specialist", "children's doctor"],
+      "keywords": ["child", "children", "baby", "infant", "kid", "toddler", "newborn", "vaccination", "my son", "my daughter"]
+    },
+    "obstetrics-gynaecology": {
+      "aliases": ["obstetrics", "gynaecology", "gynecology", "gynaecologist", "gynecologist", "obstetrics & gynaecology", "ob-gyn", "obgyn", "maternity"],
+      "keywords": ["pregnant", "pregnancy", "period", "periods", "menstrual", "women's health", "antenatal"]
+    },
+    "dermatology": {
+      "aliases": ["dermatology", "dermatologist", "skin doctor", "skin specialist"],
+      "keywords": ["skin", "rash", "itching", "itchy", "acne", "pimples", "hair fall", "hair loss", "nail", "eczema"]
+    },
+    "ent": {
+      "aliases": ["ent", "ear nose and throat", "ear, nose and throat", "ent specialist"],
+      "keywords": ["ear", "ears", "earache", "hearing", "nose", "sinus", "throat", "sore throat", "tonsil", "tonsils"]
+    },
+    "ophthalmology": {
+      "aliases": ["ophthalmology", "ophthalmologist", "eye doctor", "eye department", "eye specialist"],
+      "keywords": ["eye", "eyes", "vision", "eyesight", "red eye", "spectacles", "glasses"]
+    },
+    "laboratory": {
+      "aliases": ["laboratory", "lab", "diagnostics", "pathology", "sample collection"],
+      "keywords": ["blood test", "lab test", "urine test", "test report", "reports"]
+    },
+    "pharmacy": {
+      "aliases": ["pharmacy", "chemist", "medical store", "dispensary"],
+      "keywords": ["medicine", "medicines", "prescription", "tablets"]
+    },
+    "emergency": {
+      "aliases": ["emergency department", "emergency ward", "casualty", "er", "a&e"],
+      "keywords": []
+    }
+  }
+}

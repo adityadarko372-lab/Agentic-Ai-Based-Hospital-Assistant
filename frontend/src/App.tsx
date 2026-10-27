@@ -6,7 +6,9 @@ import { RequireAuth } from "./auth/RequireAuth";
 import { AppShell } from "./components/layout/AppShell";
 import { ToastProvider } from "./components/ui";
 import { BackendHealthProvider } from "./hooks/BackendHealthContext";
+import { AgentActivityPage } from "./pages/AgentActivityPage";
 import { AppointmentsPage } from "./pages/AppointmentsPage";
+import { AssistantPage } from "./pages/AssistantPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
@@ -37,23 +39,7 @@ export default function App() {
               }
             >
               <Route index element={<DashboardPage />} />
-              <Route
-                path="assistant"
-                element={
-                  <ModulePreviewPage
-                    eyebrow="Module 2 · AI Hospital Assistant"
-                    title="AI Assistant"
-                    description="Chat with Nova Health. A Supervisory Agent routes each request to the right specialist agent."
-                    icon="chat"
-                    plannedPhase="Phase 3"
-                    plannedCapabilities={[
-                      "Answer hospital questions such as which department to visit and what to bring",
-                      "Route requests to the Patient Assistance, Appointment or Care Navigation agent",
-                      "Show a live Agent Activity panel for every request",
-                    ]}
-                  />
-                }
-              />
+              <Route path="assistant" element={<AssistantPage />} />
               <Route
                 path="symptom-guidance"
                 element={
@@ -73,23 +59,7 @@ export default function App() {
               />
               <Route path="appointments" element={<AppointmentsPage />} />
               <Route path="services" element={<ServicesPage />} />
-              <Route
-                path="activity"
-                element={
-                  <ModulePreviewPage
-                    eyebrow="Module 3 · Multi-Agent System"
-                    title="Agent Activity"
-                    description="A history of which agent handled each request and what happened."
-                    icon="activity"
-                    plannedPhase="Phase 3"
-                    plannedCapabilities={[
-                      "Supervisory Agent decision: detected intent, confidence and evidence",
-                      "The specialist agent selected and the action it took",
-                      "The real outcome, such as an appointment request reference",
-                    ]}
-                  />
-                }
-              />
+              <Route path="activity" element={<AgentActivityPage />} />
               <Route path="design-system" element={<DesignSystemPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>

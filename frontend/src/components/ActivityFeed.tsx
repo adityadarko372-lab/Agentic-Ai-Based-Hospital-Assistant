@@ -5,6 +5,16 @@ import { EmptyState, Icon, type IconName } from "./ui";
 const EVENT_ICON: Record<string, IconName> = {
   "appointment.submitted": "calendar",
   "appointment.cancelled": "close",
+  "assistant.emergency_escalation": "alert",
+  "assistant.refused": "shield",
+};
+
+/** Icon for the agent that acted, when the event type has none of its own. */
+const ACTOR_ICON: Record<string, IconName> = {
+  "Supervisory Agent": "sparkle",
+  "Patient Assistance Agent": "building",
+  "Appointment Agent": "calendar",
+  "Care Navigation Agent": "stethoscope",
 };
 
 interface ActivityFeedProps {
@@ -18,7 +28,7 @@ export function ActivityFeed({ events }: ActivityFeedProps) {
       <EmptyState
         icon="activity"
         title="No activity yet"
-        description="When you submit an appointment request (or, from Phase 3, use the assistant), each step and who handled it will appear here."
+        description="When you use the assistant or submit an appointment request, what happened and which agent handled it will appear here."
       />
     );
   }
@@ -28,7 +38,7 @@ export function ActivityFeed({ events }: ActivityFeedProps) {
       {events.map((event) => (
         <li key={event.id} className="nh-activity-item">
           <span className="nh-activity-item__icon">
-            <Icon name={EVENT_ICON[event.event_type] ?? "activity"} size={16} />
+            <Icon name={EVENT_ICON[event.event_type] ?? ACTOR_ICON[event.actor] ?? "activity"} size={16} />
           </span>
           <div className="nh-activity-item__body">
             <p className="nh-activity-item__summary">{event.summary}</p>

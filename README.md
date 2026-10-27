@@ -10,7 +10,7 @@ Nova Health (earlier called "Hospivanta" in the project documents) is a final-ye
 |---|---|---|
 | 1 | Foundation, design system, app shell, `/api/health` | ✅ Done |
 | 2 | Demo login, SQLite, dashboard, appointment requests | ✅ Done |
-| 3 | Supervisory Agent, 3 specialist agents, chat, activity panel | Planned |
+| 3 | Supervisory Agent, 3 specialist agents, chat, activity panel | ✅ Done |
 | 4 | Symptom guidance, end-to-end demo, `v0.1-required-scope` | Planned |
 | 5 | Optional enhancements (front desk, MedQuAD, trained classifier, Ollama) | Optional |
 
@@ -28,6 +28,7 @@ Two more fictional patients (`rohan.mehta@novahealth.demo`, `kavya.iyer@novaheal
 
 - **Frontend:** React 19, Vite 8, TypeScript 7, React Router 7, Framer Motion, and a hand-built neumorphic CSS design system with locally bundled Inter and Fraunces fonts.
 - **Backend:** Python 3.13, FastAPI, SQLModel on SQLite, bcrypt password hashing and signed (JWT) session tokens.
+- **Agents:** plain Python modules (no agent framework, no AI API, no model download). Intent routing uses an explainable rule classifier behind a swappable `IntentClassifier` interface.
 - **Tests:** pytest for the backend, Vitest with Testing Library for the frontend, Playwright browser tests (using the Edge browser already installed on Windows).
 
 ## Prerequisites
@@ -71,6 +72,23 @@ To stop the app, close the two server windows.
 | GET | `/api/appointments/mine` | Yes | The signed-in patient's own requests |
 | POST | `/api/appointments/{reference}/cancel` | Yes | Withdraw your own pending request |
 | GET | `/api/activity/mine` | Yes | Your activity history |
+| POST | `/api/assistant/message` | Yes | Send a chat message; the Supervisory Agent routes it and returns the reply and the full trace |
+| GET | `/api/assistant/conversations/{id}` | Yes | Messages of one of your conversations |
+| GET | `/api/activity/runs` | Yes | Agent runs: which agent handled each request, with every step |
+| GET | `/api/activity/runs/{id}` | Yes | One run with its steps |
+
+## How the agents work (Phase 3)
+
+```
+message → Safety Gate (warning signs → emergency; rule-override → refused)
+        → conversation context (continue an unfinished booking / follow-up)
+        → IntentClassifier (transparent rules: intent + confidence + matched evidence)
+        → Supervisory Agent routes to ONE specialist:
+             Patient Assistance Agent  hospital_info.json (fictional directory)
+             Appointment Agent         appointment_service (same rules as the form; always Pending)
+             Care Navigation Agent     care_rules.json (fixed rules, not clinically reviewed, never diagnoses)
+        → every step saved in agent_runs / agent_steps and shown in the Agent Activity panel
+```
 
 ## Test
 

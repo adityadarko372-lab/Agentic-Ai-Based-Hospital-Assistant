@@ -1,0 +1,153 @@
+{
+  "_notice": "Preliminary care-navigation rules for the Nova Health PROTOTYPE. Written by the project team from general public first-aid and care-seeking guidance. NOT clinically reviewed. They suggest a level of care and a department; they never name a condition or suggest medicines.",
+  "version": "2026-10-27.1",
+  "clinically_reviewed": false,
+  "disclaimer": "This is preliminary guidance from fixed rules, not a diagnosis. These rules have not been reviewed by clinicians. If you are worried or your symptoms change, contact a doctor or the hospital.",
+  "emergency_numbers": {
+    "112": "National emergency number (India)",
+    "108": "Emergency ambulance service (most Indian states)",
+    "14416": "Tele-MANAS, free 24×7 mental-health helpline (Government of India)"
+  },
+  "red_flags": [
+    {
+      "id": "chest_pain",
+      "label": "Chest pain or pressure",
+      "phrases": ["chest pain", "pain in my chest", "pain in the chest", "chest tightness", "tightness in my chest", "pressure in my chest", "chest pressure", "crushing chest", "chest is hurting", "chest hurts"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "breathing",
+      "label": "Serious difficulty breathing",
+      "phrases": ["can't breathe", "cannot breathe", "cant breathe", "not able to breathe", "unable to breathe", "difficulty breathing", "difficulty in breathing", "trouble breathing", "struggling to breathe", "short of breath", "shortness of breath", "breathless", "gasping for air", "choking", "lips turning blue", "lips are blue"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "face_arm_speech",
+      "label": "Sudden face, arm or speech changes",
+      "phrases": ["face drooping", "face is drooping", "drooping face", "slurred speech", "speech is slurred", "can't speak properly", "cannot speak properly", "weakness on one side", "one side of my body", "numbness on one side", "arm is weak", "sudden confusion", "sudden severe headache", "worst headache"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "unresponsive",
+      "label": "Fainting, collapse or unresponsiveness",
+      "phrases": ["unconscious", "fainted", "passed out", "not responding", "unresponsive", "collapsed", "won't wake up", "not waking up"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "seizure",
+      "label": "Seizure or fitting",
+      "phrases": ["seizure", "seizures", "convulsion", "convulsions", "convulsing", "having a fit", "having fits"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "severe_bleeding",
+      "label": "Severe or uncontrolled bleeding",
+      "phrases": ["bleeding heavily", "heavy bleeding", "won't stop bleeding", "wont stop bleeding", "bleeding won't stop", "bleeding a lot", "lot of blood", "vomiting blood", "coughing blood", "coughing up blood", "blood in vomit"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "self_harm",
+      "label": "Thoughts of suicide or self-harm",
+      "phrases": ["kill myself", "suicide", "suicidal", "end my life", "self harm", "self-harm", "hurt myself", "harm myself", "want to die", "don't want to live", "dont want to live"],
+      "numbers": ["112", "14416"]
+    },
+    {
+      "id": "poisoning",
+      "label": "Poisoning or overdose",
+      "phrases": ["overdose", "overdosed", "swallowed poison", "drank poison", "poisoning", "took too many pills", "took too many tablets"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "severe_allergy",
+      "label": "Severe allergic reaction",
+      "phrases": ["throat is swelling", "throat swelling", "swollen tongue", "tongue is swelling", "face is swelling", "anaphylaxis", "severe allergic reaction"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "serious_injury",
+      "label": "Serious injury or burn",
+      "phrases": ["head injury", "hit my head", "severe burn", "badly burned", "badly burnt", "road accident", "bone sticking out"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "sudden_vision_loss",
+      "label": "Sudden loss of vision",
+      "phrases": ["sudden loss of vision", "suddenly can't see", "suddenly cannot see", "lost my vision", "went blind"],
+      "numbers": ["112", "108"]
+    },
+    {
+      "id": "fever_stiff_neck",
+      "label": "Fever with a stiff neck",
+      "phrases": ["stiff neck"],
+      "requires_any": ["fever", "temperature"],
+      "numbers": ["112", "108"]
+    }
+  ],
+  "symptoms": [
+    { "id": "cough", "label": "Cough", "phrases": ["cough", "coughing"], "level": "self_care", "department": "general-medicine" },
+    { "id": "cold", "label": "Cold or runny nose", "phrases": ["cold", "runny nose", "blocked nose", "sneezing", "stuffy nose"], "level": "self_care", "department": "general-medicine" },
+    { "id": "sore_throat", "label": "Sore throat", "phrases": ["sore throat", "throat pain", "painful throat"], "level": "self_care", "department": "ent" },
+    { "id": "headache", "label": "Headache", "phrases": ["headache", "head ache", "head is paining", "head pain"], "level": "self_care", "department": "general-medicine" },
+    { "id": "fever", "label": "Fever", "phrases": ["fever", "temperature", "feverish"], "level": "routine", "department": "general-medicine" },
+    { "id": "high_fever", "label": "High fever", "phrases": ["high fever", "very high fever", "high temperature", "103", "104"], "level": "see_doctor_soon", "department": "general-medicine" },
+    { "id": "body_ache", "label": "Body ache or tiredness", "phrases": ["body ache", "body pain", "tired", "tiredness", "fatigue", "weakness"], "level": "routine", "department": "general-medicine" },
+    { "id": "vomiting", "label": "Vomiting or nausea", "phrases": ["vomiting", "vomit", "throwing up", "nausea", "nauseous"], "level": "routine", "department": "general-medicine" },
+    { "id": "diarrhoea", "label": "Loose motions or diarrhoea", "phrases": ["diarrhoea", "diarrhea", "loose motion", "loose motions", "loose stools"], "level": "routine", "department": "general-medicine" },
+    { "id": "cannot_keep_fluids", "label": "Unable to keep fluids down", "phrases": ["can't keep water down", "cannot keep water down", "can't keep anything down", "cannot keep anything down", "can't keep fluids down", "not passing urine"], "level": "urgent_same_day", "department": "emergency" },
+    { "id": "abdominal_pain", "label": "Stomach or abdominal pain", "phrases": ["stomach pain", "stomach ache", "abdominal pain", "belly pain", "pain in my stomach", "tummy pain"], "level": "see_doctor_soon", "department": "general-medicine" },
+    { "id": "dizziness", "label": "Dizziness", "phrases": ["dizzy", "dizziness", "lightheaded", "light-headed", "giddiness"], "level": "see_doctor_soon", "department": "general-medicine" },
+    { "id": "palpitations", "label": "Palpitations", "phrases": ["palpitation", "palpitations", "heart racing", "heart is racing", "irregular heartbeat"], "level": "see_doctor_soon", "department": "cardiology" },
+    { "id": "joint_pain", "label": "Joint, back or muscle pain", "phrases": ["knee pain", "joint pain", "back pain", "shoulder pain", "neck pain", "muscle pain", "sprain", "twisted my ankle", "ankle pain", "wrist pain", "hip pain"], "level": "routine", "department": "orthopaedics" },
+    { "id": "skin", "label": "Rash, itching or skin changes", "phrases": ["rash", "itching", "itchy", "skin problem", "acne", "pimples", "hair fall", "hair loss"], "level": "routine", "department": "dermatology" },
+    { "id": "ear", "label": "Ear pain or hearing change", "phrases": ["ear pain", "earache", "ear ache", "ear is paining", "hearing loss", "ringing in my ear"], "level": "routine", "department": "ent" },
+    { "id": "eye", "label": "Eye pain, redness or blurred vision", "phrases": ["eye pain", "red eye", "red eyes", "blurred vision", "blurry vision", "watery eyes", "itchy eyes"], "level": "see_doctor_soon", "department": "ophthalmology" },
+    { "id": "urinary", "label": "Burning or frequent urination", "phrases": ["burning urination", "burning while urinating", "pain while urinating", "frequent urination"], "level": "routine", "department": "general-medicine" },
+    { "id": "low_mood", "label": "Stress, anxiety or low mood", "phrases": ["anxiety", "anxious", "stressed", "stress", "depressed", "low mood", "can't sleep", "cannot sleep", "panic"], "level": "routine", "department": "general-medicine", "support_numbers": ["14416"] },
+    { "id": "general_pain", "label": "Pain", "phrases": ["pain", "paining", "hurts", "hurting", "ache", "aching", "sore"], "level": "routine", "department": "general-medicine" }
+  ],
+  "levels": {
+    "emergency": {
+      "label": "Get emergency help now",
+      "explanation": "What you describe includes warning signs that need emergency assessment straight away.",
+      "next_steps": [
+        "Call 112 (national emergency) or 108 (ambulance) now, or go to the nearest emergency department.",
+        "If possible, do not travel alone and do not drive yourself.",
+        "Keep the person still and safe, and stay with them until help arrives."
+      ],
+      "department": "emergency"
+    },
+    "urgent_same_day": {
+      "label": "Seek medical care today",
+      "explanation": "Your answers suggest you should be seen by a doctor today rather than waiting for a routine appointment.",
+      "next_steps": [
+        "Visit the Emergency Department (open 24 hours) or a doctor today.",
+        "If things get worse or any warning sign appears, call 112 or 108 straight away."
+      ]
+    },
+    "see_doctor_soon": {
+      "label": "See a doctor within 1–2 days",
+      "explanation": "Your answers suggest a doctor should check this soon.",
+      "next_steps": [
+        "Request an appointment for the next day or two.",
+        "If symptoms get worse before then, seek care sooner or call 112 / 108 for warning signs."
+      ]
+    },
+    "routine": {
+      "label": "Book a routine consultation",
+      "explanation": "Your answers do not include warning signs, but a doctor can review this at a routine appointment.",
+      "next_steps": [
+        "Request an appointment with the suggested department.",
+        "Note when the symptoms started and anything that makes them better or worse, to share with the doctor."
+      ]
+    },
+    "self_care": {
+      "label": "General self-care information",
+      "explanation": "Your answers do not include warning signs and sound mild and recent. Many mild symptoms like these settle with rest, but this is not a guarantee.",
+      "next_steps": [
+        "Rest and drink enough fluids.",
+        "See a doctor if symptoms last more than 7 days, get worse, or new symptoms appear.",
+        "Do not start or change any medicine without advice from a doctor or pharmacist."
+      ]
+    }
+  }
+}

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
+
+// The default 1 s wait is too tight when the whole suite runs on a busy laptop.
+configure({ asyncUtilTimeout: 5000 });
 
 afterEach(() => {
   cleanup();

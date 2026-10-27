@@ -6,8 +6,10 @@ Phase 2 tables:
 - appointment_requests  requests submitted by patients; always start as "pending"
 - activity_events       a readable history of what happened and who did it
 
-The agent trace tables (agent_runs / agent_steps) are added in Phase 3, when
-the Supervisory Agent actually writes to them.
+Phase 3 tables (the multi-agent system):
+- conversations         one assistant chat; remembers an unfinished task (e.g. a booking draft)
+- agent_runs            one row per message: intent, chosen agent, outcome
+- agent_steps           the ordered steps inside a run (safety check, routing, actions)
 """
 
 from datetime import date, datetime
@@ -96,3 +98,64 @@ class ActivityEvent(SQLModel, table=True):
     summary: str = Field(max_length=200)
     reference: str | None = Field(default=None, max_length=20)
     created_at: datetime = Field(default_factory=utc_now, index=True)
+
+
+# ---------------------------------------------------------------------------
+# Phase 3: multi-agent conversation and trace
+# ---------------------------------------------------------------------------
+
+
+class Conversation(SQLModel, table=True):
+    __tablename__ = "conversations"
+
+    # Random id handed to the browser (not guessable, not sequential).
+    id: str = Field(primary_key=True, max_length=40)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    # An unfinished task that the next message may continue, e.g.
+    # "appointment_booking", "cancel_confirmation", "care_followup".
+    pending_task: str | None = Field(default=None, max_length=40)
+    # JSON with the task's collected details (e.g. department and date so far).
+    state_json: str = Field(default="{}")
+    created_at: datetime = Field(default_factory=utc_now)
+    updated_at: datetime = Field(default_factory=utc_now)
+
+
+class AgentRun(SQLModel, table=True):
+    """One user message handled by the Supervisory Agent."""
+
+    __tablename__ = "agent_runs"
+
+    id: int | None = Field(default=None, primary_key=True)
+    conversation_id: str = Field(foreign_key="conversations.id", index=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    # The patient's own words, shown only to that patient in their history.
+    user_message: str = Field(max_length=1000)
+    detected_intent: str = Field(max_length=40)
+    confidence: float
+    classifier_method: str = Field(max_length=40)
+    selected_agent: str = Field(max_length=60)
+    # answered | needs_input | action_completed | emergency_escalation |
+    # refused | clarification | information_unavailable | error
+    outcome_status: str = Field(max_length=40)
+    outcome_summary: str = Field(max_length=300)
+    reference: str | None = Field(default=None, max_length=20)
+    duration_ms: int = 0
+    created_at: datetime = Field(default_factory=utc_now, index=True)
+
+
+class AgentStep(SQLModel, table=True):
+    """One visible step inside a run, in order."""
+
+    __tablename__ = "agent_steps"
+
+    id: int | None = Field(default=None, primary_key=True)
+    run_id: int = Field(foreign_key="agent_runs.id", index=True)
+    step_order: int
+    agent: str = Field(max_length=60)
+    action: str = Field(max_length=60)
+    # ok | warning | blocked | fallback | error
+    status: str = Field(max_length=20)
+    detail: str = Field(max_length=500)
+    # JSON with structured evidence (matched words, scores, references).
+    data_json: str = Field(default="{}")
+    duration_ms: int = 0

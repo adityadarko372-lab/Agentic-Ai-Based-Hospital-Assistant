@@ -14,11 +14,11 @@ from datetime import date, timedelta
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, col, select
 
-from app.core.clock import today_in_india, utc_now
+from app.core.clock import as_utc, today_in_india, utc_now
 from app.core.config import get_settings
 from app.core.errors import FieldValidationError
 from app.db.models import AppointmentRequest, AppointmentStatus, Department, User
-from app.schemas import AppointmentCreate
+from app.schemas import AppointmentCreate, AppointmentRead
 from app.services.activity_service import record_event
 
 
@@ -42,24 +42,52 @@ def format_reference(appointment_id: int) -> str:
     return f"NH-APT-{appointment_id:04d}"
 
 
-def validate_business_rules(session: Session, data: AppointmentCreate, today: date | None = None) -> Department:
-    """Checks that need the database or today's date. Raises FieldValidationError."""
+def to_appointment_read(appointment: AppointmentRequest, department: Department) -> AppointmentRead:
+    """The public shape of a request, used by both the API and the Appointment Agent."""
+    assert appointment.reference is not None
+    return AppointmentRead(
+        reference=appointment.reference,
+        patient_name=appointment.patient_name,
+        department_id=department.id,
+        department_name=department.name,
+        preferred_date=appointment.preferred_date,
+        reason=appointment.reason,
+        status=appointment.status,
+        source=appointment.source,
+        created_at=as_utc(appointment.created_at),
+        updated_at=as_utc(appointment.updated_at),
+    )
+
+
+def check_preferred_date(preferred_date: date, today: date | None = None) -> str | None:
+    """Return a friendly problem message, or None if the date is allowed."""
     today = today or today_in_india()
     max_days = get_settings().appointment_max_days_ahead
+    if preferred_date <= today:
+        return "Please choose a date from tomorrow onwards."
+    if preferred_date > today + timedelta(days=max_days):
+        return f"Please choose a date within the next {max_days} days."
+    return None
+
+
+def check_department(department: Department | None) -> str | None:
+    """Return a friendly problem message, or None if the department takes requests."""
+    if department is None:
+        return "Please choose a department from the list."
+    if not department.accepts_appointments:
+        return f"{department.name} does not take appointment requests. {department.summary}"
+    return None
+
+
+def validate_business_rules(session: Session, data: AppointmentCreate, today: date | None = None) -> Department:
+    """Checks that need the database or today's date. Raises FieldValidationError."""
     errors: dict[str, str] = {}
 
     department = session.get(Department, data.department_id)
-    if department is None:
-        errors["department_id"] = "Please choose a department from the list."
-    elif not department.accepts_appointments:
-        errors["department_id"] = (
-            f"{department.name} does not take appointment requests. {department.summary}"
-        )
-
-    if data.preferred_date <= today:
-        errors["preferred_date"] = "Please choose a date from tomorrow onwards."
-    elif data.preferred_date > today + timedelta(days=max_days):
-        errors["preferred_date"] = f"Please choose a date within the next {max_days} days."
+    if problem := check_department(department):
+        errors["department_id"] = problem
+    if problem := check_preferred_date(data.preferred_date, today):
+        errors["preferred_date"] = problem
 
     if errors:
         raise FieldValidationError(errors)

@@ -9,8 +9,13 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./e2e",
-  timeout: 30_000,
+  // The full demo journey sends six chat messages and visits three pages.
+  timeout: 90_000,
+  expect: { timeout: 10_000 },
   fullyParallel: false,
+  // Two browsers at a time: more parallel Edge windows overload one laptop and
+  // the single dev server, which produced timeouts unrelated to the app.
+  workers: 2,
   reporter: [["list"]],
   outputDir: "./test-results",
   use: {

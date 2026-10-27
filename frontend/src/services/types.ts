@@ -77,3 +77,113 @@ export interface ActivityEvent {
   reference: string | null;
   created_at: string;
 }
+
+// ---------- Assistant and agent trace (Phase 3) ----------
+
+export type OutcomeStatus =
+  | "answered"
+  | "needs_input"
+  | "action_completed"
+  | "emergency_escalation"
+  | "refused"
+  | "clarification"
+  | "information_unavailable"
+  | "error";
+
+export interface AgentStep {
+  order: number;
+  agent: string;
+  action: string;
+  status: "ok" | "warning" | "blocked" | "fallback" | "error";
+  detail: string;
+  data: Record<string, unknown>;
+  duration_ms: number;
+}
+
+export interface AgentRun {
+  id: number;
+  conversation_id: string;
+  user_message: string;
+  detected_intent: string;
+  confidence: number;
+  classifier_method: string;
+  selected_agent: string;
+  outcome_status: OutcomeStatus;
+  outcome_summary: string;
+  reference: string | null;
+  duration_ms: number;
+  created_at: string;
+  steps: AgentStep[];
+}
+
+export interface Suggestion {
+  label: string;
+  message?: string | null;
+  href?: string | null;
+}
+
+export interface CareAssessment {
+  level: "self_care" | "routine" | "see_doctor_soon" | "urgent_same_day" | "emergency" | null;
+  label: string;
+  explanation: string;
+  next_steps: string[];
+  department_id: string | null;
+  department_name: string | null;
+  can_request_appointment: boolean;
+  matched_symptoms: { id: string; label: string; matched: string }[];
+  red_flags: { id: string; label: string; matched: string }[];
+  emergency_numbers: { number: string; label: string }[];
+  support_numbers: { number: string; label: string }[];
+  reasons: string[];
+  understood: Record<string, unknown>;
+  needs_more_info: string[];
+  disclaimer: string;
+  rules_version: string;
+  clinically_reviewed: boolean;
+}
+
+export type AssistantCard =
+  | { type: "department"; department: Department }
+  | { type: "departments"; title: string; items: Department[] }
+  | { type: "checklist"; title: string; items: string[] }
+  | { type: "steps"; title: string; items: string[] }
+  | {
+      type: "appointment_draft";
+      ready: boolean;
+      note: string;
+      details: {
+        patient_name: string;
+        department_id: string | null;
+        department_name: string | null;
+        preferred_date: string | null;
+        preferred_date_label: string | null;
+        reason: string | null;
+      };
+    }
+  | { type: "appointment_submitted"; appointment: AppointmentRequest }
+  | { type: "appointment_list"; items: AppointmentRequest[] }
+  | { type: "care_guidance"; assessment: CareAssessment }
+  | {
+      type: "emergency";
+      red_flags: string[];
+      numbers: { number: string; label: string }[];
+      next_steps: string[];
+      self_harm: boolean;
+    };
+
+export interface AssistantReply {
+  conversation_id: string;
+  run_id: number;
+  agent: string;
+  intent: string;
+  confidence: number;
+  method: string;
+  outcome_status: OutcomeStatus;
+  reply: string;
+  cards: AssistantCard[];
+  suggestions: Suggestion[];
+  sources: string[];
+  reference: string | null;
+  pending_task: string | null;
+  run: AgentRun;
+}

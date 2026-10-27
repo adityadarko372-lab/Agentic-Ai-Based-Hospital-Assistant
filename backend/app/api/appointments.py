@@ -7,32 +7,15 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from sqlmodel import Session
 
 from app.api.deps import get_current_patient
-from app.core.clock import as_utc
-from app.db.models import AppointmentRequest, Department, User
+from app.db.models import User
 from app.db.session import get_session
 from app.schemas import AppointmentCreate, AppointmentRead
 from app.services import appointment_service
-from app.services.appointment_service import AppointmentConflict, AppointmentNotFound
+from app.services.appointment_service import AppointmentConflict, AppointmentNotFound, to_appointment_read
 
 router = APIRouter(prefix="/api/appointments", tags=["appointments"])
 
 _IDEMPOTENCY_KEY_PATTERN = re.compile(r"^[A-Za-z0-9_-]{8,80}$")
-
-
-def to_appointment_read(appointment: AppointmentRequest, department: Department) -> AppointmentRead:
-    assert appointment.reference is not None
-    return AppointmentRead(
-        reference=appointment.reference,
-        patient_name=appointment.patient_name,
-        department_id=department.id,
-        department_name=department.name,
-        preferred_date=appointment.preferred_date,
-        reason=appointment.reason,
-        status=appointment.status,
-        source=appointment.source,
-        created_at=as_utc(appointment.created_at),
-        updated_at=as_utc(appointment.updated_at),
-    )
 
 
 @router.post(

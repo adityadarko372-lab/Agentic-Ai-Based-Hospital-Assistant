@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { CHAT_STORAGE_PREFIX } from "../hooks/useAssistantChat";
 import { setAuthToken, setUnauthorizedHandler } from "../services/apiClient";
 import { authApi } from "../services/novaApi";
 import type { User } from "../services/types";
@@ -52,6 +53,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(() => {
     storeToken(null);
+    // Chat transcripts belong to the signed-in user; remove them on sign-out.
+    try {
+      for (const key of Object.keys(window.sessionStorage)) {
+        if (key.startsWith(CHAT_STORAGE_PREFIX)) window.sessionStorage.removeItem(key);
+      }
+    } catch {
+      // storage unavailable: nothing to clear
+    }
     setUser(null);
     setStatus("signed_out");
   }, []);

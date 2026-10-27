@@ -2,6 +2,8 @@
 import { apiGet, apiPost } from "./apiClient";
 import type {
   ActivityEvent,
+  AgentRun,
+  AssistantReply,
   AppointmentCreate,
   AppointmentRequest,
   Department,
@@ -35,4 +37,16 @@ export const appointmentApi = {
 
 export const activityApi = {
   mine: (limit = 20) => apiGet<ActivityEvent[]>(`/api/activity/mine?limit=${limit}`),
+  runs: (limit = 30) => apiGet<AgentRun[]>(`/api/activity/runs?limit=${limit}`),
+  run: (runId: number) => apiGet<AgentRun>(`/api/activity/runs/${runId}`),
+};
+
+export const assistantApi = {
+  /** The Supervisory Agent can take a moment on the first call, so allow 15 s. */
+  send: (message: string, conversationId: string | null) =>
+    apiPost<AssistantReply>(
+      "/api/assistant/message",
+      { message, conversation_id: conversationId },
+      { timeoutMs: 15000 },
+    ),
 };

@@ -6,7 +6,7 @@ import { vi } from "vitest";
 import App from "../src/App";
 import { SESSION_STORAGE_KEY } from "../src/auth/AuthContext";
 import { setAuthToken } from "../src/services/apiClient";
-import type { ActivityEvent, AppointmentRequest, Department } from "../src/services/types";
+import type { ActivityEvent, AgentRun, AppointmentRequest, AssistantReply, Department } from "../src/services/types";
 import { addDays, todayInIndia } from "../src/utils/dates";
 
 export const HEALTHY_RESPONSE = {
@@ -101,8 +101,65 @@ interface FakeApiOptions {
   healthOnline?: boolean;
   appointments?: AppointmentRequest[];
   activity?: ActivityEvent[];
+  runs?: AgentRun[];
   /** Field errors returned by POST /api/appointments (simulates server validation). */
   createFieldErrors?: Record<string, string>;
+  /** Builds the assistant's reply for a message (default: a simple Patient Assistance answer). */
+  assistant?: (message: string, conversationId: string | null) => AssistantReply | { status: number; detail: string };
+}
+
+export function makeRun(overrides: Partial<AgentRun> = {}): AgentRun {
+  return {
+    id: 1,
+    conversation_id: "conv_test",
+    user_message: "What should I bring to my appointment?",
+    detected_intent: "hospital_info",
+    confidence: 0.62,
+    classifier_method: "rules",
+    selected_agent: "Patient Assistance Agent",
+    outcome_status: "answered",
+    outcome_summary: "Listed what to bring to an appointment",
+    reference: null,
+    duration_ms: 12,
+    created_at: new Date().toISOString(),
+    steps: [
+      { order: 1, agent: "Supervisory Agent", action: "receive_message", status: "ok", detail: "New message", data: {}, duration_ms: 0 },
+      { order: 2, agent: "Safety Gate", action: "check_safety", status: "ok", detail: "No emergency warning signs or rule-override attempts", data: {}, duration_ms: 1 },
+      {
+        order: 3,
+        agent: "Supervisory Agent",
+        action: "classify_intent",
+        status: "ok",
+        detail: "Intent: hospital_info (confidence 0.62, method: rules)",
+        data: { evidence: ['"what should i bring" (+3)'] },
+        duration_ms: 1,
+      },
+      { order: 4, agent: "Supervisory Agent", action: "route_request", status: "ok", detail: "Routed to Patient Assistance Agent", data: {}, duration_ms: 0 },
+      { order: 5, agent: "Patient Assistance Agent", action: "lookup_directory", status: "ok", detail: "Answered from the hospital directory", data: {}, duration_ms: 1 },
+    ],
+    ...overrides,
+  };
+}
+
+export function makeReply(overrides: Partial<AssistantReply> = {}): AssistantReply {
+  const run = overrides.run ?? makeRun();
+  return {
+    conversation_id: run.conversation_id,
+    run_id: run.id,
+    agent: run.selected_agent,
+    intent: run.detected_intent,
+    confidence: run.confidence,
+    method: "rules",
+    outcome_status: run.outcome_status,
+    reply: "Here is what to bring to your appointment at Nova Health.",
+    cards: [{ type: "checklist", title: "What to bring", items: ["A government photo ID"] }],
+    suggestions: [{ label: "Book an appointment", message: "I want to book an appointment" }],
+    sources: ["Nova Health demo directory (fictional)"],
+    reference: null,
+    pending_task: null,
+    run,
+    ...overrides,
+  };
 }
 
 export interface FakeApiCall {
@@ -152,6 +209,15 @@ export function mockApi(options: FakeApiOptions = {}) {
     if (!signedIn) return json({ detail: "Please sign in to continue." }, 401);
     if (url.pathname === "/api/auth/me") return json(DEMO_USER);
     if (url.pathname === "/api/activity/mine") return json(state.activity);
+    if (url.pathname === "/api/activity/runs") return json(options.runs ?? []);
+    if (url.pathname === "/api/assistant/message" && method === "POST") {
+      const data = body as { message: string; conversation_id: string | null };
+      const result = options.assistant ? options.assistant(data.message, data.conversation_id) : makeReply();
+      if ("detail" in result && "status" in result && typeof result.status === "number") {
+        return json({ detail: result.detail }, result.status);
+      }
+      return json(result);
+    }
     if (url.pathname === "/api/appointments/mine") return json(state.appointments);
     if (url.pathname === "/api/appointments" && method === "POST") {
       if (options.createFieldErrors) {

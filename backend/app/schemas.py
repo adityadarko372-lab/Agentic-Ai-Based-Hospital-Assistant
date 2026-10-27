@@ -145,3 +145,68 @@ class ActivityEventRead(BaseModel):
     summary: str
     reference: str | None
     created_at: datetime
+
+
+# ---------- Assistant (Phase 3) ----------
+class AssistantMessageRequest(BaseModel):
+    message: str = Field(max_length=4000)
+    conversation_id: str | None = Field(default=None, max_length=40)
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Please type a message.")
+        if len(value) > 1000:
+            raise ValueError("Please keep your message under 1000 characters.")
+        return value
+
+
+class SuggestionRead(BaseModel):
+    label: str
+    message: str | None = None
+    href: str | None = None
+
+
+class AgentStepRead(BaseModel):
+    order: int
+    agent: str
+    action: str
+    status: str
+    detail: str
+    data: dict
+    duration_ms: int
+
+
+class AgentRunRead(BaseModel):
+    id: int
+    conversation_id: str
+    user_message: str
+    detected_intent: str
+    confidence: float
+    classifier_method: str
+    selected_agent: str
+    outcome_status: str
+    outcome_summary: str
+    reference: str | None
+    duration_ms: int
+    created_at: datetime
+    steps: list[AgentStepRead] = []
+
+
+class AssistantReply(BaseModel):
+    conversation_id: str
+    run_id: int
+    agent: str
+    intent: str
+    confidence: float
+    method: str
+    outcome_status: str
+    reply: str
+    cards: list[dict]
+    suggestions: list[SuggestionRead]
+    sources: list[str]
+    reference: str | None
+    pending_task: str | None
+    run: AgentRunRead

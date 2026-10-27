@@ -53,10 +53,10 @@ describe("Nova Health app shell (signed in)", () => {
     renderApp("/");
 
     const sidebar = await screen.findByRole("complementary", { name: /sidebar/i });
-    await user.click(within(sidebar).getByRole("link", { name: /agent activity/i }));
+    await user.click(within(sidebar).getByRole("link", { name: /symptom guidance/i }));
 
-    expect(screen.getByRole("heading", { level: 1, name: "Agent Activity" })).toBeInTheDocument();
-    expect(within(sidebar).getByRole("link", { name: /agent activity/i })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("heading", { level: 1, name: "Symptom Guidance" })).toBeInTheDocument();
+    expect(within(sidebar).getByRole("link", { name: /symptom guidance/i })).toHaveAttribute("aria-current", "page");
     // Unbuilt modules must say so rather than show fake controls.
     expect(screen.getByText("Not built yet")).toBeInTheDocument();
   });

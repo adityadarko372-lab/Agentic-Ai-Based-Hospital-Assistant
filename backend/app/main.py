@@ -16,6 +16,7 @@ from sqlmodel import Session
 
 from app.api.activity import router as activity_router
 from app.api.appointments import router as appointments_router
+from app.api.assistant import router as assistant_router
 from app.api.auth import router as auth_router
 from app.api.health import router as health_router
 from app.api.hospital import router as hospital_router
@@ -62,6 +63,7 @@ def create_app() -> FastAPI:
     app.include_router(hospital_router)
     app.include_router(appointments_router)
     app.include_router(activity_router)
+    app.include_router(assistant_router)
     return app
 
 
