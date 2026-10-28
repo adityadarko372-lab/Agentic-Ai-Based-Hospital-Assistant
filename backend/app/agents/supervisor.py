@@ -23,10 +23,11 @@ from typing import Any
 
 from sqlmodel import Session
 
-from app.agents import appointment_agent, care_navigation, patient_assistance
+from app.agents import appointment_agent, care_navigation, health_info_agent, patient_assistance
 from app.agents.base import (
     APPOINTMENT,
     CARE_NAVIGATION,
+    HEALTH_INFO,
     PATIENT_ASSISTANCE,
     SAFETY_GATE,
     SUPERVISOR,
@@ -39,6 +40,7 @@ from app.agents.intent import IntentPrediction, get_intent_classifier
 from app.agents.safety_gate import check_message
 from app.agents.text import normalise
 from app.core.clock import today_in_india, utc_now
+from app.core.config import get_settings
 from app.db.models import AgentRun, AgentStep, Conversation, User
 from app.services.activity_service import record_event
 
@@ -54,6 +56,7 @@ AGENT_FOR_INTENT = {
     "appointment_status": APPOINTMENT,
     "appointment_cancel": APPOINTMENT,
     "symptom_report": CARE_NAVIGATION,
+    "health_info": HEALTH_INFO,
     "greeting": SUPERVISOR,
     "help": SUPERVISOR,
     "out_of_scope": SUPERVISOR,
@@ -107,22 +110,19 @@ def _greeting(ctx: AgentContext) -> AgentResult:
 
 
 def _help(_ctx: AgentContext) -> AgentResult:
+    items = [
+        "Patient Assistance Agent: departments, timings, what to bring, how booking works.",
+        "Appointment Agent: request, check or cancel appointment requests (saved as Pending).",
+        "Care Navigation Agent: cautious guidance on where and how soon to seek care. It does not diagnose.",
+    ]
+    if get_settings().health_info_enabled:
+        items.append("Health Information Agent: general, cited facts about a condition from NIH MedQuAD. Not advice about you.")
     return AgentResult(
         SUPERVISOR,
         "I'm the Nova Health assistant. I pass your request to the right specialist:",
         "answered",
         "Explained what the assistant can do",
-        [
-            {
-                "type": "steps",
-                "title": "Specialist agents",
-                "items": [
-                    "Patient Assistance Agent: departments, timings, what to bring, how booking works.",
-                    "Appointment Agent: request, check or cancel appointment requests (saved as Pending).",
-                    "Care Navigation Agent: cautious guidance on where and how soon to seek care. It does not diagnose.",
-                ],
-            }
-        ],
+        [{"type": "steps", "title": "Specialist agents", "items": items}],
         STARTER_SUGGESTIONS,
     )
 
@@ -195,6 +195,8 @@ def _route(ctx: AgentContext, prediction: IntentPrediction) -> AgentResult:
         return appointment_agent.handle(ctx, intent)
     if intent == "symptom_report":
         return care_navigation.handle(ctx)
+    if intent == "health_info":
+        return health_info_agent.handle(ctx)
     if intent == "greeting":
         return _greeting(ctx)
     if intent == "help":

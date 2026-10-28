@@ -27,7 +27,9 @@ export const HEALTHY_RESPONSE = {
   server_time: "2026-10-26T10:00:00Z",
   features: {
     intent_classifier: "rules",
+    intent_classifier_active: "rules",
     health_info_enabled: false,
+    health_info_index_present: false,
     llm_phrasing_enabled: false,
     front_desk_enabled: false,
   },

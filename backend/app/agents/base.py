@@ -21,6 +21,7 @@ SAFETY_GATE = "Safety Gate"
 PATIENT_ASSISTANCE = "Patient Assistance Agent"
 APPOINTMENT = "Appointment Agent"
 CARE_NAVIGATION = "Care Navigation Agent"
+HEALTH_INFO = "Health Information Agent"  # optional (Phase 5)
 
 StepStatus = Literal["ok", "warning", "blocked", "fallback", "error"]
 OutcomeStatus = Literal[

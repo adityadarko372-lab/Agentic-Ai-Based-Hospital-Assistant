@@ -10,3 +10,5 @@ SQLAlchemy==2.1.6
 # Demo login: password hashing and signed session tokens
 bcrypt==5.0.0
 PyJWT==2.15.1
+# Safe XML parsing for the optional MedQuAD preparation script
+defusedxml==0.7.1

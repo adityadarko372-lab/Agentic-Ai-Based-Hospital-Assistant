@@ -58,6 +58,12 @@ class Settings(BaseSettings):
     llm_phrasing_enabled: bool = False
     front_desk_enabled: bool = False
 
+    # Optional MedQuAD index (built by model/health_info/build_index.py).
+    health_info_index_dir: Path = REPO_ROOT / "model" / "artifacts" / "health_info"
+    # Below this cosine similarity the agent says it has no reliable answer.
+    # Chosen on the hand-written evaluation set (model/health_info/evaluate.py).
+    health_info_min_score: float = 0.6
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]

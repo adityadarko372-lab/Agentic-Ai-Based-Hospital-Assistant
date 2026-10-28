@@ -4,7 +4,7 @@ import type { OutcomeStatus } from "../services/types";
 export interface AgentPresentation {
   short: string;
   icon: IconName;
-  tone: "supervisor" | "safety" | "assistance" | "appointment" | "care";
+  tone: "supervisor" | "safety" | "assistance" | "appointment" | "care" | "health";
   role: string;
 }
 
@@ -15,6 +15,7 @@ export const AGENTS: Record<string, AgentPresentation> = {
   "Patient Assistance Agent": { short: "Patient Assistance", icon: "building", tone: "assistance", role: "Hospital services and departments" },
   "Appointment Agent": { short: "Appointment", icon: "calendar", tone: "appointment", role: "Appointment requests" },
   "Care Navigation Agent": { short: "Care Navigation", icon: "stethoscope", tone: "care", role: "Preliminary care guidance" },
+  "Health Information Agent": { short: "Health Information", icon: "info", tone: "health", role: "General, cited health facts (optional)" },
 };
 
 export function agentPresentation(agent: string): AgentPresentation {
@@ -44,6 +45,8 @@ export const ACTION_LABELS: Record<string, string> = {
   apply_care_rules: "Applied care-navigation rules",
   ask_followup: "Asked a follow-up question",
   combine_answers: "Combined answers",
+  search_medquad: "Searched NIH MedQuAD",
+  rephrase_reply: "Optional AI rewording",
   compose_reply: "Composed the reply",
   record_outcome: "Recorded the outcome",
 };

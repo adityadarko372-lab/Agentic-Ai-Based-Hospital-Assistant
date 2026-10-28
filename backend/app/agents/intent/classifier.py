@@ -36,6 +36,7 @@ INTENTS = (
     "appointment_status",
     "appointment_cancel",
     "symptom_report",
+    "health_info",
     "out_of_scope",
 )
 
@@ -50,6 +51,7 @@ INTENT_GROUPS = {
     "appointment_status": "appointment_records",
     "appointment_cancel": "appointment_records",
     "symptom_report": "care",
+    "health_info": "health_education",
     "out_of_scope": "out_of_scope",
 }
 
@@ -137,6 +139,15 @@ _RULES: dict[str, list[tuple[str, float]]] = {
         (r"\b(withdraw|call off|delete) (my )?(appointment|request|booking)\b", 3),
         (r"\b(don't|do not|no longer) need (the|my|an?) (appointment|request)\b", 3),
     ],
+    # Phase 5: general questions about a condition (answered only if HEALTH_INFO_ENABLED).
+    "health_info": [
+        (r"\b(what|which) (is|are) (the )?(common |main |early |usual |first )?(symptoms|signs|causes|risk factors|complications|types|stages) (of|for)\b", 3),
+        (r"\bwhat causes\b", 3),
+        (r"\bhow (is|are) [a-z' -]{3,40} (treated|diagnosed|prevented|spread|transmitted|inherited|caused)\b", 3),
+        (r"\bhow (can|do|to) (i |you |we |one )?prevent\b", 3),
+        (r"\b(is|are) [a-z' -]{3,30} (contagious|infectious|hereditary|inherited|genetic|curable)\b", 3),
+        (r"\b(who|how many people) (gets?|is at risk|are affected)\b", 2),
+    ],
     "out_of_scope": [
         (r"\b(weather|cricket|movie|song|joke|recipe|stock|bitcoin|football|politics|election)\b", 3),
         (r"\b(write|solve) (a |my )?(poem|essay|code|homework|program)\b", 3),
@@ -146,6 +157,15 @@ _RULES: dict[str, list[tuple[str, float]]] = {
         (r"\bdiagnos(e|is)\b", 3),
     ],
 }
+
+# Generic "what is X?" / "tell me about X" questions. They count for health_info
+# only when no other rule matched at all, so "what is the status..." or
+# "tell me about cardiology" keep their usual meaning.
+_GENERAL_QUESTION = [
+    (r"^(what|wht) (is|are|s) (a |an )?[a-z][a-z' -]{2,40}\??$", 2.0),
+    (r"\b(tell me|information|info|facts|learn|know more|read) about\b", 2.0),
+    (r"\b(meaning|definition) of\b", 2.0),
+]
 
 # How much a recognised symptom phrase adds to "symptom_report".
 _SYMPTOM_WEIGHT = 2.0
@@ -170,6 +190,7 @@ class RuleBasedIntentClassifier:
             intent: [_Compiled(re.compile(source), source, weight) for source, weight in rules]
             for intent, rules in _RULES.items()
         }
+        self._general_question = [_Compiled(re.compile(source), source, weight) for source, weight in _GENERAL_QUESTION]
         self._symptom_phrases = [
             phrase for symptom in load_care_rules()["symptoms"] for phrase in symptom["phrases"]
         ]
@@ -210,6 +231,14 @@ class RuleBasedIntentClassifier:
         if scores["department_query"] >= 3 and scores["symptom_report"] > 0:
             scores["department_query"] += 1
             evidence["department_query"].append("asks where to go for a symptom (+1)")
+
+        if all(score == 0 for score in scores.values()):
+            for rule in self._general_question:
+                match = rule.pattern.search(normalised_text)
+                if match:
+                    scores["health_info"] = rule.weight
+                    evidence["health_info"].append(f'general question "{match.group(0).strip()}" (+{rule.weight:g})')
+                    break
 
         ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
         top_intent, top = ranked[0]

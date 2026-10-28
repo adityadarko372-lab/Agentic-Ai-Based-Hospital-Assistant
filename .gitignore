@@ -29,6 +29,7 @@ frontend/playwright-report/
 # --- Optional ML artifacts and raw datasets (rebuilt by scripts) ---
 model/artifacts/
 datasets/raw/
+datasets/processed/
 *.safetensors
 *.bin
 *.pt

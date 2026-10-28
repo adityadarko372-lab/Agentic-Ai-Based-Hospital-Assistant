@@ -114,9 +114,43 @@ export function EmergencyCard({ card }: { card: Extract<AssistantCard, { type: "
   );
 }
 
+export function HealthInfoCard({ card }: { card: Extract<AssistantCard, { type: "health_info" }> }) {
+  // Only link to the https source pages that MedQuAD records.
+  const safeUrl = /^https:\/\//.test(card.url) ? card.url : null;
+  return (
+    <div className="nh-chat-card nh-health-card">
+      <div className="nh-care-card__head">
+        <Badge tone="info">General information</Badge>
+        <span className="nh-chat-card__muted">
+          {card.source} (NIH) · match {Math.round(card.similarity * 100)}%
+        </span>
+      </div>
+      <p className="nh-health-card__question">{card.question}</p>
+      <p className="nh-health-card__answer">{card.answer}</p>
+      <p className="nh-chat-card__muted nh-health-card__source">
+        Source:{" "}
+        {safeUrl ? (
+          <a href={safeUrl} target="_blank" rel="noopener noreferrer">
+            {card.source} page (opens in a new tab)
+          </a>
+        ) : (
+          card.source
+        )}{" "}
+        · {card.license}
+      </p>
+      <p className="nh-care-card__disclaimer">
+        <Icon name="info" size={14} />
+        {card.disclaimer}
+      </p>
+    </div>
+  );
+}
+
 /** Renders the structured parts of an assistant reply. */
 export function AssistantCardView({ card }: { card: AssistantCard }) {
   switch (card.type) {
+    case "health_info":
+      return <HealthInfoCard card={card} />;
     case "emergency":
       return <EmergencyCard card={card} />;
     case "care_guidance":

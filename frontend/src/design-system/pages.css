@@ -885,6 +885,25 @@ a.nh-button {
   color: var(--nh-warning);
 }
 
+.nh-agent-chip--health {
+  background: var(--nh-success-soft);
+  color: var(--nh-success);
+}
+
+/* Phase 5: cited MedQuAD passage inside a chat reply. */
+.nh-health-card__question {
+  font-weight: 700;
+}
+
+.nh-health-card__answer {
+  font-size: var(--nh-text-sm);
+  line-height: 1.6;
+}
+
+.nh-health-card__source a {
+  color: var(--nh-primary-strong);
+}
+
 /* ---------- Chat ---------- */
 .nh-chat {
   display: flex;

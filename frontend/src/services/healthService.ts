@@ -10,7 +10,10 @@ export interface HealthResponse {
   server_time: string;
   features: {
     intent_classifier: "rules" | "transformer";
+    /** The classifier actually in use (falls back to "rules"). */
+    intent_classifier_active: string;
     health_info_enabled: boolean;
+    health_info_index_present: boolean;
     llm_phrasing_enabled: boolean;
     front_desk_enabled: boolean;
   };

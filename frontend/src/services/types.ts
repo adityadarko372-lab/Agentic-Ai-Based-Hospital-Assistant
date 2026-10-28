@@ -177,6 +177,18 @@ export type AssistantCard =
   | { type: "appointment_list"; items: AppointmentRequest[] }
   | { type: "care_guidance"; assessment: CareAssessment }
   | {
+      /** Phase 5 (optional): cited general information from NIH MedQuAD. */
+      type: "health_info";
+      title: string;
+      question: string;
+      answer: string;
+      source: string;
+      url: string;
+      similarity: number;
+      license: string;
+      disclaimer: string;
+    }
+  | {
       type: "emergency";
       red_flags: string[];
       numbers: { number: string; label: string }[];

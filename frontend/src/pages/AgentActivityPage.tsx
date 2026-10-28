@@ -5,6 +5,7 @@ import { AgentTimeline } from "../components/assistant/AgentTimeline";
 import { PageHeader } from "../components/layout/PageHeader";
 import { Badge, Button, Card, DemoDataBanner, EmptyState, Icon, Skeleton } from "../components/ui";
 import { AGENTS, agentPresentation, intentLabel, OUTCOME_LABELS } from "../config/agents";
+import { useBackendHealthContext } from "../hooks/BackendHealthContext";
 import { useApiResource } from "../hooks/useApiResource";
 import { activityApi } from "../services/novaApi";
 import { formatRelative, formatTimestamp } from "../utils/dates";
@@ -14,6 +15,7 @@ const SPECIALISTS = Object.keys(AGENTS).filter((name) => name !== "Safety Gate")
 
 /** Module 3: history of which agent handled each request and what happened. */
 export function AgentActivityPage() {
+  const { health } = useBackendHealthContext();
   const runs = useApiResource(loadRuns);
   const [agentFilter, setAgentFilter] = useState<string>("all");
   const [openRunId, setOpenRunId] = useState<number | null>(null);
@@ -40,7 +42,13 @@ export function AgentActivityPage() {
           </Button>
         }
       />
-      <DemoDataBanner message="Only your own requests are shown. Routing uses transparent rules; the optional trained classifier is off." />
+      <DemoDataBanner
+        message={`Only your own requests are shown. ${
+          health && health.features.intent_classifier_active !== "rules"
+            ? "Routing uses the optional trained classifier, with the transparent rules as a fallback."
+            : "Routing uses transparent rules; the optional trained classifier is off."
+        }`}
+      />
 
       <div className="nh-filter-bar" role="group" aria-label="Filter by agent">
         <button type="button" className={`nh-chip${agentFilter === "all" ? " is-selected" : ""}`} aria-pressed={agentFilter === "all"} onClick={() => setAgentFilter("all")}>

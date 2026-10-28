@@ -15,6 +15,7 @@ import {
   type IconName,
 } from "../components/ui";
 import { APPOINTMENT_STATUS } from "../config/appointmentStatus";
+import { describeAddOns, describeRouting } from "../config/features";
 import { useBackendHealthContext } from "../hooks/BackendHealthContext";
 import { useApiResource } from "../hooks/useApiResource";
 import { activityApi, appointmentApi, hospitalApi } from "../services/novaApi";
@@ -274,18 +275,12 @@ export function DashboardPage() {
               <div>
                 <dt>Request routing</dt>
                 <dd>
-                  {health?.features.intent_classifier === "rules"
-                    ? "Transparent rules (default)"
-                    : "Trained classifier (optional)"}
+                  {health ? describeRouting(health.features) : "Unknown"}
                 </dd>
               </div>
               <div>
-                <dt>Optional AI add-ons</dt>
-                <dd>
-                  {health && (health.features.health_info_enabled || health.features.llm_phrasing_enabled)
-                    ? "Enabled"
-                    : "Off (not required)"}
-                </dd>
+                <dt>Optional add-ons</dt>
+                <dd>{health ? describeAddOns(health.features) : "Unknown"}</dd>
               </div>
               <div>
                 <dt>Data</dt>
