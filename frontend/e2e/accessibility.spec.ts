@@ -29,6 +29,9 @@ test("login page", async ({ page }) => {
 });
 
 test("every signed-in page, with content on screen", async ({ page }) => {
+  // Eight full axe scans plus two chat exchanges: on this laptop the test takes
+  // 60-85 s when another browser test runs in parallel, so allow 3x the default.
+  test.slow();
   await signIn(page, "/");
   await page.waitForLoadState("networkidle");
   await expectNoSeriousViolations(page, "dashboard");

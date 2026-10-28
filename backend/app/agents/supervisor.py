@@ -184,7 +184,10 @@ def _load_conversation(session: Session, user: User, conversation_id: str | None
     assert user.id is not None
     conversation = Conversation(id=f"conv_{secrets.token_urlsafe(12)}", user_id=user.id)
     session.add(conversation)
-    session.flush()
+    # Commit now: holding SQLite's write lock while the agents work (and an
+    # optional model replies) would block other patients' requests.
+    session.commit()
+    session.refresh(conversation)
     return conversation
 
 

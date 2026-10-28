@@ -14,7 +14,7 @@ This page lists clearly what is **implemented**, what is **simulated**, and what
 | 4 | Symptom-guidance module with safe, predefined responses | **Implemented** | Symptom Guidance page; `care_engine.py`, `care_rules.json` |
 | 5 | Appointment-request system connected to SQLite | **Implemented** | Appointments page; `appointment_service.py` |
 | 6 | Activity or status panel showing processing and outcomes | **Implemented** | Agent activity panel and Agent Activity page |
-| 7 | Screenshots and test cases | **Implemented** | `docs/screenshots/`; 261 pytest, 72 Vitest, and Playwright runs with optional features off and on (see the Phase 5 report) |
+| 7 | Screenshots and test cases | **Implemented** | `docs/screenshots/`; 262 pytest, 72 Vitest, and Playwright runs with optional features off and on (see the Phase 5 report) |
 
 ## Demonstration sequence (section 5)
 

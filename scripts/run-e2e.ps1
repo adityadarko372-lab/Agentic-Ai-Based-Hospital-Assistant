@@ -42,7 +42,7 @@ $serverEnv = @{
     LLM_PHRASING_ENABLED = $flag
     INTENT_CLASSIFIER    = $(if ($AllFeatures) { "transformer" } else { "rules" })
 }
-Remove-Item -LiteralPath $Database -ErrorAction SilentlyContinue
+foreach ($suffix in "", "-wal", "-shm") { Remove-Item -LiteralPath "$Database$suffix" -ErrorAction SilentlyContinue }
 
 $saved = @{}
 foreach ($key in $serverEnv.Keys) { $saved[$key] = [Environment]::GetEnvironmentVariable($key); [Environment]::SetEnvironmentVariable($key, $serverEnv[$key]) }
@@ -76,7 +76,7 @@ try {
         if ($process -and -not $process.HasExited) { & taskkill.exe /PID $process.Id /T /F | Out-Null }
     }
     Start-Sleep -Seconds 1
-    Remove-Item -LiteralPath $Database -ErrorAction SilentlyContinue
+    foreach ($suffix in "", "-wal", "-shm") { Remove-Item -LiteralPath "$Database$suffix" -ErrorAction SilentlyContinue }
 }
 if ($LogFile) { "E2E_EXIT=$exitCode" | Out-File -Append $LogFile }
 exit $exitCode

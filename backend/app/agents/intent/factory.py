@@ -8,6 +8,7 @@ INTENT_CLASSIFIER=transformer  -> the optional fine-tuned DistilBERT model
 """
 
 import logging
+import threading
 from functools import lru_cache
 
 from app.agents.intent.classifier import IntentClassifier, RuleBasedIntentClassifier
@@ -16,9 +17,24 @@ from app.core.config import get_settings
 logger = logging.getLogger("nova_health.intent")
 
 
-@lru_cache
+_LOAD_LOCK = threading.Lock()
+
+
 def get_intent_classifier() -> tuple[IntentClassifier, str | None]:
-    """Return (classifier, fallback_note). fallback_note is None when no fallback happened."""
+    """Return (classifier, fallback_note). fallback_note is None when no fallback happened.
+
+    Loaded once. The lock matters: two requests importing Transformers at the
+    same time can fail half-way, which would silently fall back to the rules.
+    """
+    with _LOAD_LOCK:
+        return _load_intent_classifier()
+
+
+get_intent_classifier.cache_clear = lambda: _load_intent_classifier.cache_clear()  # type: ignore[attr-defined]
+
+
+@lru_cache
+def _load_intent_classifier() -> tuple[IntentClassifier, str | None]:
     settings = get_settings()
     if settings.intent_classifier != "transformer":
         return RuleBasedIntentClassifier(), None

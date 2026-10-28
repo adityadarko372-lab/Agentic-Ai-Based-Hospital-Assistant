@@ -14,6 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session
 
+from app.agents.intent import get_intent_classifier
 from app.api.activity import router as activity_router
 from app.api.appointments import router as appointments_router
 from app.api.assistant import router as assistant_router
@@ -26,6 +27,7 @@ from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.db.seed import seed_all
 from app.db.session import create_tables, get_engine
+from app.health_info.retriever import get_retriever
 
 
 @asynccontextmanager
@@ -34,6 +36,14 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     create_tables()
     with Session(get_engine()) as session:
         seed_all(session)
+    # Optional models load once here (a few seconds), not inside the first
+    # request, so /api/health stays fast and reports what is really in use.
+    # Each loader falls back on failure and never stops the server.
+    settings = get_settings()
+    if settings.intent_classifier == "transformer":
+        get_intent_classifier()
+    if settings.health_info_enabled:
+        get_retriever()
     yield
 
 

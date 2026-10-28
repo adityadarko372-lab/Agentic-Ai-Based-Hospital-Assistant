@@ -1,0 +1,63 @@
+{
+  "base_model": "distilbert-base-uncased",
+  "labels": [
+    "greeting",
+    "help",
+    "hospital_info",
+    "department_query",
+    "appointment_book",
+    "appointment_status",
+    "appointment_cancel",
+    "symptom_report",
+    "health_info",
+    "out_of_scope"
+  ],
+  "train_examples": 3443,
+  "val_examples": 383,
+  "epochs": 4,
+  "batch_size": 32,
+  "learning_rate": 5e-05,
+  "fp16": true,
+  "class_weighted_loss": true,
+  "train_label_counts": {
+    "greeting": 381,
+    "help": 466,
+    "hospital_info": 119,
+    "department_query": 407,
+    "appointment_book": 400,
+    "appointment_status": 67,
+    "appointment_cancel": 88,
+    "symptom_report": 407,
+    "health_info": 414,
+    "out_of_scope": 694
+  },
+  "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "seconds": 28.3,
+  "best_val_macro_f1": 1.0,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.236,
+      "val_accuracy": 0.9556,
+      "val_macro_f1": 0.9621
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.0856,
+      "val_accuracy": 0.9869,
+      "val_macro_f1": 0.9898
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.0266,
+      "val_accuracy": 0.9948,
+      "val_macro_f1": 0.9958
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0117,
+      "val_accuracy": 1.0,
+      "val_macro_f1": 1.0
+    }
+  ]
+}

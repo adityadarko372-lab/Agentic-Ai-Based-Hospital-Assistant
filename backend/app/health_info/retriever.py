@@ -84,9 +84,23 @@ def index_present() -> bool:
     return all((directory / name).exists() for name in REQUIRED_FILES)
 
 
-@lru_cache
+_LOAD_LOCK = threading.Lock()
+
+
 def get_retriever() -> Retriever | Unavailable:
-    """Load the retriever once per process, or explain why it cannot be used."""
+    """Load the retriever once per process, or explain why it cannot be used.
+
+    The lock stops two first requests from importing the libraries at once.
+    """
+    with _LOAD_LOCK:
+        return _load_retriever()
+
+
+get_retriever.cache_clear = lambda: _load_retriever.cache_clear()  # type: ignore[attr-defined]
+
+
+@lru_cache
+def _load_retriever() -> Retriever | Unavailable:
     directory = index_dir()
     missing = [name for name in REQUIRED_FILES if not (directory / name).exists()]
     if missing:

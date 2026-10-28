@@ -115,7 +115,7 @@ The new **Health Information Agent** handles a new `health_info` intent ("What i
 - **Set B** (60 messages): written after the round-1 results were seen.
 
 ### Round 1 and what changed
-On set A the first model scored accuracy 0.824. Its mistakes were mostly real hospital questions labelled out-of-scope ("is there parking for two wheelers", "do you take cashless insurance"). The cause was in the data: out-of-scope was a third of the examples, and CLINC150 intents such as *insurance*, *schedule_meeting* and *reminder* taught the model that those words mean "not for us". Round 2 dropped those CLINC150 intents, halved the out-of-scope sample, mapped CLINC150's "are you a bot" and "who made you" to `help`, and added class weights.
+On set A the first model scored accuracy 0.824 (`results_round1.json`, `training_log_round1.json`). Its mistakes were mostly real hospital questions labelled out-of-scope ("is there parking for two wheelers", "do you take cashless insurance"). The cause was in the data: out-of-scope was a third of the examples, and CLINC150 intents such as *insurance*, *schedule_meeting* and *reminder* taught the model that those words mean "not for us". Round 2 dropped those CLINC150 intents, halved the out-of-scope sample, mapped CLINC150's "are you a bot" and "who made you" to `help`, and added class weights.
 
 ### Results (`model/intent_classifier/results.json`)
 "Routed" means confidence ≥ 0.45, the Supervisor's threshold; below it the assistant asks a clarifying question instead.
@@ -175,10 +175,10 @@ A microphone button in the assistant uses the browser's Web Speech API with lang
 
 | Suite | Phase 4 | Phase 5 | Notes |
 |---|---|---|---|
-| Backend (pytest) | 209 | **261** | front desk, health info (fake retriever), classifier fallbacks and guard, rewording guard (fake Ollama) |
+| Backend (pytest) | 209 | **262** | front desk, health info (fake retriever), classifier fallbacks and guard, rewording guard (fake Ollama), concurrent writes |
 | Frontend unit (Vitest) | 57 | **72** | roles and routing, front desk page, demo-account picker, health card, add-on summary, voice input |
-| Browser (Playwright), all switches off | 28 | E2E_OFF | the 6-step demo, accessibility (axe) including the staff page |
-| Browser (Playwright), all switches on | – | E2E_ON | the same, plus front-desk review, health info, trained classifier, rewording |
+| Browser (Playwright), all switches off | 28 | **34 passed**, 8 skipped (the feature-on tests), 0 failed | the 6-step demo, accessibility (axe) including the staff page; desktop and phone |
+| Browser (Playwright), all switches on | – | **40 passed**, 2 skipped (the "switched off" tests), 0 failed | the same, plus front-desk review, health info, trained classifier and rewording, with the real models and Ollama |
 
 `scripts\run-e2e.ps1` runs the browser tests against a throwaway database; `-AllFeatures` switches every optional feature on for that run only. Tests for features that are off skip themselves, so both runs are expected to pass.
 
@@ -196,6 +196,9 @@ The typecheck (`tsc -b`) and the production build (`vite build`) also pass.
 | `QAPair` count was inflated by the `QAPairs` wrapper tag | Counted with a regex that excludes the wrapper |
 | Round-1 classifier refused real hospital questions | Fixed the training data (section 5) instead of tuning on the test set |
 | Rewording dropped an extension number | Added the "dropped numbers" rule and a test |
+| With every feature on, the trained classifier silently fell back to the rules in the browser run | Two first requests imported Transformers at the same time. Model loading now happens once at server start-up, behind a lock, and `/api/health` reports the classifier really in use |
+| With every feature on, one appointment submission returned HTTP 500 | The Supervisor held SQLite's write lock for the whole chat message, so a parallel submission timed out with "database is locked". The conversation row is now committed straight away, SQLite runs in WAL mode with a 15 s busy timeout, and `test_concurrency.py` checks that a slow assistant reply no longer blocks another patient's request |
+| One accessibility test (8 full-page scans) came close to the 90 s limit when the laptop was busy | Marked it `test.slow()`; it normally takes 14–25 s |
 
 ---
 

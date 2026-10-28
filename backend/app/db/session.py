@@ -11,10 +11,16 @@ from app.core.config import get_settings
 _engine: Engine | None = None
 
 
-def _enable_sqlite_foreign_keys(dbapi_connection, _connection_record) -> None:
-    # SQLite ignores FOREIGN KEY constraints unless this pragma is on.
+def _configure_sqlite(dbapi_connection, _connection_record) -> None:
     cursor = dbapi_connection.cursor()
+    # SQLite ignores FOREIGN KEY constraints unless this pragma is on.
     cursor.execute("PRAGMA foreign_keys=ON")
+    # WAL lets readers continue while one request writes, and a writer waits
+    # up to 15 s for another writer instead of failing at once with
+    # "database is locked" (seen when two browser tests submitted together
+    # while the assistant was busy with an optional model).
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA busy_timeout=15000")
     cursor.close()
 
 
@@ -27,9 +33,9 @@ def get_engine() -> Engine:
         _engine = create_engine(
             f"sqlite:///{database_path.as_posix()}",
             # FastAPI may use a different thread per request.
-            connect_args={"check_same_thread": False},
+            connect_args={"check_same_thread": False, "timeout": 15},
         )
-        event.listen(_engine, "connect", _enable_sqlite_foreign_keys)
+        event.listen(_engine, "connect", _configure_sqlite)
     return _engine
 
 

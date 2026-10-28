@@ -14,6 +14,10 @@ $Database = Join-Path $RepoRoot "backend\data\nova_health.db"
 if (Test-Path $Database) {
     try {
         Remove-Item -LiteralPath $Database -ErrorAction Stop
+        # SQLite write-ahead log files (Phase 5 turned WAL mode on).
+        foreach ($suffix in "-wal", "-shm") {
+            Remove-Item -LiteralPath "$Database$suffix" -ErrorAction SilentlyContinue
+        }
         Write-Host "Demo database removed. It will be recreated on the next backend start." -ForegroundColor Green
     }
     catch {
