@@ -9,7 +9,10 @@ import type {
   CareAssessResponse,
   CareFormOptions,
   AppointmentRequest,
+  AppointmentStatus,
   Department,
+  FrontDeskDecision,
+  FrontDeskRequest,
   HospitalInfo,
   LoginResponse,
   User,
@@ -47,6 +50,17 @@ export const activityApi = {
 export const careApi = {
   options: () => apiGet<CareFormOptions>("/api/care-navigation/options"),
   assess: (data: CareAssessRequest) => apiPost<CareAssessResponse>("/api/care-navigation/assess", data),
+};
+
+export const frontDeskApi = {
+  /** Returns 404 when FRONT_DESK_ENABLED is off on the backend. */
+  list: (status: AppointmentStatus | "all" = "pending") =>
+    apiGet<FrontDeskRequest[]>(`/api/front-desk/requests?status=${status}`),
+  decide: (reference: string, decision: FrontDeskDecision, note: string) =>
+    apiPost<FrontDeskRequest>(`/api/front-desk/requests/${encodeURIComponent(reference)}/decision`, {
+      decision,
+      note,
+    }),
 };
 
 export const assistantApi = {

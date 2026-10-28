@@ -41,11 +41,31 @@ def reset_engine() -> None:
     _engine = None
 
 
+def _add_missing_columns(engine: Engine) -> None:
+    """Tiny forward-only migration for an existing demo database.
+
+    `create_all` creates missing tables but never adds columns to a table
+    that already exists. Columns added in later phases are nullable, so they
+    can be added with ALTER TABLE without touching existing rows.
+    """
+    with engine.begin() as connection:
+        for table in SQLModel.metadata.sorted_tables:
+            existing = {row[1] for row in connection.exec_driver_sql(f'PRAGMA table_info("{table.name}")')}
+            if not existing:
+                continue  # table was just created with every column
+            for column in table.columns:
+                if column.name not in existing and column.nullable:
+                    column_type = column.type.compile(dialect=engine.dialect)
+                    connection.exec_driver_sql(f'ALTER TABLE "{table.name}" ADD COLUMN "{column.name}" {column_type}')
+
+
 def create_tables() -> None:
     # Importing the models registers them with SQLModel.metadata.
     from app.db import models  # noqa: F401
 
-    SQLModel.metadata.create_all(get_engine())
+    engine = get_engine()
+    SQLModel.metadata.create_all(engine)
+    _add_missing_columns(engine)
 
 
 def get_session() -> Iterator[Session]:

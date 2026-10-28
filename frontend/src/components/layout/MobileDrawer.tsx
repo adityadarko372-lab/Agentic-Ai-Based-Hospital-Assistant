@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { PRIMARY_NAV, SECONDARY_NAV } from "../../config/navigation";
+import { SECONDARY_NAV, type NavItem } from "../../config/navigation";
 import { Button, Icon } from "../ui";
 import { BrandLogo } from "./BrandLogo";
 import { NavList } from "./NavList";
@@ -9,6 +9,7 @@ import { NavList } from "./NavList";
 interface MobileDrawerProps {
   open: boolean;
   onClose: () => void;
+  items: NavItem[];
 }
 
 /**
@@ -16,7 +17,7 @@ interface MobileDrawerProps {
  * Escape closes it, focus moves inside on open, and the page behind is inert
  * to scrolling.
  */
-export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
+export function MobileDrawer({ open, onClose, items }: MobileDrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                 <Icon name="close" />
               </Button>
             </div>
-            <NavList items={PRIMARY_NAV} label="Main" onNavigate={onClose} />
+            <NavList items={items} label="Main" onNavigate={onClose} />
             <div className="nh-sidebar__divider" />
             <NavList items={SECONDARY_NAV} label="System" onNavigate={onClose} />
           </motion.div>

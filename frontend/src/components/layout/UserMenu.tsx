@@ -23,7 +23,7 @@ export function UserMenu() {
       </span>
       <span className="nh-user-menu__text">
         <span className="nh-user-menu__name">{user.full_name}</span>
-        <span className="nh-user-menu__role">Demo patient</span>
+        <span className="nh-user-menu__role">{user.role === "front_desk" ? "Front desk staff" : "Demo patient"}</span>
       </span>
       <Button
         variant="ghost"

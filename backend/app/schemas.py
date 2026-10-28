@@ -137,6 +137,27 @@ class AppointmentRead(BaseModel):
     source: str
     created_at: datetime
     updated_at: datetime
+    # Phase 5: filled in only after a front-desk decision.
+    reviewed_by: str | None = None
+    reviewed_at: datetime | None = None
+    review_note: str | None = None
+
+
+class FrontDeskDecision(BaseModel):
+    decision: Literal["confirm", "decline"]
+    note: str = Field(default="", max_length=1000)
+
+    @field_validator("note")
+    @classmethod
+    def validate_note(cls, value: str) -> str:
+        value = _WHITESPACE.sub(" ", value).strip()
+        if len(value) > 300:
+            raise ValueError("Please keep the note under 300 characters.")
+        return value
+
+
+class FrontDeskRequestRead(AppointmentRead):
+    patient_email: str
 
 
 class ActivityEventRead(BaseModel):

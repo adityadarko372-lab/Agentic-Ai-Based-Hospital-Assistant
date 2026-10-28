@@ -1,10 +1,13 @@
 /** API response shapes. These mirror backend/app/schemas.py. */
 
+/** "front_desk" is the Phase 5 hospital staff role that reviews appointment requests. */
+export type UserRole = "patient" | "front_desk";
+
 export interface User {
   id: number;
   email: string;
   full_name: string;
-  role: "patient";
+  role: UserRole;
 }
 
 export interface LoginResponse {
@@ -60,7 +63,17 @@ export interface AppointmentRequest {
   source: "form" | "assistant";
   created_at: string;
   updated_at: string;
+  /** Phase 5: set only after a front-desk decision. */
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+  review_note?: string | null;
 }
+
+export interface FrontDeskRequest extends AppointmentRequest {
+  patient_email: string;
+}
+
+export type FrontDeskDecision = "confirm" | "decline";
 
 export interface AppointmentCreate {
   patient_name: string;

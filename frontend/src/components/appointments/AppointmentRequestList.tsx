@@ -57,7 +57,13 @@ export function AppointmentRequestList({ requests, onCancel }: AppointmentReques
                 <p className="nh-request__status-note">
                   {status.explanation} Submitted {formatTimestamp(request.created_at)}
                   {request.source === "assistant" ? " via the AI Assistant" : ""}.
+                  {request.reviewed_by && request.reviewed_at
+                    ? ` Reviewed by ${request.reviewed_by} on ${formatTimestamp(request.reviewed_at)}.`
+                    : ""}
                 </p>
+                {request.review_note && (
+                  <p className="nh-request__review-note">Front desk note: {request.review_note}</p>
+                )}
               </div>
               {request.status === "pending" && (
                 <Button

@@ -14,6 +14,7 @@ import type {
   CareAssessment,
   CareFormOptions,
   Department,
+  FrontDeskRequest,
 } from "../src/services/types";
 import { addDays, todayInIndia } from "../src/utils/dates";
 
@@ -33,6 +34,8 @@ export const HEALTHY_RESPONSE = {
 };
 
 export const DEMO_USER = { id: 1, email: "patient@novahealth.demo", full_name: "Asha Verma", role: "patient" };
+export const STAFF_USER = { id: 7, email: "frontdesk@novahealth.demo", full_name: "Meera Desai", role: "front_desk" };
+export const STAFF_TOKEN = "staff-token";
 
 export const DEPARTMENTS: Department[] = [
   {
@@ -177,6 +180,13 @@ interface FakeApiOptions {
   createFieldErrors?: Record<string, string>;
   /** Builds the assistant's reply for a message (default: a simple Patient Assistance answer). */
   assistant?: (message: string, conversationId: string | null) => AssistantReply | { status: number; detail: string };
+  /** Phase 5: when false (default) the front-desk endpoints return 404, like FRONT_DESK_ENABLED=false. */
+  frontDeskEnabled?: boolean;
+  frontDeskRequests?: FrontDeskRequest[];
+}
+
+export function makeFrontDeskRequest(overrides: Partial<FrontDeskRequest> = {}): FrontDeskRequest {
+  return { ...makeAppointment(), patient_email: "patient@novahealth.demo", ...overrides };
 }
 
 export function makeRun(overrides: Partial<AgentRun> = {}): AgentRun {
@@ -252,6 +262,7 @@ export function mockApi(options: FakeApiOptions = {}) {
   const state = {
     appointments: [...(options.appointments ?? [])],
     activity: [...(options.activity ?? [])],
+    frontDesk: [...(options.frontDeskRequests ?? [])],
     calls: [] as FakeApiCall[],
   };
 
@@ -272,6 +283,9 @@ export function mockApi(options: FakeApiOptions = {}) {
       if (credentials.email === DEMO_USER.email && credentials.password === "NovaDemo@2026") {
         return json({ access_token: "test-token", token_type: "bearer", expires_at: "2099-01-01T00:00:00Z", user: DEMO_USER });
       }
+      if (credentials.email === STAFF_USER.email && credentials.password === "NovaDemo@2026") {
+        return json({ access_token: STAFF_TOKEN, token_type: "bearer", expires_at: "2099-01-01T00:00:00Z", user: STAFF_USER });
+      }
       return json({ detail: "Incorrect email or password." }, 401);
     }
     if (url.pathname === "/api/care-navigation/options") return json(CARE_OPTIONS);
@@ -279,7 +293,39 @@ export function mockApi(options: FakeApiOptions = {}) {
     if (url.pathname === "/api/hospital/info") return json(HOSPITAL_INFO);
 
     if (!signedIn) return json({ detail: "Please sign in to continue." }, 401);
-    if (url.pathname === "/api/auth/me") return json(DEMO_USER);
+    const isStaff = headers.Authorization === `Bearer ${STAFF_TOKEN}`;
+    if (url.pathname === "/api/auth/me") return json(isStaff ? STAFF_USER : DEMO_USER);
+
+    if (url.pathname.startsWith("/api/front-desk/")) {
+      if (!options.frontDeskEnabled) return json({ detail: "Not Found" }, 404);
+      if (!isStaff) return json({ detail: "This page is for hospital front-desk staff only." }, 403);
+      if (url.pathname === "/api/front-desk/requests" && method === "GET") {
+        const status = url.searchParams.get("status") ?? "pending";
+        return json(status === "all" ? state.frontDesk : state.frontDesk.filter((item) => item.status === status));
+      }
+      const match = url.pathname.match(/^\/api\/front-desk\/requests\/([^/]+)\/decision$/);
+      if (match && method === "POST") {
+        const target = state.frontDesk.find((item) => item.reference === decodeURIComponent(match[1]));
+        if (!target) return json({ detail: "Appointment request not found." }, 404);
+        const data = body as { decision: "confirm" | "decline"; note: string };
+        if (data.decision === "decline" && data.note.trim().length < 3) {
+          return json(
+            { detail: "Please correct the highlighted fields.", field_errors: { note: "Please add a short note for the patient explaining why." } },
+            422,
+          );
+        }
+        if (target.status !== "pending") {
+          return json({ detail: `${target.reference} is already ${target.status}; it can only be decided once.` }, 409);
+        }
+        Object.assign(target, {
+          status: data.decision === "confirm" ? "confirmed" : "declined",
+          reviewed_by: STAFF_USER.full_name,
+          reviewed_at: new Date().toISOString(),
+          review_note: data.note || null,
+        });
+        return json(target);
+      }
+    }
     if (url.pathname === "/api/activity/mine") return json(state.activity);
     if (url.pathname === "/api/activity/runs") return json(options.runs ?? []);
     if (url.pathname === "/api/care-navigation/assess" && method === "POST") {
@@ -331,8 +377,8 @@ export function mockApi(options: FakeApiOptions = {}) {
 }
 
 /** Simulates a stored session, as if the user had signed in earlier in this tab. */
-export function signInBeforeRender() {
-  window.sessionStorage.setItem(SESSION_STORAGE_KEY, "test-token");
+export function signInBeforeRender(token = "test-token") {
+  window.sessionStorage.setItem(SESSION_STORAGE_KEY, token);
 }
 
 export function resetSession() {

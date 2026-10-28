@@ -56,6 +56,9 @@ def to_appointment_read(appointment: AppointmentRequest, department: Department)
         source=appointment.source,
         created_at=as_utc(appointment.created_at),
         updated_at=as_utc(appointment.updated_at),
+        reviewed_by=appointment.reviewed_by,
+        reviewed_at=as_utc(appointment.reviewed_at) if appointment.reviewed_at else None,
+        review_note=appointment.review_note,
     )
 
 

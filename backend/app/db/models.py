@@ -23,6 +23,8 @@ from app.core.clock import utc_now
 
 class UserRole(StrEnum):
     PATIENT = "patient"
+    # Phase 5: hospital front-desk staff who review appointment requests.
+    FRONT_DESK = "front_desk"
 
 
 class AppointmentStatus(StrEnum):
@@ -30,8 +32,10 @@ class AppointmentStatus(StrEnum):
     PENDING = "pending"
     # Withdrawn by the patient before any hospital decision.
     CANCELLED = "cancelled"
-    # "confirmed" / "declined" are reserved for a staff review workflow
-    # (optional Phase 5). Nothing in Phase 2 can set them.
+    # Phase 5: set ONLY by a signed-in front-desk staff member's decision
+    # (app/services/front_desk_service.py). No agent can set these.
+    CONFIRMED = "confirmed"
+    DECLINED = "declined"
 
 
 class User(SQLModel, table=True):
@@ -82,6 +86,10 @@ class AppointmentRequest(SQLModel, table=True):
     idempotency_key: str = Field(max_length=80)
     created_at: datetime = Field(default_factory=utc_now)
     updated_at: datetime = Field(default_factory=utc_now)
+    # Phase 5: human review by the front desk (who, when, and a note for the patient).
+    reviewed_by: str | None = Field(default=None, max_length=80)
+    reviewed_at: datetime | None = Field(default=None)
+    review_note: str | None = Field(default=None, max_length=300)
 
 
 class ActivityEvent(SQLModel, table=True):

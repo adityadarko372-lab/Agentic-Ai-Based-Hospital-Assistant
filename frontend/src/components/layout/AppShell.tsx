@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { PRIMARY_NAV, SECONDARY_NAV } from "../../config/navigation";
+import { useAuth } from "../../auth/AuthContext";
+import { navForRole, SECONDARY_NAV } from "../../config/navigation";
 import { useBackendHealthContext } from "../../hooks/BackendHealthContext";
 import { Button, Icon } from "../ui";
 import { AssistantFab } from "./AssistantFab";
@@ -20,6 +21,9 @@ export function AppShell() {
   const location = useLocation();
   const outlet = useOutlet();
   const { state } = useBackendHealthContext();
+  const { user } = useAuth();
+  const navItems = navForRole(user?.role);
+  const isStaff = user?.role === "front_desk";
   const [drawerOpen, setDrawerOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
@@ -45,7 +49,7 @@ export function AppShell() {
 
       <aside className="nh-sidebar" aria-label="Sidebar">
         <BrandLogo />
-        <NavList items={PRIMARY_NAV} label="Main" />
+        <NavList items={navItems} label="Main" />
         <div className="nh-sidebar__spacer" />
         <div className="nh-sidebar__divider" />
         <NavList items={SECONDARY_NAV} label="System" />
@@ -87,8 +91,9 @@ export function AppShell() {
         </main>
       </div>
 
-      <MobileDrawer open={drawerOpen} onClose={closeDrawer} />
-      <AssistantFab />
+      <MobileDrawer open={drawerOpen} onClose={closeDrawer} items={navItems} />
+      {/* The patient assistant is not part of the staff workflow. */}
+      {!isStaff && <AssistantFab />}
     </div>
   );
 }

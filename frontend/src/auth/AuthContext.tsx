@@ -22,7 +22,8 @@ interface AuthContextValue {
   user: User | null;
   /** True when the user was signed out because the session expired. */
   sessionExpired: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  /** Resolves with the signed-in user so the caller can route by role. */
+  signIn: (email: string, password: string) => Promise<User>;
   signOut: () => void;
 }
 
@@ -101,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(result.user);
     setSessionExpired(false);
     setStatus("signed_in");
+    return result.user;
   }, []);
 
   const value = useMemo(

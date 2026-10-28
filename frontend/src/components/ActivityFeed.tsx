@@ -5,6 +5,8 @@ import { EmptyState, Icon, type IconName } from "./ui";
 const EVENT_ICON: Record<string, IconName> = {
   "appointment.submitted": "calendar",
   "appointment.cancelled": "close",
+  "appointment.confirmed": "check",
+  "appointment.declined": "alert",
   "assistant.emergency_escalation": "alert",
   "assistant.refused": "shield",
   "care.assessment": "stethoscope",

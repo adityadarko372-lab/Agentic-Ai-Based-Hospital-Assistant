@@ -2,10 +2,14 @@ import { expect, type Page } from "@playwright/test";
 
 export const SCREENSHOT_DIR = "../docs/screenshots";
 
-/** Signs in through the real login form with the fictional demo account. */
-export async function signIn(page: Page, redirectPath = "/"): Promise<void> {
+/**
+ * Signs in through the real login form with a fictional demo account
+ * (default: the first account in the picker, Asha Verma).
+ */
+export async function signIn(page: Page, redirectPath = "/", accountEmail?: string): Promise<void> {
   await page.goto(redirectPath);
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  if (accountEmail) await page.getByLabel("Demo account").selectOption(accountEmail);
   await page.getByRole("button", { name: "Fill in" }).click();
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();

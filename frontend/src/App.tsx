@@ -1,8 +1,9 @@
 import { MotionConfig } from "framer-motion";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./auth/AuthContext";
 import { RequireAuth } from "./auth/RequireAuth";
+import { RequireRole } from "./auth/RequireRole";
 import { AppShell } from "./components/layout/AppShell";
 import { ToastProvider } from "./components/ui";
 import { BackendHealthProvider } from "./hooks/BackendHealthContext";
@@ -12,13 +13,15 @@ import { AssistantPage } from "./pages/AssistantPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
+import { FrontDeskPage } from "./pages/FrontDeskPage";
 import { SymptomGuidancePage } from "./pages/SymptomGuidancePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ServicesPage } from "./pages/ServicesPage";
 
 /**
- * Route map. /login is public; every other page needs a signed-in demo
- * patient. All five modules of partial implementation.md are routed here.
+ * Route map. /login is public; every other page needs a signed-in user.
+ * All five modules of partial implementation.md are patient routes; the
+ * optional Phase 5 front desk is a staff route.
  */
 export default function App() {
   return (
@@ -37,12 +40,30 @@ export default function App() {
                 </RequireAuth>
               }
             >
-              <Route index element={<DashboardPage />} />
-              <Route path="assistant" element={<AssistantPage />} />
-              <Route path="symptom-guidance" element={<SymptomGuidancePage />} />
-              <Route path="appointments" element={<AppointmentsPage />} />
+              {/* Patient modules. Staff are redirected to their own home. */}
+              <Route
+                element={
+                  <RequireRole role="patient">
+                    <Outlet />
+                  </RequireRole>
+                }
+              >
+                <Route index element={<DashboardPage />} />
+                <Route path="assistant" element={<AssistantPage />} />
+                <Route path="symptom-guidance" element={<SymptomGuidancePage />} />
+                <Route path="appointments" element={<AppointmentsPage />} />
+                <Route path="activity" element={<AgentActivityPage />} />
+              </Route>
+              {/* Phase 5 staff workflow. */}
+              <Route
+                path="front-desk"
+                element={
+                  <RequireRole role="front_desk">
+                    <FrontDeskPage />
+                  </RequireRole>
+                }
+              />
               <Route path="services" element={<ServicesPage />} />
-              <Route path="activity" element={<AgentActivityPage />} />
               <Route path="design-system" element={<DesignSystemPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>

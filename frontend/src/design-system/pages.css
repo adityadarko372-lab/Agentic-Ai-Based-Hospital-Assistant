@@ -438,13 +438,27 @@ a.nh-button {
 
 .nh-demo-account {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--nh-space-3);
   padding: var(--nh-space-3) var(--nh-space-4);
   border-radius: var(--nh-radius-md);
   background: var(--nh-surface-sunken);
   box-shadow: var(--nh-inset-sm);
+}
+
+.nh-demo-account__picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.nh-demo-account__password {
+  margin-top: var(--nh-space-2);
+}
+
+.nh-demo-account__picker .nh-select {
+  width: 100%;
+  text-overflow: ellipsis;
 }
 
 .nh-demo-account__title {
@@ -640,6 +654,27 @@ a.nh-button {
 
 .nh-request__status-note {
   font-size: var(--nh-text-xs);
+}
+
+/* Phase 5: front-desk note shown to patient and staff. */
+.nh-request__review-note {
+  margin-top: var(--nh-space-2);
+  padding: var(--nh-space-2) var(--nh-space-3);
+  border-left: 3px solid var(--nh-primary);
+  border-radius: var(--nh-radius-sm);
+  background: var(--nh-surface-sunken);
+  font-size: var(--nh-text-sm);
+}
+
+.nh-request__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nh-space-2);
+  flex-shrink: 0;
+}
+
+.nh-front-desk__filters {
+  margin-bottom: var(--nh-space-4);
 }
 
 @media (max-width: 520px) {

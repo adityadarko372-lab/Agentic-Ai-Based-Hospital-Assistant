@@ -57,3 +57,19 @@ test("every signed-in page, with content on screen", async ({ page }) => {
   await expect(page.getByRole("region", { name: "Your guidance" })).toContainText("General self-care information");
   await expectNoSeriousViolations(page, "symptom-guidance");
 });
+
+test("front-desk page (Phase 5 staff view)", async ({ page }) => {
+  await signIn(page, "/", "frontdesk@novahealth.demo");
+  await expect(page.getByRole("heading", { level: 1, name: "Front desk" })).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  await expectNoSeriousViolations(page, "front-desk");
+
+  // With the feature on and a request waiting, check the decision dialog too.
+  const confirm = page.getByRole("button", { name: /^Confirm request NH-APT-/ }).first();
+  if (await confirm.isVisible()) {
+    await confirm.click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectNoSeriousViolations(page, "front-desk dialog");
+    await page.getByRole("button", { name: "Back" }).click();
+  }
+});

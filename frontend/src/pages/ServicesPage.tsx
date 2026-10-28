@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../auth/AuthContext";
 import { PageHeader } from "../components/layout/PageHeader";
 import { Badge, Button, Card, DemoDataBanner, Icon, Skeleton, type IconName } from "../components/ui";
 import { useApiResource } from "../hooks/useApiResource";
 import { hospitalApi } from "../services/novaApi";
 import type { Department } from "../services/types";
 
-function DepartmentCard({ department }: { department: Department }) {
+function DepartmentCard({ department, canRequest }: { department: Department; canRequest: boolean }) {
   return (
     <Card as="article" variant="flat" className="nh-department-card">
       <div className="nh-department-card__head">
@@ -35,7 +36,7 @@ function DepartmentCard({ department }: { department: Department }) {
           {department.extension}
         </li>
       </ul>
-      {department.accepts_appointments && (
+      {department.accepts_appointments && canRequest && (
         <Link
           to={`/appointments?department=${encodeURIComponent(department.id)}`}
           className="nh-button nh-button--secondary nh-button--sm nh-department-card__cta"
@@ -50,6 +51,9 @@ function DepartmentCard({ department }: { department: Department }) {
 
 /** Hospital services directory, loaded from the backend knowledge file. */
 export function ServicesPage() {
+  const { user } = useAuth();
+  // Staff browse the directory but do not submit patient requests.
+  const canRequest = user?.role !== "front_desk";
   const departments = useApiResource(hospitalApi.departments);
   const info = useApiResource(hospitalApi.info);
 
@@ -126,7 +130,7 @@ export function ServicesPage() {
             <ul className="nh-department-grid">
               {clinical.map((department) => (
                 <li key={department.id}>
-                  <DepartmentCard department={department} />
+                  <DepartmentCard department={department} canRequest={canRequest} />
                 </li>
               ))}
             </ul>
@@ -138,7 +142,7 @@ export function ServicesPage() {
             <ul className="nh-department-grid">
               {services.map((department) => (
                 <li key={department.id}>
-                  <DepartmentCard department={department} />
+                  <DepartmentCard department={department} canRequest={canRequest} />
                 </li>
               ))}
             </ul>

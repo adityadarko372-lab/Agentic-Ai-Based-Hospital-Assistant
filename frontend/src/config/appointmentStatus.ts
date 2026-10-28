@@ -25,11 +25,11 @@ export const APPOINTMENT_STATUS: Record<AppointmentStatus, StatusPresentation> =
   confirmed: {
     label: "Confirmed",
     tone: "confirmed",
-    explanation: "Confirmed by the hospital.",
+    explanation: "Confirmed by the hospital front desk.",
   },
   declined: {
     label: "Declined",
     tone: "emergency",
-    explanation: "The hospital could not accept this request.",
+    explanation: "The hospital front desk could not accept this request.",
   },
 };
