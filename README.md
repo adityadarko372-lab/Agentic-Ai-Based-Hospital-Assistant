@@ -11,10 +11,18 @@ Nova Health (earlier called "Hospivanta" in the project documents) is a final-ye
 | 1 | Foundation, design system, app shell, `/api/health` | ✅ Done |
 | 2 | Demo login, SQLite, dashboard, appointment requests | ✅ Done |
 | 3 | Supervisory Agent, 3 specialist agents, chat, activity panel | ✅ Done |
-| 4 | Symptom guidance, end-to-end demo, `v0.1-required-scope` | Planned |
+| 4 | Symptom guidance, end-to-end demo, `v0.1-required-scope` | ✅ Done (tag `v0.1-required-scope`) |
 | 5 | Optional enhancements (front desk, MedQuAD, trained classifier, Ollama) | Optional |
 
-The full approved plan is in [`docs/first report.md`](docs/first%20report.md). Phase reports are in [`docs/phase-reports/`](docs/phase-reports/).
+All five required modules and the 6-step demonstration sequence from `partial implementation.md` are working.
+
+| Document | Purpose |
+|---|---|
+| [`docs/setup.md`](docs/setup.md) | Install, run, reset, test, troubleshoot |
+| [`docs/demo-script.md`](docs/demo-script.md) | What to click and say in the examination |
+| [`docs/implementation-status.md`](docs/implementation-status.md) | Implemented / simulated / future work |
+| [`docs/first report.md`](docs/first%20report.md) | The approved plan |
+| [`docs/phase-reports/`](docs/phase-reports/) | One report per phase, with real test results |
 
 ## Demo account
 
@@ -76,6 +84,8 @@ To stop the app, close the two server windows.
 | GET | `/api/assistant/conversations/{id}` | Yes | Messages of one of your conversations |
 | GET | `/api/activity/runs` | Yes | Agent runs: which agent handled each request, with every step |
 | GET | `/api/activity/runs/{id}` | Yes | One run with its steps |
+| GET | `/api/care-navigation/options` | No | Symptom form choices (warning signs, symptoms, durations…) |
+| POST | `/api/care-navigation/assess` | Yes | Symptom Guidance form, evaluated by the Care Navigation Agent (same engine as the chat) |
 
 ## How the agents work (Phase 3)
 

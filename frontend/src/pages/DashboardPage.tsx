@@ -65,7 +65,7 @@ function greetingForHour(hour: number): string {
 
 function LoadingRows({ label, rows = 3 }: { label: string; rows?: number }) {
   return (
-    <div className="nh-stack" aria-busy="true" aria-label={label}>
+    <div className="nh-stack" role="status" aria-busy="true" aria-label={label}>
       {Array.from({ length: rows }, (_, index) => (
         <Skeleton key={index} height={52} />
       ))}

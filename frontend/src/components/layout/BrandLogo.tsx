@@ -13,7 +13,8 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
   const gradientId = `nh-brand-gradient-${useId().replace(/:/g, "")}`;
 
   return (
-    <Link to="/" className="nh-brand" aria-label="Nova Health, go to dashboard">
+    // The accessible name starts with the visible words (WCAG 2.5.3 "Label in Name").
+    <Link to="/" className="nh-brand" aria-label={compact ? "Nova Health, go to dashboard" : undefined}>
       <svg className="nh-brand__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
@@ -28,7 +29,8 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
       {!compact && (
         <span className="nh-brand__text">
           <span className="nh-brand__name">Nova Health</span>
-          <span className="nh-brand__tagline">Hospital Assistant</span>
+          <span className="nh-brand__tagline"> Hospital Assistant</span>
+          <span className="nh-visually-hidden">, go to dashboard</span>
         </span>
       )}
     </Link>

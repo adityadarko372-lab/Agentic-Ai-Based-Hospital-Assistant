@@ -7,6 +7,7 @@ const EVENT_ICON: Record<string, IconName> = {
   "appointment.cancelled": "close",
   "assistant.emergency_escalation": "alert",
   "assistant.refused": "shield",
+  "care.assessment": "stethoscope",
 };
 
 /** Icon for the agent that acted, when the event type has none of its own. */

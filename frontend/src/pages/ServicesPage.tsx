@@ -39,7 +39,7 @@ function DepartmentCard({ department }: { department: Department }) {
         <Link
           to={`/appointments?department=${encodeURIComponent(department.id)}`}
           className="nh-button nh-button--secondary nh-button--sm nh-department-card__cta"
-          aria-label={`Request an appointment with ${department.name}`}
+          aria-label={`Request appointment: ${department.name}`}
         >
           Request appointment
         </Link>
@@ -103,7 +103,7 @@ export function ServicesPage() {
       )}
 
       {departments.loading && !departments.data ? (
-        <div className="nh-department-grid" aria-busy="true" aria-label="Loading departments">
+        <div className="nh-department-grid" role="status" aria-busy="true" aria-label="Loading departments">
           {Array.from({ length: 6 }, (_, index) => (
             <Skeleton key={index} height={220} />
           ))}

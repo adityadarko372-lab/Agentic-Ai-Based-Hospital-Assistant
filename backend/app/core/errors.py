@@ -33,6 +33,12 @@ def _friendly_message(error: dict) -> str:
         return "This entry is too long."
     if error_type == "string_type":
         return "Please enter text."
+    if error_type in ("literal_error", "enum"):
+        return "Please choose one of the options."
+    if error_type == "bool_type":
+        return "Please answer yes or no."
+    if error_type == "too_long":
+        return "Too many items selected."
     message = str(error.get("msg", "This value is not valid."))
     return message.removeprefix("Value error, ")
 
@@ -47,7 +53,10 @@ def register_error_handlers(app: FastAPI) -> None:
         field_errors: dict[str, str] = {}
         for error in exc.errors():
             location = [part for part in error.get("loc", ()) if part not in ("body", "query", "path", "header")]
-            field = str(location[-1]) if location else "form"
+            # Use the top-level field name, so an error in a list item
+            # ("symptom_ids", 2) is reported under "symptom_ids".
+            names = [part for part in location if isinstance(part, str)]
+            field = names[0] if names else "form"
             # Keep the first (most relevant) message per field.
             field_errors.setdefault(field, _friendly_message(error))
         return validation_error_response(field_errors)

@@ -6,7 +6,15 @@ import { vi } from "vitest";
 import App from "../src/App";
 import { SESSION_STORAGE_KEY } from "../src/auth/AuthContext";
 import { setAuthToken } from "../src/services/apiClient";
-import type { ActivityEvent, AgentRun, AppointmentRequest, AssistantReply, Department } from "../src/services/types";
+import type {
+  ActivityEvent,
+  AgentRun,
+  AppointmentRequest,
+  AssistantReply,
+  CareAssessment,
+  CareFormOptions,
+  Department,
+} from "../src/services/types";
 import { addDays, todayInIndia } from "../src/utils/dates";
 
 export const HEALTHY_RESPONSE = {
@@ -79,6 +87,69 @@ export const HOSPITAL_INFO = {
     { number: "108", label: "Ambulance" },
   ],
   appointment_guidance: { how_to_book: [], what_to_bring: ["Photo ID"], arrival_advice: "Arrive early." },
+};
+
+export const CARE_OPTIONS: CareFormOptions = {
+  warning_signs: [
+    { id: "chest_pain", label: "Chest pain or pressure" },
+    { id: "self_harm", label: "Thoughts of suicide or self-harm" },
+  ],
+  symptoms: [
+    { id: "cough", label: "Cough" },
+    { id: "fever", label: "Fever" },
+  ],
+  durations: [
+    { id: "under_1_day", label: "Less than a day" },
+    { id: "1_3_days", label: "1 to 3 days" },
+  ],
+  severities: [
+    { id: "mild", label: "Mild" },
+    { id: "moderate", label: "Moderate" },
+    { id: "severe", label: "Severe" },
+  ],
+  age_groups: [
+    { id: "child", label: "Child (1–15 years)" },
+    { id: "adult", label: "Adult (16–64 years)" },
+  ],
+  emergency_numbers: [{ number: "112", label: "National emergency" }],
+  disclaimer: "This is preliminary guidance from fixed rules, not a diagnosis.",
+  rules_version: "test",
+  clinically_reviewed: false,
+};
+
+const BASE_ASSESSMENT: CareAssessment = {
+  level: "self_care",
+  label: "General self-care information",
+  explanation: "Your answers do not include warning signs.",
+  next_steps: ["Rest and drink enough fluids."],
+  department_id: "general-medicine",
+  department_name: "General Medicine",
+  can_request_appointment: true,
+  matched_symptoms: [{ id: "cough", label: "Cough", matched: "selected on the form" }],
+  red_flags: [],
+  emergency_numbers: [{ number: "112", label: "National emergency" }],
+  support_numbers: [],
+  reasons: ["Highest-priority symptom: cough → general self-care information."],
+  understood: {},
+  needs_more_info: [],
+  disclaimer: "This is preliminary guidance from fixed rules, not a diagnosis.",
+  rules_version: "test",
+  clinically_reviewed: false,
+};
+export const SELF_CARE_ASSESSMENT = BASE_ASSESSMENT;
+export const EMERGENCY_ASSESSMENT: CareAssessment = {
+  ...BASE_ASSESSMENT,
+  level: "emergency",
+  label: "Get emergency help now",
+  department_id: "emergency",
+  department_name: "Emergency Department",
+  can_request_appointment: false,
+  red_flags: [{ id: "chest_pain", label: "Chest pain or pressure", matched: "selected on the form" }],
+  emergency_numbers: [
+    { number: "112", label: "National emergency" },
+    { number: "108", label: "Ambulance" },
+  ],
+  next_steps: ["Call 112 or 108 now."],
 };
 
 export function makeAppointment(overrides: Partial<AppointmentRequest> = {}): AppointmentRequest {
@@ -203,6 +274,7 @@ export function mockApi(options: FakeApiOptions = {}) {
       }
       return json({ detail: "Incorrect email or password." }, 401);
     }
+    if (url.pathname === "/api/care-navigation/options") return json(CARE_OPTIONS);
     if (url.pathname === "/api/hospital/departments") return json(DEPARTMENTS);
     if (url.pathname === "/api/hospital/info") return json(HOSPITAL_INFO);
 
@@ -210,6 +282,25 @@ export function mockApi(options: FakeApiOptions = {}) {
     if (url.pathname === "/api/auth/me") return json(DEMO_USER);
     if (url.pathname === "/api/activity/mine") return json(state.activity);
     if (url.pathname === "/api/activity/runs") return json(options.runs ?? []);
+    if (url.pathname === "/api/care-navigation/assess" && method === "POST") {
+      const data = body as { symptom_ids: string[] };
+      const emergency = data.symptom_ids.some((id) => CARE_OPTIONS.warning_signs.some((w) => w.id === id));
+      return json({
+        assessment: emergency ? EMERGENCY_ASSESSMENT : SELF_CARE_ASSESSMENT,
+        run: makeRun({
+          id: 9,
+          detected_intent: "symptom_form",
+          confidence: 1,
+          classifier_method: "form",
+          selected_agent: "Care Navigation Agent",
+          outcome_status: emergency ? "emergency_escalation" : "answered",
+          steps: [
+            { order: 1, agent: "Care Navigation Agent", action: "receive_form", status: "ok", detail: "Symptom form received", data: {}, duration_ms: 0 },
+            { order: 2, agent: "Care Navigation Agent", action: "apply_care_rules", status: "ok", detail: "Level: General self-care information", data: { reasons: ["Highest-priority symptom: cough"] }, duration_ms: 1 },
+          ],
+        }),
+      });
+    }
     if (url.pathname === "/api/assistant/message" && method === "POST") {
       const data = body as { message: string; conversation_id: string | null };
       const result = options.assistant ? options.assistant(data.message, data.conversation_id) : makeReply();

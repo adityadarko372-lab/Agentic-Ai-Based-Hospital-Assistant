@@ -5,6 +5,9 @@ import type {
   AgentRun,
   AssistantReply,
   AppointmentCreate,
+  CareAssessRequest,
+  CareAssessResponse,
+  CareFormOptions,
   AppointmentRequest,
   Department,
   HospitalInfo,
@@ -39,6 +42,11 @@ export const activityApi = {
   mine: (limit = 20) => apiGet<ActivityEvent[]>(`/api/activity/mine?limit=${limit}`),
   runs: (limit = 30) => apiGet<AgentRun[]>(`/api/activity/runs?limit=${limit}`),
   run: (runId: number) => apiGet<AgentRun>(`/api/activity/runs/${runId}`),
+};
+
+export const careApi = {
+  options: () => apiGet<CareFormOptions>("/api/care-navigation/options"),
+  assess: (data: CareAssessRequest) => apiPost<CareAssessResponse>("/api/care-navigation/assess", data),
 };
 
 export const assistantApi = {

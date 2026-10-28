@@ -60,7 +60,7 @@ export function AppointmentsPage() {
       <div className="nh-appointments-layout">
         <Card as="section" title="Request an appointment" subtitle="All fields are required.">
           {departments.loading && !departments.data ? (
-            <div className="nh-stack" aria-busy="true" aria-label="Loading departments">
+            <div className="nh-stack" role="status" aria-busy="true" aria-label="Loading departments">
               <Skeleton height={46} />
               <Skeleton height={46} />
               <Skeleton height={46} />
@@ -100,7 +100,7 @@ export function AppointmentsPage() {
           }
         >
           {requests.loading && !requests.data ? (
-            <div className="nh-stack" aria-busy="true" aria-label="Loading your requests">
+            <div className="nh-stack" role="status" aria-busy="true" aria-label="Loading your requests">
               <Skeleton height={90} />
               <Skeleton height={90} />
             </div>

@@ -8,7 +8,7 @@ export function AssistantFab() {
   if (pathname.startsWith("/assistant")) return null;
 
   return (
-    <Link to="/assistant" className="nh-fab" aria-label="Open the AI Assistant">
+    <Link to="/assistant" className="nh-fab" aria-label="Ask Nova, open the AI Assistant">
       <Icon name="sparkle" size={22} />
       <span className="nh-fab__label">Ask Nova</span>
     </Link>

@@ -187,3 +187,38 @@ export interface AssistantReply {
   pending_task: string | null;
   run: AgentRun;
 }
+
+// ---------- Symptom Guidance form (Phase 4) ----------
+
+export interface CareOption {
+  id: string;
+  label: string;
+  hint?: string;
+}
+
+export interface CareFormOptions {
+  warning_signs: CareOption[];
+  symptoms: CareOption[];
+  durations: CareOption[];
+  severities: CareOption[];
+  age_groups: CareOption[];
+  emergency_numbers: { number: string; label: string }[];
+  disclaimer: string;
+  rules_version: string;
+  clinically_reviewed: boolean;
+}
+
+export interface CareAssessRequest {
+  symptom_ids: string[];
+  free_text: string;
+  duration: string | null;
+  severity: "mild" | "moderate" | "severe" | null;
+  age_group: "infant" | "child" | "adult" | "older_adult" | null;
+  pregnant: boolean;
+  long_term_condition: boolean;
+}
+
+export interface CareAssessResponse {
+  assessment: CareAssessment;
+  run: AgentRun;
+}

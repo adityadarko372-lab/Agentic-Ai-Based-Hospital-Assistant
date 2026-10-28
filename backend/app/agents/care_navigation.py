@@ -9,7 +9,7 @@ reviewed) and never names a condition or suggests a medicine.
 
 from dataclasses import asdict
 
-from app.agents.base import CARE_NAVIGATION, AgentContext, AgentResult, Suggestion
+from app.agents.base import CARE_NAVIGATION, AgentContext, AgentResult, Suggestion, Trace
 from app.agents.care_engine import CareAssessment, CareInput, evaluate
 from app.agents.safety_gate import SafetyResult
 
@@ -21,7 +21,12 @@ def _guidance_card(assessment: CareAssessment) -> dict:
 
 
 def _trace_assessment(ctx: AgentContext, assessment: CareAssessment) -> None:
-    ctx.trace.add(
+    trace_assessment(ctx.trace, assessment)
+
+
+def trace_assessment(trace: Trace, assessment: CareAssessment) -> None:
+    """Shared by the chat and the Symptom Guidance form, so both traces look the same."""
+    trace.add(
         CARE_NAVIGATION,
         "apply_care_rules",
         f"Level: {assessment.label}"

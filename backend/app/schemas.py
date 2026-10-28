@@ -7,6 +7,7 @@ to patients next to the form field (see app/core/errors.py).
 import re
 import unicodedata
 from datetime import date, datetime
+from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -209,4 +210,31 @@ class AssistantReply(BaseModel):
     sources: list[str]
     reference: str | None
     pending_task: str | None
+    run: AgentRunRead
+
+
+# ---------- Symptom Guidance form (Phase 4) ----------
+DurationChoice = Literal["under_1_day", "1_3_days", "4_7_days", "1_3_weeks", "over_3_weeks"]
+
+
+class CareAssessRequest(BaseModel):
+    symptom_ids: list[str] = Field(default_factory=list, max_length=30)
+    free_text: str = Field(default="", max_length=2000)
+    duration: DurationChoice | None = None
+    severity: Literal["mild", "moderate", "severe"] | None = None
+    age_group: Literal["infant", "child", "adult", "older_adult"] | None = None
+    pregnant: bool = False
+    long_term_condition: bool = False
+
+    @field_validator("free_text")
+    @classmethod
+    def validate_free_text(cls, value: str) -> str:
+        value = _WHITESPACE.sub(" ", value).strip()
+        if len(value) > 500:
+            raise ValueError("Please keep the description under 500 characters.")
+        return value
+
+
+class CareAssessResponse(BaseModel):
+    assessment: dict
     run: AgentRunRead

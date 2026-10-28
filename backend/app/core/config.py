@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Nova Health"
-    app_version: str = "0.2.0-phase2"
+    app_version: str = "0.1.0-required-scope"
     # "demo" makes it explicit that all data is synthetic.
     environment: Literal["demo", "development", "test"] = "demo"
 

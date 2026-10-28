@@ -23,6 +23,7 @@ export function agentPresentation(agent: string): AgentPresentation {
 
 export const ACTION_LABELS: Record<string, string> = {
   receive_message: "Received the message",
+  receive_form: "Received the symptom form",
   check_safety: "Safety check",
   select_classifier: "Classifier selection",
   classify_intent: "Intent detection",

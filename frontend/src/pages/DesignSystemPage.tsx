@@ -80,7 +80,7 @@ export function DesignSystemPage() {
 
       <div className="nh-dashboard-columns">
         <Card as="section" title="Loading skeleton">
-          <div className="nh-stack" aria-busy="true" aria-label="Loading example">
+          <div className="nh-stack" role="status" aria-busy="true" aria-label="Loading example">
             <Skeleton height={20} width="50%" />
             <Skeleton />
             <Skeleton width="85%" />

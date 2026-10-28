@@ -61,7 +61,7 @@ export function AgentActivityPage() {
 
       <Card as="section" title="Requests" subtitle="Select a request to see every step.">
         {runs.loading && !runs.data ? (
-          <div className="nh-stack" aria-busy="true" aria-label="Loading agent activity">
+          <div className="nh-stack" role="status" aria-busy="true" aria-label="Loading agent activity">
             <Skeleton height={64} />
             <Skeleton height={64} />
             <Skeleton height={64} />

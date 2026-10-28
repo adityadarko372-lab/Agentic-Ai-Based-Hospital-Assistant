@@ -12,14 +12,13 @@ import { AssistantPage } from "./pages/AssistantPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
 import { DesignSystemPage } from "./pages/DesignSystemPage";
-import { ModulePreviewPage } from "./pages/ModulePreviewPage";
+import { SymptomGuidancePage } from "./pages/SymptomGuidancePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ServicesPage } from "./pages/ServicesPage";
 
 /**
  * Route map. /login is public; every other page needs a signed-in demo
- * patient. Modules not yet implemented render an honest preview page that
- * names the phase delivering them (see docs/first report.md).
+ * patient. All five modules of partial implementation.md are routed here.
  */
 export default function App() {
   return (
@@ -40,23 +39,7 @@ export default function App() {
             >
               <Route index element={<DashboardPage />} />
               <Route path="assistant" element={<AssistantPage />} />
-              <Route
-                path="symptom-guidance"
-                element={
-                  <ModulePreviewPage
-                    eyebrow="Module 4 · Preliminary Symptom Guidance"
-                    title="Symptom Guidance"
-                    description="A short questionnaire that suggests an appropriate next step. It does not diagnose."
-                    icon="stethoscope"
-                    plannedPhase="Phase 4"
-                    plannedCapabilities={[
-                      "Collect symptoms, duration and general information",
-                      "Show emergency guidance (112 / 108) immediately for warning signs",
-                      "Suggest a level of care and a relevant department, never a diagnosis",
-                    ]}
-                  />
-                }
-              />
+              <Route path="symptom-guidance" element={<SymptomGuidancePage />} />
               <Route path="appointments" element={<AppointmentsPage />} />
               <Route path="services" element={<ServicesPage />} />
               <Route path="activity" element={<AgentActivityPage />} />

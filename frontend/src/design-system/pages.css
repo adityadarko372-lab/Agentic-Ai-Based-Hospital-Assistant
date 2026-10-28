@@ -925,7 +925,7 @@ a.nh-button {
   align-items: flex-start;
   gap: 6px;
   font-size: var(--nh-text-xs);
-  color: var(--nh-ink-subtle);
+  color: var(--nh-ink-muted);
 }
 
 .nh-bubble__source svg {
@@ -1505,4 +1505,156 @@ ul.nh-chat-card {
   .nh-chat__log {
     scroll-behavior: auto;
   }
+}
+
+/* ======================= Phase 4: Symptom Guidance ======================= */
+
+.nh-symptom-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 1fr);
+  gap: var(--nh-space-6);
+  align-items: start;
+}
+
+.nh-symptom-result {
+  position: sticky;
+  top: calc(var(--nh-topbar-height) + var(--nh-space-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-4);
+}
+
+.nh-symptom-result h2:focus {
+  outline: none;
+}
+
+@media (max-width: 1100px) {
+  .nh-symptom-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nh-symptom-result {
+    position: static;
+  }
+}
+
+.nh-symptom-form {
+  gap: var(--nh-space-6);
+}
+
+.nh-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.nh-fieldset--warning {
+  padding: var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: rgba(246, 220, 220, 0.45);
+  border: 1px solid rgba(165, 38, 44, 0.18);
+}
+
+.nh-option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--nh-space-2);
+}
+
+.nh-option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nh-space-2);
+}
+
+.nh-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nh-space-2);
+  min-height: 44px;
+  padding: var(--nh-space-2) var(--nh-space-3);
+  border: 1px solid var(--nh-border-strong);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-surface-raised);
+  box-shadow: var(--nh-raise-sm);
+  font-size: var(--nh-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    box-shadow var(--nh-duration-fast) var(--nh-ease),
+    border-color var(--nh-duration-fast) var(--nh-ease);
+}
+
+.nh-option input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--nh-primary);
+}
+
+.nh-option:has(input:focus-visible) {
+  box-shadow: var(--nh-raise-sm), var(--nh-focus-ring);
+}
+
+.nh-option.is-checked {
+  border-color: var(--nh-primary);
+  background: var(--nh-primary-soft);
+  box-shadow: var(--nh-inset-sm);
+}
+
+.nh-option--warning input {
+  accent-color: var(--nh-danger);
+}
+
+.nh-option--warning.is-checked {
+  border-color: var(--nh-danger);
+  background: var(--nh-danger-soft);
+}
+
+.nh-option__hint {
+  display: block;
+  font-size: var(--nh-text-xs);
+  font-weight: 500;
+  color: var(--nh-ink-muted);
+}
+
+.nh-inline-emergency {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nh-space-3);
+  padding: var(--nh-space-4);
+  border-radius: var(--nh-radius-md);
+  background: var(--nh-danger-soft);
+  border: 2px solid rgba(165, 38, 44, 0.35);
+}
+
+.nh-inline-emergency__title {
+  display: flex;
+  align-items: center;
+  gap: var(--nh-space-2);
+  font-weight: 800;
+  color: var(--nh-danger);
+}
+
+.nh-symptom-result__agent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nh-space-2);
+}
+
+.nh-symptom-result__trace summary {
+  cursor: pointer;
+  font-size: var(--nh-text-sm);
+  font-weight: 700;
+  color: var(--nh-accent);
+}
+
+.nh-symptom-result__trace[open] summary {
+  margin-bottom: var(--nh-space-3);
 }
