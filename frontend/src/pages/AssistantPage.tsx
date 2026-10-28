@@ -8,6 +8,7 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { Button, Card, DemoDataBanner, EmptyState, Icon } from "../components/ui";
 import { agentPresentation } from "../config/agents";
 import { useAssistantChat, type ChatMessage } from "../hooks/useAssistantChat";
+import { useVoiceInput } from "../hooks/useVoiceInput";
 import type { Suggestion } from "../services/types";
 
 // The four example questions from partial implementation.md, plus two demo journeys.
@@ -83,6 +84,11 @@ export function AssistantPage() {
   const [draft, setDraft] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  // Optional voice input: the transcript goes into the box for review, never sent automatically.
+  const voice = useVoiceInput((text) => {
+    setDraft((current) => (current.trim() ? `${current.trim()} ${text}` : text));
+    inputRef.current?.focus();
+  });
 
   useEffect(() => {
     const log = logRef.current;
@@ -165,10 +171,32 @@ export function AssistantPage() {
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={handleKeyDown}
             />
+            {voice.supported && (
+              <Button
+                type="button"
+                variant={voice.listening ? "danger" : "secondary"}
+                iconOnly
+                aria-label={voice.listening ? "Stop voice input" : "Speak your message"}
+                aria-pressed={voice.listening}
+                aria-describedby="nh-voice-note"
+                onClick={voice.listening ? voice.stop : voice.start}
+                disabled={sending}
+              >
+                <Icon name={voice.listening ? "close" : "mic"} />
+              </Button>
+            )}
             <Button type="submit" iconOnly aria-label="Send message" disabled={!draft.trim()} loading={sending}>
               {!sending && <Icon name="chevronRight" />}
             </Button>
           </form>
+          {voice.supported && (
+            <p id="nh-voice-note" className="nh-composer__note" role={voice.error ? "alert" : undefined}>
+              {voice.error ??
+                (voice.listening
+                  ? "Listening… speak now. Your words appear in the box so you can check them before sending."
+                  : "Voice input (optional) uses your browser's speech service, which may send the audio to the browser maker's servers.")}
+            </p>
+          )}
         </Card>
 
         <Card

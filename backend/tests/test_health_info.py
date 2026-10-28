@@ -66,6 +66,11 @@ def test_parser_keeps_answered_pairs_and_drops_medicine_questions_and_stubs():
     assert len(record.answer) >= MIN_ANSWER_CHARS
 
 
+def test_parser_drops_whole_medicine_topics():
+    xml = SAMPLE_XML.replace("<Focus>Asthma</Focus>", "<Focus>Diabetes Medicines</Focus>")
+    assert parse_document(xml) == []
+
+
 def test_dedupe_and_excerpt():
     records = parse_document(SAMPLE_XML)
     assert len(dedupe(records + records)) == 1

@@ -1078,6 +1078,12 @@ a.nh-button {
 }
 
 /* ---------- Composer ---------- */
+.nh-composer__note {
+  margin-top: var(--nh-space-2);
+  color: var(--nh-ink-muted);
+  font-size: var(--nh-text-xs);
+}
+
 .nh-composer {
   display: flex;
   align-items: flex-end;

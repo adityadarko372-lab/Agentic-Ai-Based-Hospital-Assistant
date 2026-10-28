@@ -1,0 +1,74 @@
+{
+  "selection": "max(correct - 2 x wrong) on set A",
+  "chosen_on_set_A": "rules_first_cautious",
+  "results": {
+    "A": {
+      "rules": {
+        "n": 108,
+        "routed_correct": 40,
+        "routed_wrong": 4,
+        "asked_to_clarify": 64,
+        "correct_rate": 0.37,
+        "utility": 32
+      },
+      "model": {
+        "n": 108,
+        "routed_correct": 92,
+        "routed_wrong": 16,
+        "asked_to_clarify": 0,
+        "correct_rate": 0.852,
+        "utility": 60
+      },
+      "rules_first": {
+        "n": 108,
+        "routed_correct": 92,
+        "routed_wrong": 16,
+        "asked_to_clarify": 0,
+        "correct_rate": 0.852,
+        "utility": 60
+      },
+      "rules_first_cautious": {
+        "n": 108,
+        "routed_correct": 85,
+        "routed_wrong": 9,
+        "asked_to_clarify": 14,
+        "correct_rate": 0.787,
+        "utility": 67
+      }
+    },
+    "B": {
+      "rules": {
+        "n": 60,
+        "routed_correct": 21,
+        "routed_wrong": 3,
+        "asked_to_clarify": 36,
+        "correct_rate": 0.35,
+        "utility": 15
+      },
+      "model": {
+        "n": 60,
+        "routed_correct": 48,
+        "routed_wrong": 11,
+        "asked_to_clarify": 1,
+        "correct_rate": 0.8,
+        "utility": 26
+      },
+      "rules_first": {
+        "n": 60,
+        "routed_correct": 50,
+        "routed_wrong": 10,
+        "asked_to_clarify": 0,
+        "correct_rate": 0.833,
+        "utility": 30
+      },
+      "rules_first_cautious": {
+        "n": 60,
+        "routed_correct": 44,
+        "routed_wrong": 4,
+        "asked_to_clarify": 12,
+        "correct_rate": 0.733,
+        "utility": 36
+      }
+    }
+  }
+}

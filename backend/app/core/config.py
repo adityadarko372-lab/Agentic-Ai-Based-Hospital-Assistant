@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Nova Health"
-    app_version: str = "0.1.0-required-scope"
+    app_version: str = "0.2.0"
     # "demo" makes it explicit that all data is synthetic.
     environment: Literal["demo", "development", "test"] = "demo"
 
@@ -58,11 +58,20 @@ class Settings(BaseSettings):
     llm_phrasing_enabled: bool = False
     front_desk_enabled: bool = False
 
+    # Optional local LLM rewording (LLM_PHRASING_ENABLED). Only local addresses are used.
+    ollama_url: str = "http://127.0.0.1:11434"
+    ollama_model: str = "qwen2.5:3b"
+    llm_timeout_seconds: float = 8.0
+
+    # Optional fine-tuned intent model (built by model/intent_classifier/train.py).
+    intent_model_dir: Path = REPO_ROOT / "model" / "artifacts" / "intent_classifier"
+
     # Optional MedQuAD index (built by model/health_info/build_index.py).
     health_info_index_dir: Path = REPO_ROOT / "model" / "artifacts" / "health_info"
     # Below this cosine similarity the agent says it has no reliable answer.
-    # Chosen on the hand-written evaluation set (model/health_info/evaluate.py).
-    health_info_min_score: float = 0.6
+    # Chosen on the hand-written evaluation set (model/health_info/results.json):
+    # highest off-topic score 0.354, lowest correct match 0.563.
+    health_info_min_score: float = 0.55
 
     @property
     def cors_origin_list(self) -> list[str]:

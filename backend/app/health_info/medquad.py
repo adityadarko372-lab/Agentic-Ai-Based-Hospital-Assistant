@@ -45,6 +45,9 @@ EXCLUDED_QTYPES = frozenset(
     }
 )
 
+# Whole topics about medicines (e.g. "Diabetes Medicines") are dropped too.
+_MEDICINE_TOPIC = re.compile(r"\b(medicines?|medications?|drugs?)\b", re.IGNORECASE)
+
 # Very short answers are usually "See the ... page" stubs.
 MIN_ANSWER_CHARS = 80
 
@@ -81,6 +84,8 @@ def parse_document(xml_text: str) -> list[MedQuADRecord]:
     source = _clean(root.get("source"))
     url = _clean(root.get("url"))
     focus = _clean(root.findtext("Focus"))
+    if _MEDICINE_TOPIC.search(focus):
+        return []
     records: list[MedQuADRecord] = []
     for pair in root.iter("QAPair"):
         question_el = pair.find("Question")

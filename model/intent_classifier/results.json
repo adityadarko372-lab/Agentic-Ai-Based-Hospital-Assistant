@@ -1,0 +1,1368 @@
+{
+  "confidence_threshold": 0.45,
+  "test_sets": {
+    "A": {
+      "file": "model\\intent_classifier\\test_set.json",
+      "rules": {
+        "examples": 108,
+        "accuracy": 0.426,
+        "macro_f1": 0.527,
+        "routed": 44,
+        "routed_correct": 40,
+        "routed_wrong": 4,
+        "asked_to_clarify": 64,
+        "ms_per_message": 0.2,
+        "f1_per_intent": {
+          "greeting": 0.824,
+          "help": 0.333,
+          "hospital_info": 0.737,
+          "department_query": 0.609,
+          "appointment_book": 0.526,
+          "appointment_status": 0.462,
+          "appointment_cancel": 0.462,
+          "symptom_report": 0.667,
+          "health_info": 0.25,
+          "out_of_scope": 0.4
+        },
+        "mistakes": [
+          {
+            "text": "ok bye take care",
+            "expected": "greeting",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "thnx",
+            "expected": "greeting",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "good night",
+            "expected": "greeting",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what all can you help me with",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what can i ask you about",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "are you a bot or a human",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how does this assistant work",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what are you supposed to do",
+            "expected": "help",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "who made you",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "explain your features",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what jobs can you do for me",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "my mother is admitted, when can family visit her",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "is the hospital open on public holidays",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what are the steps to get an appointment",
+            "expected": "hospital_info",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "is there a medical shop inside the hospital",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how early should i reach before my slot",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "who do i see for a twisted ankle",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "where should i take my baby for vaccines",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "which speciality for eye checkup and specs",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "book me in for general medicine day after tomorrow",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.17,
+            "method": "rules"
+          },
+          {
+            "text": "i want to see the ENT specialist",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "appointment chahiye kal ke liye",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "reserve a time with the eye doctor",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "set up a visit with paediatrics on 20 november",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "has the hospital accepted my booking",
+            "expected": "appointment_status",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "did my cardiology request go through",
+            "expected": "appointment_status",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "show everything i have requested so far",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "is my slot confirmed or still pending",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what's happening with my appointment request",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "do i have anything booked",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "check if my request was approved",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "drop my ortho appointment",
+            "expected": "appointment_cancel",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "i want to withdraw the request i made yesterday",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "remove the friday booking",
+            "expected": "appointment_cancel",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "no need for the appointment now, i am better",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "please call off my visit",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "delete my pending request",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "i'd like to take back my booking request",
+            "expected": "appointment_cancel",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "my throat has been scratchy for two days",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "my lower back is killing me after lifting boxes",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "bukhar hai 3 din se",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "my eyes are watering and red",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "my knee swells after walking",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what exactly is thyroid disease",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how do people get dengue",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "can tb spread by coughing",
+            "expected": "health_info",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "why does someone get kidney stones",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "is psoriasis passed from parents to kids",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "explain what glaucoma is",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how to avoid getting malaria",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what is the difference between type 1 and type 2 diabetes",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how serious is hepatitis b",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what happens in a stroke",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "play some music",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "book a flight to delhi",
+            "expected": "out_of_scope",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "what's my bank balance",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "which tablet should i take for headache",
+            "expected": "out_of_scope",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "how much paracetamol is safe for a child",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "do you think i have dengue",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "could this be a stomach ulcer",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "write me a leave application",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "who is the prime minister of india",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          }
+        ]
+      },
+      "model_only": {
+        "examples": 108,
+        "accuracy": 0.852,
+        "macro_f1": 0.858,
+        "routed": 108,
+        "routed_correct": 92,
+        "routed_wrong": 16,
+        "asked_to_clarify": 0,
+        "ms_per_message": 11.2,
+        "f1_per_intent": {
+          "greeting": 0.909,
+          "help": 0.9,
+          "hospital_info": 0.632,
+          "department_query": 0.824,
+          "appointment_book": 0.842,
+          "appointment_status": 0.889,
+          "appointment_cancel": 1.0,
+          "symptom_report": 0.917,
+          "health_info": 1.0,
+          "out_of_scope": 0.667
+        },
+        "mistakes": [
+          {
+            "text": "what jobs can you do for me",
+            "expected": "help",
+            "got": "out_of_scope",
+            "confidence": 0.98,
+            "method": "transformer"
+          },
+          {
+            "text": "my mother is admitted, when can family visit her",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.99,
+            "method": "transformer"
+          },
+          {
+            "text": "which papers do i carry for the first visit",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.92,
+            "method": "transformer"
+          },
+          {
+            "text": "opd timing kya hai",
+            "expected": "hospital_info",
+            "got": "greeting",
+            "confidence": 0.91,
+            "method": "transformer"
+          },
+          {
+            "text": "is there parking for two wheelers",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.98,
+            "method": "transformer"
+          },
+          {
+            "text": "how early should i reach before my slot",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.78,
+            "method": "transformer"
+          },
+          {
+            "text": "what is the full address of nova health",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.7,
+            "method": "transformer"
+          },
+          {
+            "text": "my son has an ear infection, which department",
+            "expected": "department_query",
+            "got": "symptom_report",
+            "confidence": 0.9,
+            "method": "transformer"
+          },
+          {
+            "text": "who do i see for a twisted ankle",
+            "expected": "department_query",
+            "got": "out_of_scope",
+            "confidence": 0.49,
+            "method": "transformer"
+          },
+          {
+            "text": "show me the list of all specialities",
+            "expected": "department_query",
+            "got": "out_of_scope",
+            "confidence": 0.51,
+            "method": "transformer"
+          },
+          {
+            "text": "appointment chahiye kal ke liye",
+            "expected": "appointment_book",
+            "got": "greeting",
+            "confidence": 0.97,
+            "method": "transformer"
+          },
+          {
+            "text": "could you arrange a doctor appointment for my father",
+            "expected": "appointment_book",
+            "got": "out_of_scope",
+            "confidence": 0.65,
+            "method": "transformer"
+          },
+          {
+            "text": "show everything i have requested so far",
+            "expected": "appointment_status",
+            "got": "help",
+            "confidence": 0.59,
+            "method": "transformer"
+          },
+          {
+            "text": "do i have anything booked",
+            "expected": "appointment_status",
+            "got": "hospital_info",
+            "confidence": 0.85,
+            "method": "transformer"
+          },
+          {
+            "text": "bukhar hai 3 din se",
+            "expected": "symptom_report",
+            "got": "out_of_scope",
+            "confidence": 0.6,
+            "method": "transformer"
+          },
+          {
+            "text": "book a flight to delhi",
+            "expected": "out_of_scope",
+            "got": "appointment_book",
+            "confidence": 0.58,
+            "method": "transformer"
+          }
+        ]
+      },
+      "hybrid": {
+        "examples": 108,
+        "accuracy": 0.787,
+        "macro_f1": 0.829,
+        "routed": 94,
+        "routed_correct": 85,
+        "routed_wrong": 9,
+        "asked_to_clarify": 14,
+        "ms_per_message": 6.3,
+        "f1_per_intent": {
+          "greeting": 0.909,
+          "help": 0.842,
+          "hospital_info": 0.762,
+          "department_query": 0.889,
+          "appointment_book": 0.842,
+          "appointment_status": 0.889,
+          "appointment_cancel": 1.0,
+          "symptom_report": 0.88,
+          "health_info": 0.88,
+          "out_of_scope": 0.4
+        },
+        "mistakes": [
+          {
+            "text": "what are you supposed to do",
+            "expected": "help",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "what jobs can you do for me",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "my mother is admitted, when can family visit her",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "opd timing kya hai",
+            "expected": "hospital_info",
+            "got": "greeting",
+            "confidence": 0.91,
+            "method": "transformer"
+          },
+          {
+            "text": "what are the steps to get an appointment",
+            "expected": "hospital_info",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "how early should i reach before my slot",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "who do i see for a twisted ankle",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "show me the list of all specialities",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "appointment chahiye kal ke liye",
+            "expected": "appointment_book",
+            "got": "greeting",
+            "confidence": 0.97,
+            "method": "transformer"
+          },
+          {
+            "text": "could you arrange a doctor appointment for my father",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "show everything i have requested so far",
+            "expected": "appointment_status",
+            "got": "help",
+            "confidence": 0.59,
+            "method": "transformer"
+          },
+          {
+            "text": "do i have anything booked",
+            "expected": "appointment_status",
+            "got": "hospital_info",
+            "confidence": 0.85,
+            "method": "transformer"
+          },
+          {
+            "text": "bukhar hai 3 din se",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "can tb spread by coughing",
+            "expected": "health_info",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "play some music",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "book a flight to delhi",
+            "expected": "out_of_scope",
+            "got": "appointment_book",
+            "confidence": 0.58,
+            "method": "transformer"
+          },
+          {
+            "text": "what's my bank balance",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "which tablet should i take for headache",
+            "expected": "out_of_scope",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "how much paracetamol is safe for a child",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "do you think i have dengue",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "could this be a stomach ulcer",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "write me a leave application",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "who is the prime minister of india",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          }
+        ]
+      }
+    },
+    "B": {
+      "file": "model\\intent_classifier\\test_set_b.json",
+      "rules": {
+        "examples": 60,
+        "accuracy": 0.383,
+        "macro_f1": 0.46,
+        "routed": 24,
+        "routed_correct": 21,
+        "routed_wrong": 3,
+        "asked_to_clarify": 36,
+        "ms_per_message": 0.2,
+        "f1_per_intent": {
+          "greeting": 0.889,
+          "help": 0.0,
+          "hospital_info": 0.545,
+          "department_query": 0.571,
+          "appointment_book": 0.0,
+          "appointment_status": 0.571,
+          "appointment_cancel": 0.571,
+          "symptom_report": 0.727,
+          "health_info": 0.727,
+          "out_of_scope": 0.0
+        },
+        "mistakes": [
+          {
+            "text": "cheers, that's all",
+            "expected": "greeting",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what sort of things can you answer",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "can you tell me what you're capable of",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "is this an automated assistant",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what's your name",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how am i supposed to use this chat",
+            "expected": "help",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "are visitors allowed in the evening",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "where exactly is the hospital located",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "do you have a cafeteria for relatives",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how do i go about booking a consultation",
+            "expected": "hospital_info",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "is mediclaim accepted here",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "where do i go for a broken wrist",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "who handles hearing problems here",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "i'd like an appointment with a skin doctor on monday",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.17,
+            "method": "rules"
+          },
+          {
+            "text": "book cardiology for 15 december please",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.17,
+            "method": "rules"
+          },
+          {
+            "text": "can i schedule a check-up for my wife",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "please get me a doctor visit this week",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "i need to consult an orthopaedic surgeon",
+            "expected": "appointment_book",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "what requests have i made",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "has anyone reviewed my appointment",
+            "expected": "appointment_status",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "is my dermatology appointment still pending",
+            "expected": "appointment_status",
+            "got": "department_query",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "please scrap my booking for tuesday",
+            "expected": "appointment_cancel",
+            "got": "appointment_book",
+            "confidence": 0.33,
+            "method": "rules"
+          },
+          {
+            "text": "undo my appointment request",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "i don't want the slot anymore",
+            "expected": "appointment_cancel",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "my stomach has been upset since yesterday",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "i get headaches every evening this week",
+            "expected": "symptom_report",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how does hepatitis a spread",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "can high blood pressure be prevented",
+            "expected": "health_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "set an alarm for 6 am",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "translate hello into french",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what's the score in the ipl match",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "how much ibuprofen can i take",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "tell me which antibiotic cures a sore throat",
+            "expected": "out_of_scope",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "am i having a migraine or something worse",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "order a pizza for me",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "rules"
+          },
+          {
+            "text": "what is the population of india",
+            "expected": "out_of_scope",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "rules"
+          },
+          {
+            "text": "help me write an email to my boss",
+            "expected": "out_of_scope",
+            "got": "help",
+            "confidence": 1.0,
+            "method": "rules"
+          }
+        ]
+      },
+      "model_only": {
+        "examples": 60,
+        "accuracy": 0.8,
+        "macro_f1": 0.815,
+        "routed": 59,
+        "routed_correct": 48,
+        "routed_wrong": 11,
+        "asked_to_clarify": 1,
+        "ms_per_message": 10.7,
+        "f1_per_intent": {
+          "greeting": 0.889,
+          "help": 0.769,
+          "hospital_info": 0.667,
+          "department_query": 0.667,
+          "appointment_book": 0.75,
+          "appointment_status": 0.889,
+          "appointment_cancel": 1.0,
+          "symptom_report": 0.923,
+          "health_info": 0.909,
+          "out_of_scope": 0.692
+        },
+        "mistakes": [
+          {
+            "text": "hi, is anyone available",
+            "expected": "greeting",
+            "got": "help",
+            "confidence": 0.97,
+            "method": "transformer"
+          },
+          {
+            "text": "are visitors allowed in the evening",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.98,
+            "method": "transformer"
+          },
+          {
+            "text": "what id proof should i carry",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.48,
+            "method": "transformer"
+          },
+          {
+            "text": "do you have a cafeteria for relatives",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.93,
+            "method": "transformer"
+          },
+          {
+            "text": "is mediclaim accepted here",
+            "expected": "hospital_info",
+            "got": "out_of_scope",
+            "confidence": 0.59,
+            "method": "transformer"
+          },
+          {
+            "text": "who handles hearing problems here",
+            "expected": "department_query",
+            "got": "out_of_scope",
+            "confidence": 0.83,
+            "method": "transformer"
+          },
+          {
+            "text": "do you have a paediatrics department",
+            "expected": "department_query",
+            "got": "help",
+            "confidence": 0.39,
+            "method": "transformer"
+          },
+          {
+            "text": "my grandmother has blurry vision, which doctor",
+            "expected": "department_query",
+            "got": "symptom_report",
+            "confidence": 0.98,
+            "method": "transformer"
+          },
+          {
+            "text": "book cardiology for 15 december please",
+            "expected": "appointment_book",
+            "got": "out_of_scope",
+            "confidence": 0.97,
+            "method": "transformer"
+          },
+          {
+            "text": "can i schedule a check-up for my wife",
+            "expected": "appointment_book",
+            "got": "out_of_scope",
+            "confidence": 0.99,
+            "method": "transformer"
+          },
+          {
+            "text": "what requests have i made",
+            "expected": "appointment_status",
+            "got": "help",
+            "confidence": 0.68,
+            "method": "transformer"
+          },
+          {
+            "text": "what is chikungunya",
+            "expected": "health_info",
+            "got": "out_of_scope",
+            "confidence": 0.74,
+            "method": "transformer"
+          }
+        ]
+      },
+      "hybrid": {
+        "examples": 60,
+        "accuracy": 0.733,
+        "macro_f1": 0.8,
+        "routed": 48,
+        "routed_correct": 44,
+        "routed_wrong": 4,
+        "asked_to_clarify": 12,
+        "ms_per_message": 6.5,
+        "f1_per_intent": {
+          "greeting": 1.0,
+          "help": 0.833,
+          "hospital_info": 0.769,
+          "department_query": 0.909,
+          "appointment_book": 0.75,
+          "appointment_status": 0.889,
+          "appointment_cancel": 1.0,
+          "symptom_report": 0.923,
+          "health_info": 0.923,
+          "out_of_scope": 0.0
+        },
+        "mistakes": [
+          {
+            "text": "are visitors allowed in the evening",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "do you have a cafeteria for relatives",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "is mediclaim accepted here",
+            "expected": "hospital_info",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "who handles hearing problems here",
+            "expected": "department_query",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "book cardiology for 15 december please",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "can i schedule a check-up for my wife",
+            "expected": "appointment_book",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "what requests have i made",
+            "expected": "appointment_status",
+            "got": "help",
+            "confidence": 0.68,
+            "method": "transformer"
+          },
+          {
+            "text": "set an alarm for 6 am",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "translate hello into french",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "what's the score in the ipl match",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "how much ibuprofen can i take",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "tell me which antibiotic cures a sore throat",
+            "expected": "out_of_scope",
+            "got": "symptom_report",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "am i having a migraine or something worse",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "order a pizza for me",
+            "expected": "out_of_scope",
+            "got": "unknown",
+            "confidence": 0.0,
+            "method": "hybrid_clarify"
+          },
+          {
+            "text": "what is the population of india",
+            "expected": "out_of_scope",
+            "got": "health_info",
+            "confidence": 0.67,
+            "method": "hybrid_rules"
+          },
+          {
+            "text": "help me write an email to my boss",
+            "expected": "out_of_scope",
+            "got": "help",
+            "confidence": 1.0,
+            "method": "hybrid_rules"
+          }
+        ]
+      }
+    }
+  },
+  "training": {
+    "base_model": "distilbert-base-uncased",
+    "train_examples": 3443,
+    "val_examples": 383,
+    "epochs": 4,
+    "batch_size": 32,
+    "learning_rate": 5e-05,
+    "fp16": true,
+    "class_weighted_loss": true,
+    "train_label_counts": {
+      "greeting": 381,
+      "help": 466,
+      "hospital_info": 119,
+      "department_query": 407,
+      "appointment_book": 400,
+      "appointment_status": 67,
+      "appointment_cancel": 88,
+      "symptom_report": 407,
+      "health_info": 414,
+      "out_of_scope": 694
+    },
+    "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "seconds": 28.3,
+    "best_val_macro_f1": 1.0,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.236,
+        "val_accuracy": 0.9556,
+        "val_macro_f1": 0.9621
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.0856,
+        "val_accuracy": 0.9869,
+        "val_macro_f1": 0.9898
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.0266,
+        "val_accuracy": 0.9948,
+        "val_macro_f1": 0.9958
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.0117,
+        "val_accuracy": 1.0,
+        "val_macro_f1": 1.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "model": "qwen2.5:3b",
+    "questions": 10,
+    "reworded": 8,
+    "rejected_by_guard": 2,
+    "ollama_unavailable": 0,
+    "median_seconds": 0.61,
+    "max_seconds": 0.89
+  },
+  "rows": [
+    {
+      "question": "What should I bring to my appointment?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Here's what you need to bring for your appointment at Nova Health. Please arrive 15 minutes early to get registered at the Main Reception.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "Here is what to bring to your appointment at Nova Health. Please arrive 15 minutes early to complete registration at the Main Reception.",
+      "rejected_rewrite": null,
+      "seconds": 0.87
+    },
+    {
+      "question": "What are the visiting hours?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Visiting hours are daily from 4:00 PM to 7:00 PM. Each patient has one visitor at a time. Please check with the ward staff as rules might be different for intensive care areas.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "Visiting hours: Daily, 4:00 PM to 7:00 PM (one visitor per patient at a time). Please check with the ward staff, as rules can differ for intensive care.",
+      "rejected_rewrite": null,
+      "seconds": 0.61
+    },
+    {
+      "question": "How do I book an appointment?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Hello! You can request an appointment either through the Appointments page or right here in this chat. Either way, your request is saved as Pending until the hospital reviews it.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "You can request an appointment in two ways: through the Appointments page, or right here in this chat. Either way, the request is saved as Pending until the hospital reviews it.",
+      "rejected_rewrite": null,
+      "seconds": 0.5
+    },
+    {
+      "question": "Where is the help desk?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000). They can help with registration, directions, and any questions I can't answer. Outpatient (OPD) hours are Monday to Saturday, 9:00 AM to 5:00 PM.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000). Staff there can help with registration, directions and questions I cannot answer. Outpatient (OPD) hours: Monday to Saturday, 9:00 AM to 5:00 PM.",
+      "rejected_rewrite": null,
+      "seconds": 0.72
+    },
+    {
+      "question": "What are the OPD timings?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Outpatient (OPD) hours are Monday to Saturday, 9:00 AM to 5:00 PM. The Emergency Department is open 24 hours, all days. Individual departments may differ; ask me about a department for its exact timings.",
+      "outcome": "fallback",
+      "detail": "Kept the template: rewrite rejected, added numbers not in the original (7)",
+      "template": null,
+      "rejected_rewrite": "OPD hours are Monday to Saturday from 9 AM to 5 PM. The Emergency Department is open 24/7. Ask me about a department for its specific timings.",
+      "seconds": 0.42
+    },
+    {
+      "question": "Where can I find hospital services?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Here’s where you can find all the departments and services at Nova Health Multi-Speciality Hospital. The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000).",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "Here are the departments and services at Nova Health Multi-Speciality Hospital with where to find them. The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000).",
+      "rejected_rewrite": null,
+      "seconds": 0.51
+    },
+    {
+      "question": "Which department should I visit for a consultation?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "If you're unsure where to go, start with General Medicine. They're the first point of contact for most concerns and can refer you to a specialist. It's at Block A, Ground Floor (Monday to Saturday, 9:00 AM – 5:00 PM). Tell me your concern (like \"knee pain\" or \"skin rash\") and I can guide you to the right department.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "If you are not sure where to go, start with General Medicine. It is the first point of contact for most concerns and can refer you to a specialist. It is at Block A, Ground Floor (Mon–Sat, 9:00 AM – 5:00 PM). Tell me your concern (for example “knee pain” or “skin rash”) and I can point you to a department.",
+      "rejected_rewrite": null,
+      "seconds": 0.89
+    },
+    {
+      "question": "Where is cardiology?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Cardiology is at Block B, First Floor. They're open from 9 AM to 4 PM on Monday to Saturday, you can reach them at Ext. 2201.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "Cardiology is at Block B, First Floor. Hours: Mon–Sat, 9:00 AM – 4:00 PM (Ext. 2201).",
+      "rejected_rewrite": null,
+      "seconds": 0.48
+    },
+    {
+      "question": "Is there parking?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000). They can help with registration, directions, and any questions I might have. Outpatient (OPD) hours are Monday to Saturday, 9:00 AM to 5:00 PM.",
+      "outcome": "ok",
+      "detail": "Reworded by local model qwen2.5:3b; facts unchanged (no new numbers or medical terms)",
+      "template": "The help desk is at the Main Reception, Block A, Ground Floor (Ext. 1000). Staff there can help with registration, directions and questions I cannot answer. Outpatient (OPD) hours: Monday to Saturday, 9:00 AM to 5:00 PM.",
+      "rejected_rewrite": null,
+      "seconds": 0.71
+    },
+    {
+      "question": "What are the timings of the laboratory?",
+      "agent": "Patient Assistance Agent",
+      "reply_shown": "Laboratory & Diagnostics is at Block A, Ground Floor (near Main Reception). Hours: Mon–Sat, 7:00 AM – 7:00 PM (Ext. 3101). No appointment is needed here.",
+      "outcome": "fallback",
+      "detail": "Kept the template: rewrite rejected, dropped numbers from the original (3101)",
+      "template": null,
+      "rejected_rewrite": "Laboratory & Diagnostics is right next to the Main Reception, on the ground floor of Block A. They're open from 7:00 AM to 7:00 PM on Mondays to Saturdays. No appointment needed here!",
+      "seconds": 0.58
+    }
+  ]
+}

@@ -1,0 +1,457 @@
+{
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "index_records": 16108,
+  "answerable_queries": 50,
+  "skipped_queries_topic_not_in_index": [],
+  "recall_at_1": 0.92,
+  "recall_at_3": 0.98,
+  "mrr_at_10": 0.947,
+  "threshold_sweep": [
+    {
+      "threshold": 0.4,
+      "answerable_answered_correctly": "46/50",
+      "answerable_answered_with_wrong_topic": 4,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.45,
+      "answerable_answered_correctly": "46/50",
+      "answerable_answered_with_wrong_topic": 4,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.5,
+      "answerable_answered_correctly": "46/50",
+      "answerable_answered_with_wrong_topic": 4,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.55,
+      "answerable_answered_correctly": "46/50",
+      "answerable_answered_with_wrong_topic": 3,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.6,
+      "answerable_answered_correctly": "44/50",
+      "answerable_answered_with_wrong_topic": 3,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.65,
+      "answerable_answered_correctly": "44/50",
+      "answerable_answered_with_wrong_topic": 2,
+      "off_topic_wrongly_answered": "0/20"
+    },
+    {
+      "threshold": 0.7,
+      "answerable_answered_correctly": "40/50",
+      "answerable_answered_with_wrong_topic": 2,
+      "off_topic_wrongly_answered": "0/20"
+    }
+  ],
+  "per_query": [
+    {
+      "query": "What is asthma?",
+      "top": "Asthma",
+      "score": 0.97,
+      "rank": 1
+    },
+    {
+      "query": "what are the signs of asthma in kids",
+      "top": "Asthma",
+      "score": 0.815,
+      "rank": 1
+    },
+    {
+      "query": "how does someone get malaria",
+      "top": "Malaria",
+      "score": 0.778,
+      "rank": 1
+    },
+    {
+      "query": "is tuberculosis contagious",
+      "top": "Tuberculosis",
+      "score": 0.665,
+      "rank": 1
+    },
+    {
+      "query": "what is glaucoma",
+      "top": "Glaucoma",
+      "score": 0.943,
+      "rank": 1
+    },
+    {
+      "query": "what causes high blood pressure",
+      "top": "High Blood Pressure",
+      "score": 0.908,
+      "rank": 1
+    },
+    {
+      "query": "how is dengue spread",
+      "top": "Dengue",
+      "score": 0.709,
+      "rank": 1
+    },
+    {
+      "query": "what are the symptoms of anemia",
+      "top": "Anemia",
+      "score": 0.936,
+      "rank": 1
+    },
+    {
+      "query": "why do kidney stones form",
+      "top": "Kidney Stones",
+      "score": 0.762,
+      "rank": 1
+    },
+    {
+      "query": "how can I prevent osteoporosis",
+      "top": "Osteoporosis",
+      "score": 0.96,
+      "rank": 1
+    },
+    {
+      "query": "what triggers a migraine",
+      "top": "Migraine",
+      "score": 0.743,
+      "rank": 1
+    },
+    {
+      "query": "what is psoriasis",
+      "top": "Psoriasis",
+      "score": 0.936,
+      "rank": 1
+    },
+    {
+      "query": "how do people catch hepatitis B",
+      "top": "Hepatitis B",
+      "score": 0.681,
+      "rank": 1
+    },
+    {
+      "query": "what is a cataract in the eye",
+      "top": "Cataract",
+      "score": 0.882,
+      "rank": 1
+    },
+    {
+      "query": "what are the warning signs of a stroke",
+      "top": "Stroke",
+      "score": 0.802,
+      "rank": 1
+    },
+    {
+      "query": "what is gout",
+      "top": "Gout",
+      "score": 0.925,
+      "rank": 1
+    },
+    {
+      "query": "what is celiac disease",
+      "top": "Celiac Disease",
+      "score": 0.927,
+      "rank": 1
+    },
+    {
+      "query": "early signs of alzheimer's",
+      "top": "Alzheimer's Disease",
+      "score": 0.815,
+      "rank": 1
+    },
+    {
+      "query": "what is parkinson's disease",
+      "top": "Parkinson disease",
+      "score": 0.914,
+      "rank": 3
+    },
+    {
+      "query": "how does flu spread",
+      "top": "Flu",
+      "score": 0.656,
+      "rank": 1
+    },
+    {
+      "query": "what is pneumonia",
+      "top": "Pneumonia",
+      "score": 0.958,
+      "rank": 1
+    },
+    {
+      "query": "risk factors for breast cancer",
+      "top": "Breast Cancer",
+      "score": 0.79,
+      "rank": 1
+    },
+    {
+      "query": "does smoking cause lung cancer",
+      "top": "Lung Cancer",
+      "score": 0.818,
+      "rank": 1
+    },
+    {
+      "query": "what are the symptoms of a heart attack in women",
+      "top": "Heart Disease in Women",
+      "score": 0.824,
+      "rank": 2
+    },
+    {
+      "query": "what is heart failure",
+      "top": "Heart Failure",
+      "score": 0.939,
+      "rank": 1
+    },
+    {
+      "query": "is sickle cell disease inherited",
+      "top": "sickle cell disease",
+      "score": 0.977,
+      "rank": 1
+    },
+    {
+      "query": "what is an underactive thyroid",
+      "top": "Thyroid Diseases",
+      "score": 0.5,
+      "rank": 3
+    },
+    {
+      "query": "what is epilepsy",
+      "top": "Epilepsy",
+      "score": 0.916,
+      "rank": 1
+    },
+    {
+      "query": "what is shingles",
+      "top": "Shingles",
+      "score": 0.926,
+      "rank": 1
+    },
+    {
+      "query": "how is chickenpox spread",
+      "top": "Chickenpox",
+      "score": 0.707,
+      "rank": 1
+    },
+    {
+      "query": "what is typhoid",
+      "top": "Typhoid Fever",
+      "score": 0.597,
+      "rank": 1
+    },
+    {
+      "query": "how do you get cholera",
+      "top": "Cholera",
+      "score": 0.801,
+      "rank": 1
+    },
+    {
+      "query": "what are the symptoms of measles",
+      "top": "Measles",
+      "score": 0.68,
+      "rank": 1
+    },
+    {
+      "query": "can a dog bite give you rabies",
+      "top": "Rabies",
+      "score": 0.757,
+      "rank": 1
+    },
+    {
+      "query": "what causes acne",
+      "top": "Acne",
+      "score": 0.764,
+      "rank": 1
+    },
+    {
+      "query": "what is eczema",
+      "top": "Eczema",
+      "score": 0.939,
+      "rank": 1
+    },
+    {
+      "query": "why can't I sleep at night insomnia",
+      "top": "Insomnia",
+      "score": 0.761,
+      "rank": 1
+    },
+    {
+      "query": "what causes constipation",
+      "top": "Constipation",
+      "score": 0.741,
+      "rank": 1
+    },
+    {
+      "query": "what is acid reflux disease",
+      "top": "Vesicoureteral Reflux",
+      "score": 0.627,
+      "rank": 5
+    },
+    {
+      "query": "what is lactose intolerance",
+      "top": "Lactose Intolerance",
+      "score": 0.938,
+      "rank": 1
+    },
+    {
+      "query": "what are gallstones",
+      "top": "Gallstones",
+      "score": 0.938,
+      "rank": 1
+    },
+    {
+      "query": "what is cirrhosis of the liver",
+      "top": "Cirrhosis",
+      "score": 0.869,
+      "rank": 1
+    },
+    {
+      "query": "what is lupus",
+      "top": "Lupus",
+      "score": 0.916,
+      "rank": 1
+    },
+    {
+      "query": "what causes dry eyes",
+      "top": "Dry Eye",
+      "score": 0.919,
+      "rank": 1
+    },
+    {
+      "query": "what is sinusitis",
+      "top": "Sinusitis",
+      "score": 0.934,
+      "rank": 1
+    },
+    {
+      "query": "ringing in the ears causes",
+      "top": "Tinnitus",
+      "score": 0.563,
+      "rank": 1
+    },
+    {
+      "query": "what are varicose veins",
+      "top": "Varicose Veins",
+      "score": 0.935,
+      "rank": 1
+    },
+    {
+      "query": "what is type 2 diabetes",
+      "top": "Diabetes Type 2",
+      "score": 0.912,
+      "rank": 1
+    },
+    {
+      "query": "what is leukemia",
+      "top": "Leukemia",
+      "score": 0.953,
+      "rank": 1
+    },
+    {
+      "query": "what are hives",
+      "top": "Hives",
+      "score": 0.935,
+      "rank": 1
+    }
+  ],
+  "off_topic": [
+    {
+      "query": "what is the capital of france",
+      "top": "Paris-Trousseau thrombocytopenia",
+      "score": 0.228
+    },
+    {
+      "query": "who won the cricket match yesterday",
+      "top": "Batten Disease",
+      "score": 0.154
+    },
+    {
+      "query": "how do I cook biryani",
+      "top": "Diverticular Disease",
+      "score": 0.282
+    },
+    {
+      "query": "what is quantum chromodynamics",
+      "top": "Prothrombin thrombophilia",
+      "score": 0.328
+    },
+    {
+      "query": "what is the best mobile phone under 20000",
+      "top": "Oto-palato-digital syndrome type 1",
+      "score": 0.181
+    },
+    {
+      "query": "tell me about the history of the mughal empire",
+      "top": "Family History",
+      "score": 0.315
+    },
+    {
+      "query": "what is machine learning",
+      "top": "Learning Disabilities",
+      "score": 0.293
+    },
+    {
+      "query": "how do I fix a flat bicycle tyre",
+      "top": "Michelin tire baby syndrome",
+      "score": 0.346
+    },
+    {
+      "query": "what is the weather in pune",
+      "top": "Sun Exposure",
+      "score": 0.243
+    },
+    {
+      "query": "explain the rules of chess",
+      "top": "What I need to know about Hepatitis B",
+      "score": 0.246
+    },
+    {
+      "query": "what is a black hole",
+      "top": "Holes in the Heart",
+      "score": 0.354
+    },
+    {
+      "query": "how do I open a bank account",
+      "top": "Financial Help for Diabetes Care",
+      "score": 0.318
+    },
+    {
+      "query": "what is the price of gold today",
+      "top": "Goldenhar disease",
+      "score": 0.284
+    },
+    {
+      "query": "tell me about bollywood movies",
+      "top": "Urachal cancer",
+      "score": 0.248
+    },
+    {
+      "query": "what is the meaning of life",
+      "top": "Suicide",
+      "score": 0.298
+    },
+    {
+      "query": "how do I learn guitar",
+      "top": "Celiac Disease",
+      "score": 0.234
+    },
+    {
+      "query": "what is photosynthesis",
+      "top": "Porphyria",
+      "score": 0.343
+    },
+    {
+      "query": "what time does the train to mumbai leave",
+      "top": "Batten Disease",
+      "score": 0.159
+    },
+    {
+      "query": "what is javascript",
+      "top": "Jaundice",
+      "score": 0.281
+    },
+    {
+      "query": "how do aeroplanes fly",
+      "top": "Air Pollution",
+      "score": 0.214
+    }
+  ]
+}

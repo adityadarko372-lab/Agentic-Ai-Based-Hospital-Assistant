@@ -1,13 +1,13 @@
 # Optional Phase 5 enhancements. NOT needed for the required demo.
 #
 # Install PyTorch with CUDA first (RTX 4060, CUDA 12.8 wheels), otherwise pip
-# pulls the CPU-only build:
+# pulls the CPU-only build (tested: torch 2.11.0+cu128):
 #   .venv\Scripts\python.exe -m pip install torch --index-url https://download.pytorch.org/whl/cu128
 # Then:
 #   .venv\Scripts\python.exe -m pip install -r requirements-optional.txt
 #
 # MedQuAD health information (HEALTH_INFO_ENABLED) and the trained intent
-# classifier (INTENT_CLASSIFIER=transformer):
-sentence-transformers
-transformers
-numpy
+# classifier (INTENT_CLASSIFIER=transformer). Versions tested in Phase 5:
+sentence-transformers==6.2.0
+transformers==5.21.0
+numpy==2.5.4

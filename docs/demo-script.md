@@ -73,9 +73,23 @@ Point to the **Agent activity** panel: the Safety Gate check, **Intent detection
 | *What medicine should I take for fever?* | Declines to prescribe and offers navigation instead |
 | Sign out, then sign in as `rohan.mehta@novahealth.demo` | Asha's requests and history are not visible |
 
+## Optional Phase 5 extras
+
+These need the switches in `.env` (see `docs/setup.md`, "Optional Phase 5 features"). The dashboard's **System status** card lists which ones are on. The required demo above works the same with all of them off.
+
+| Try | Needs | Shows |
+|---|---|---|
+| Pick **Bhavish Keni** (or Aditya Singh, Aaryan Naik) in the demo-account picker, submit a request; sign out; pick **Meera Desai · Front desk staff**, confirm it with a note; sign back in as the patient | `FRONT_DESK_ENABLED=true` | Human-in-the-loop: only staff can confirm; the patient sees **Confirmed**, who reviewed it, and the note |
+| Ask *What is glaucoma?* | `HEALTH_INFO_ENABLED=true` + index | A cited NIH passage labelled "General information", with the match score and the source link |
+| Ask *What is quantum chromodynamics?* | same | "I won't guess": no passage below the similarity threshold |
+| Ask *Do I have diabetes?* | any | Still refused: the trained parts never answer diagnosis or medicine questions |
+| Ask *where do i pick up my lab reports* | `INTENT_CLASSIFIER=transformer` | The trained model routes a question the rules could not; the activity panel shows `method: transformer` and the model's top three scores |
+| Ask *What should I bring to my appointment?* | `LLM_PHRASING_ENABLED=true` + Ollama | The reply sentence is reworded by the local model; the trace shows the original, and the checklist card is unchanged |
+| Press the microphone and speak | Chrome or Edge | The words appear in the box for checking; nothing is sent until you press Send |
+
 ## Likely examiner questions
 
-- **Is this real AI?** The agents are real, separate program components with clear responsibilities, coordinated by a Supervisory Agent. Routing uses transparent, weighted rules, so every decision can be explained, which matters in healthcare. A trained classifier can be plugged in through the same interface later (optional Phase 5).
+- **Is this real AI?** The agents are real, separate program components with clear responsibilities, coordinated by a Supervisory Agent. By default, routing uses transparent, weighted rules, so every decision can be explained, which matters in healthcare. In Phase 5 a DistilBERT classifier was fine-tuned on the laptop's RTX 4060 and can be switched on; on hand-written test messages it routed far more messages correctly than the rules (numbers in `docs/phase-reports/phase-5-optional-enhancements.md`), so it is used together with the rules, not instead of them.
 - **Can it diagnose?** No, deliberately. It only suggests how soon and where to seek care, and warning signs always go to emergency guidance.
 - **Is an appointment booked?** No. It is a request saved as Pending. Only the hospital could confirm it.
 - **What if the backend is down?** The top bar shows *Backend offline*, and the chat says the message was not processed. It never pretends.

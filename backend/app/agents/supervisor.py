@@ -37,6 +37,7 @@ from app.agents.base import (
     Trace,
 )
 from app.agents.intent import IntentPrediction, get_intent_classifier
+from app.agents.phrasing import maybe_rephrase
 from app.agents.safety_gate import check_message
 from app.agents.text import normalise
 from app.core.clock import today_in_india, utc_now
@@ -298,7 +299,15 @@ def handle_message(session: Session, user: User, message: str, conversation_id: 
                 ctx.state = state
 
     # 5. Compose and record.
-    trace.add(SUPERVISOR, "compose_reply", "Reply built from fixed templates (optional AI phrasing is off)")
+    reworded = maybe_rephrase(result, trace)
+    trace.add(
+        SUPERVISOR,
+        "compose_reply",
+        "Reply sentence reworded by the local model; cards and facts from fixed templates"
+        if reworded
+        else "Reply built from fixed templates"
+        + ("" if get_settings().llm_phrasing_enabled else " (optional AI phrasing is off)"),
+    )
     if keep_pending and result.pending_task is None:
         conversation.pending_task, conversation.state_json = pending, json.dumps(state)
     else:

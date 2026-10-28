@@ -12,9 +12,9 @@ Nova Health (earlier called "Hospivanta" in the project documents) is a final-ye
 | 2 | Demo login, SQLite, dashboard, appointment requests | ✅ Done |
 | 3 | Supervisory Agent, 3 specialist agents, chat, activity panel | ✅ Done |
 | 4 | Symptom guidance, end-to-end demo, `v0.1-required-scope` | ✅ Done (tag `v0.1-required-scope`) |
-| 5 | Optional enhancements (front desk, MedQuAD, trained classifier, Ollama) | Optional |
+| 5 | Optional enhancements: front desk, MedQuAD health info, trained classifier, Ollama rewording, voice input, new demo accounts | ✅ Done (tag `v0.2`) |
 
-All five required modules and the 6-step demonstration sequence from `partial implementation.md` are working.
+All five required modules and the 6-step demonstration sequence from `partial implementation.md` are working. The Phase 5 features are optional, off by default, and each falls back safely when it is switched off or not installed.
 
 | Document | Purpose |
 |---|---|
@@ -24,19 +24,40 @@ All five required modules and the 6-step demonstration sequence from `partial im
 | [`docs/first report.md`](docs/first%20report.md) | The approved plan |
 | [`docs/phase-reports/`](docs/phase-reports/) | One report per phase, with real test results |
 
-## Demo account
+## Demo accounts
 
-| Email | Password | Who |
+Every account uses the password **`NovaDemo@2026`**. The login page has a **Demo account** picker and a **Fill in** button.
+
+| Email | Name | Role |
 |---|---|---|
-| `patient@novahealth.demo` | `NovaDemo@2026` | Asha Verma (fictional demo patient) |
+| `patient@novahealth.demo` | Asha Verma | Patient (main demo account) |
+| `aditya.singh@novahealth.demo` | Aditya Singh | Patient |
+| `aaryan.naik@novahealth.demo` | Aaryan Naik | Patient |
+| `bhavish.keni@novahealth.demo` | Bhavish Keni | Patient |
+| `rohan.mehta@novahealth.demo` | Rohan Mehta | Patient |
+| `kavya.iyer@novahealth.demo` | Kavya Iyer | Patient |
+| `frontdesk@novahealth.demo` | Meera Desai | Front-desk staff (needs `FRONT_DESK_ENABLED=true`) |
 
-Two more fictional patients (`rohan.mehta@novahealth.demo`, `kavya.iyer@novahealth.demo`) use the same password. They are used to test that patients cannot see each other's data. The login page has a **Fill in** button for the main demo account.
+These are demo logins with synthetic data only. Patients can never see each other's requests or history.
+
+## Optional Phase 5 features
+
+| Feature | Switch in `.env` | What it does |
+|---|---|---|
+| Front-desk review | `FRONT_DESK_ENABLED=true` | Staff confirm or decline Pending requests (once, with a note); the patient sees the result |
+| Health information | `HEALTH_INFO_ENABLED=true` | Cited general information from NIH MedQuAD (16,108 Q&A pairs), shown only above a similarity threshold |
+| Trained intent classifier | `INTENT_CLASSIFIER=transformer` | DistilBERT fine-tuned on the RTX 4060, combined with the rules |
+| AI rewording | `LLM_PHRASING_ENABLED=true` | Local Ollama (qwen2.5:3b) rewords hospital-information replies; a guard rejects any change to numbers or medical wording |
+| Voice input | none | Microphone button in Chrome / Edge (Web Speech API, en-IN) |
+
+Setup steps are in [`docs/setup.md`](docs/setup.md#optional-phase-5-features); measured results are in [`docs/phase-reports/phase-5-optional-enhancements.md`](docs/phase-reports/phase-5-optional-enhancements.md).
 
 ## Tech stack
 
 - **Frontend:** React 19, Vite 8, TypeScript 7, React Router 7, Framer Motion, and a hand-built neumorphic CSS design system with locally bundled Inter and Fraunces fonts.
 - **Backend:** Python 3.13, FastAPI, SQLModel on SQLite, bcrypt password hashing and signed (JWT) session tokens.
-- **Agents:** plain Python modules (no agent framework, no AI API, no model download). Intent routing uses an explainable rule classifier behind a swappable `IntentClassifier` interface.
+- **Agents:** plain Python modules (no agent framework, no cloud AI API). By default, intent routing uses an explainable rule classifier behind a swappable `IntentClassifier` interface.
+- **Optional (Phase 5):** PyTorch 2.11 (CUDA 12.8), Hugging Face Transformers and Sentence Transformers, Ollama. All run locally.
 - **Tests:** pytest for the backend, Vitest with Testing Library for the frontend, Playwright browser tests (using the Edge browser already installed on Windows).
 
 ## Prerequisites
@@ -86,17 +107,21 @@ To stop the app, close the two server windows.
 | GET | `/api/activity/runs/{id}` | Yes | One run with its steps |
 | GET | `/api/care-navigation/options` | No | Symptom form choices (warning signs, symptoms, durations…) |
 | POST | `/api/care-navigation/assess` | Yes | Symptom Guidance form, evaluated by the Care Navigation Agent (same engine as the chat) |
+| GET | `/api/front-desk/requests?status=` | Staff | Requests to review (`pending`, `confirmed`, `declined`, `cancelled`, `all`); 404 when the feature is off |
+| POST | `/api/front-desk/requests/{reference}/decision` | Staff | Confirm or decline once (`{"decision": "confirm" \| "decline", "note": "..."}`) |
 
 ## How the agents work (Phase 3)
 
 ```
 message → Safety Gate (warning signs → emergency; rule-override → refused)
         → conversation context (continue an unfinished booking / follow-up)
-        → IntentClassifier (transparent rules: intent + confidence + matched evidence)
+        → IntentClassifier (transparent rules by default; optional trained hybrid)
         → Supervisory Agent routes to ONE specialist:
              Patient Assistance Agent  hospital_info.json (fictional directory)
-             Appointment Agent         appointment_service (same rules as the form; always Pending)
+             Appointment Agent         appointment_service (same rules as the form; Pending until staff review)
              Care Navigation Agent     care_rules.json (fixed rules, not clinically reviewed, never diagnoses)
+             Health Information Agent  optional; cited NIH MedQuAD passages, never about the patient
+        → optional local rewording of non-clinical replies (guarded; falls back to the template)
         → every step saved in agent_runs / agent_steps and shown in the Agent Activity panel
 ```
 
@@ -112,11 +137,12 @@ cd frontend
 npm.cmd run typecheck
 npm.cmd test
 
-# Browser tests (start the app first with scripts\start.ps1)
-npm.cmd run test:e2e
+# Browser tests against a throwaway database (stop the app first)
+powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1               # all optional features off
+powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1 -AllFeatures  # all optional features on
 ```
 
-Browser tests create and then cancel a real appointment request in whichever database the running backend uses. Run `scripts\reset-demo-data.ps1` afterwards for a clean demo.
+`run-e2e.ps1` starts its own servers with `backend\data\e2e.db` and deletes it afterwards, so the demo database is not touched. Tests for optional features that are off skip themselves.
 
 ## Project structure
 
@@ -124,7 +150,9 @@ Browser tests create and then cancel a real appointment request in whichever dat
 backend/    FastAPI app: app/api (routes), app/services (business rules), app/db (models, seed),
             app/knowledge (fictional hospital_info.json), app/core (config, security, errors), tests/
 frontend/   React app: src/pages, src/components, src/auth, src/services, src/design-system, tests/, e2e/
-scripts/    setup.ps1, start.ps1, ensure-env.ps1, reset-demo-data.ps1
+scripts/    setup.ps1, start.ps1, ensure-env.ps1, reset-demo-data.ps1, run-e2e.ps1, setup-ollama.ps1
+datasets/   optional: MedQuAD preparation script (downloads are gitignored)
+model/      optional: MedQuAD index builder, intent classifier training and evaluation, rewording check
 docs/       plan, phase reports, screenshots
 ```
 
@@ -138,4 +166,4 @@ docs/       plan, phase reports, screenshots
 ## Credits and licences
 
 - Fonts: Inter and Fraunces (SIL Open Font License), bundled via Fontsource.
-- MedQuAD (CC BY 4.0) may be used in optional Phase 5 work. Attribution will be added if it is used.
+- Optional Phase 5 data and models (MedQuAD CC BY 4.0, CLINC150 CC BY 3.0, MiniLM and DistilBERT Apache 2.0, Qwen2.5 3B research licence): see [`LICENSES.md`](LICENSES.md) and [`datasets/README.md`](datasets/README.md).
